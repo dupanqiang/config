@@ -1,10 +1,10 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2022-08-13 15:23:06
+ * @LastEditTime: 2023-01-11 22:10:31
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/components/AgGridTable.vue
+ * @FilePath: /dfs-page-config/src/components/AgGridTable.vue
 -->
 <!--
  * enableCellTextSelection=true  ensureDomOrder=true 允许选中文本
@@ -75,6 +75,9 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, toRefs, watch } from "vue";
 import { AgGridVue } from "ag-grid-vue3";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import '@/common/css/aggrid.less';
 import { useStore } from "vuex";
 // import { useRoute } from "vue-router";
 import { sum } from "@/utils/index";

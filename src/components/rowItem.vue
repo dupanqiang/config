@@ -1,12 +1,12 @@
 <!--
  * @Author: zengkai
  * @Date: 2022-05-31 18:31:12
- * @LastEditTime: 2023-01-09 15:31:48
+ * @LastEditTime: 2023-01-11 22:08:27
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/rowItem.vue
 -->
 <template>
-  <el-row>
+  <el-row :style="'vertical-align: top; ' + parentStyle">
     <el-col
       v-for="(itemChild, index) in configOption"
       :style="itemChild.style || ''"
@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import Card from "@/components/Card.vue";
 import Form from "@/components/Form.vue";
 import ButtonGroup from "@/components/ButtonGroup.vue";
@@ -42,9 +42,10 @@ import ImageOne from "./rowComponents/imageOne.vue";
 import ImageList from "./rowComponents/imageList.vue";
 import TagArr from "./rowComponents/tagArr.vue";
 import Tag from "./rowComponents/detileTag.vue";
-import Text from "./rowComponents/detileText.vue";
+import LabelText from "./rowComponents/LabelText.vue";
 import TextArr from "./rowComponents/textArr.vue";
-import Dialog from "./CommonDialogNew.vue";
+// import Dialog from "./CommonDialogNew.vue";
+import Dialog from "./CommonDialog.vue";
 // 详情页底部按钮操作区
 // import DetileFooter from "./rowComponents/detileFooter.vue";
 // 详情页图片轮播
@@ -63,7 +64,7 @@ export default defineComponent({
     ImageOne,
     ImageList,
     TagArr,
-    Text,
+    LabelText,
     // DetileTable,
     // RowItem,
     Tag,
@@ -85,6 +86,15 @@ export default defineComponent({
       type: Array,
       default: [],
     },
+    itemChild: {
+      type: Object,
+      default: {},
+    }
   },
+  setup(props: any) {
+    return {
+      parentStyle: props.configOption[0].parentStyle
+    }
+  }
 });
 </script>

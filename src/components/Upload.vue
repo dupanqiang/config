@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-06 21:52:31
- * @LastEditTime: 2022-07-30 15:35:58
+ * @LastEditTime: 2023-01-11 18:23:01
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/components/fileUpload.vue
+ * @FilePath: /dfs-page-config/src/components/Upload.vue
 -->
 <template>
   <el-upload
@@ -22,10 +22,9 @@
     :headers="headers"
     :data="params"
   >
-    <!-- <el-button size="mini" type="success" :loading="uploading">{{text}}</el-button> -->
-    <el-button size="mini" :type="buttonType" :disabled="uploading">{{
-      text
-    }}</el-button>
+    <el-button :size="size" :type="buttonType" :disabled="uploading">
+      {{text}}
+    </el-button>
   </el-upload>
 </template>
 <script lang="ts">
@@ -47,6 +46,7 @@ export default defineComponent({
       type: Object,
       default: {},
     },
+    size: String
   },
   emits: ["onSuccess"],
   setup(props, context) {

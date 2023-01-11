@@ -1,19 +1,23 @@
 <!--
- * @Author: zengkai
- * @Date: 2022-05-31 12:21:17
- * @LastEditTime: 2023-01-09 20:34:12
+ * @author: zhao yongfei
+ * @Date: 2023-01-10 13:02:15
+ * @description: 
+ * @LastEditTime: 2023-01-11 22:08:52
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
 <template>
-  <RowItem :pageKey="pageKey" :configOption="configOption"></RowItem>
+  <div style="height: 100%; overflow-y: auto;">
+    <RowItem :pageKey="pageKey" :configOption="configOption" />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-// import {useStore} from "vuex"
-// import { initPage } from "@/common/js/pageConfigUtils";
-import RowItem from "@/components/rowItem.vue";
+import {useStore} from "vuex"
+import { initPage } from "@/common/js/pageConfigUtils";
+import RowItem from "@/components/RowItem.vue";
+import { prop } from "vue-class-component";
 export default defineComponent({
   name: "Page",
   props: {
@@ -35,11 +39,11 @@ export default defineComponent({
   components: {
     RowItem,
   },
-  setup({ configOption, data }) {
-    // const store = useStore()
+  setup({ pageKey, configOption, data }) {
+    const store = useStore()
     // const state = reactive({});
     if (data) {
-      recursionData(configOption, data);
+      // recursionData(configOption, data);
     }
 
     // 递归遍历数据
@@ -82,7 +86,7 @@ export default defineComponent({
       }
     }
     // 初始化页面
-    // initPage(pageConfig, store);
+    initPage({pageKey: pageKey, components: configOption}, store);
     return {
       // ...toRefs(state)
     };

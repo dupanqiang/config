@@ -1,7 +1,7 @@
 /*
  * @Author: zengkai
  * @Date: 2022-05-31 11:21:21
- * @LastEditTime: 2023-01-09 15:49:34
+ * @LastEditTime: 2023-01-11 15:38:46
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/views/example/configOption.ts
  */
@@ -47,7 +47,7 @@ const options = {
         value: "",
         label: "收款人",
         rules: (formData: any) => {
-          return [{ required: formData.supply == 2, message: "不能为空" }];
+          // return [{ required: formData.supply == 2, message: "不能为空" }];
         },
       },
       {
@@ -56,7 +56,7 @@ const options = {
         value: "",
         label: "收款银行",
         rules: (formData: any) => {
-          return [{ required: formData.supply == 2, message: "不能为空" }];
+          // return [{ required: formData.supply == 2, message: "不能为空" }];
         },
       },
       {
@@ -65,7 +65,7 @@ const options = {
         value: "",
         label: "收款银行支行",
         rules: (formData: any) => {
-          return [{ required: formData.supply == 2, message: "不能为空" }];
+          // return [{ required: formData.supply == 2, message: "不能为空" }];
         },
       },
       {
@@ -74,7 +74,7 @@ const options = {
         value: "",
         label: "收款账号",
         rules: (formData: any) => {
-          return [{ required: formData.supply == 2, message: "不能为空" }];
+          // return [{ required: formData.supply == 2, message: "不能为空" }];
         },
       },
       {
@@ -101,7 +101,7 @@ const options = {
         value: "",
         label: "合同编号",
         rules: [{ required: true, message: "不能为空" }],
-        isShow: (formData: any) => formData.contractType == 1,
+        // isShow: (formData: any) => formData.contractType == 1,
       },
       {
         type: "Daterange",
@@ -145,43 +145,38 @@ const options = {
   },
   formGroup2: () => {
     return [
-      {
-        type: "Tab",
-        width: "100%",
-        prop: "statz",
-        value: 2,
-        itemName: "label",
-        itemValue: "value",
-        itemData: "num",
-        url: "/purchase/deliveryOrder/statusEnum",
-        notReset: true,
-        effects: [
-          {
-            event: "clearTableData",
-            targets: ["downTable"],
-          },
-        ],
-      },
-      {
-        type: "Input",
-        placeholder: "请输入CSID",
-        prop: "crawlerColorSizeId",
-        value: null,
-      },
+      // {
+      //   type: "Tab",
+      //   width: "100%",
+      //   prop: "statz",
+      //   value: 2,
+      //   itemName: "label",
+      //   itemValue: "value",
+      //   itemData: "num",
+      //   url: "/purchase/deliveryOrder/statusEnum",
+      //   notReset: true,
+      //   effects: [
+      //     {
+      //       event: "clearTableData",
+      //       targets: ["downTable"],
+      //     },
+      //   ],
+      // },
       {
         type: "Input",
-        placeholder: "请输入供应商款号",
-        prop: "supplierStylesCode",
-        value: null,
+        prop: "id",
+        value: "",
+        placeholder: "采购单号",
       },
       {
         type: "Select",
-        placeholder: "买手",
-        prop: "buyerId",
+        prop: "purchaseStatusList",
+        value: [],
+        url: "/purchase/slt/getOrderStatusEnum",
         options: [],
-        itemName: "userName",
-        itemValue: "userId",
-        url: "/goods-service/dmm_user/users/1",
+        multiple: true,
+        changeQry: true,
+        placeholder: "采购单状态",
       },
       {
         type: "Select",
@@ -221,20 +216,20 @@ const options = {
       },
       {
         type: "Daterange",
-        prop: "orderTime",
+        prop: "checkTime",
         value: "",
-        startTime: "orderStartTime",
-        endTime: "orderEndTime",
-        startPlaceholder: "下单开始日期",
-        endPlaceholder: "下单结束日期",
+        startTime: "checkTimeStart",
+        endTime: "checkTimeEnd",
+        startPlaceholder: "核对日期开始",
+        endPlaceholder: "核对日期结束",
         width: "240px",
         disabledDate: () => {},
       },
       {
         type: "Select",
-        prop: "orderPriority",
+        prop: "orderPriorityNewLabel",
         value: "",
-        url: "/purchase/common/getOrderPriorityEnum",
+        url: "/purchase/fabricAdvice/getOrderPriorityNewEnum",
         options: [],
         changeQry: true,
         placeholder: "采购单类型",
@@ -249,8 +244,18 @@ const options = {
           { label: "是", value: 1 },
         ],
         changeQry: true,
-        placeholder: "是否延期",
-        isShow: (formData: any) => formData.orderPriority == 1,
+        placeholder: "是否超期",
+      },
+      {
+        type: "Daterange",
+        prop: "targetDeliveryCycle",
+        value: "",
+        startTime: "targetDeliveryCycleStart",
+        endTime: "targetDeliveryCycleEnd",
+        startPlaceholder: "目标交期开始",
+        endPlaceholder: "目标交期结束",
+        width: "240px",
+        disabledDate: () => {},
       },
     ];
   },
@@ -314,146 +319,253 @@ const options = {
   columns: () => {
     return [
       {
-        headerName: "商品款号",
-        field: "supplierStylesCode",
-        minWidth: 140,
-      },
-      {
-        headerName: "csId",
-        field: "csIds",
-        minWidth: 140,
-      },
-      {
-        headerName: "商品四级分类",
-        minWidth: 140,
-        cellRenderer: ({ data }: any) => {
-          return `
-            <span>${data.category1Name}>${data.category2Name}>${data.category3Name}>${data.category4Name}</span>
-          `;
+        headerName: "采购单号",
+        field: "id",
+        width: 80,
+        cellRendererFramework: "CellId",
+        cellRendererParams: {
+          // callBackFn: (row: any) => {
+          //   router.push({
+          //     name: "progressTracking",
+          //     params: { progressTrackingId: row.id },
+          //   });
+          // },
         },
       },
       {
-        headerName: "买手",
-        field: "buyerName",
-        minWidth: 140,
+        headerName: "聚水潭采购单号",
+        field: "poId",
+        width: 120,
       },
       {
-        headerName: "货源",
-        field: "supplyDesc",
-        minWidth: 140,
+        headerName: "采购单优先级",
+        field: "orderPriorityNewDesc",
+        width: 90,
+        // cellRenderer: ({ data }: any) => {
+        //   if (data.orderPriorityNewDesc.substring(1) != 6)
+        //     return data.orderPriorityNewDesc;
+        // },
       },
-
       {
-        headerName: "上架颜色",
+        headerName: "采购单状态",
+        field: "purchaseStatusDesc",
+        minWidth: 120,
+        width: 120,
+      },
+      {
+        headerName: "采购类型",
+        field: "purchaseTypeDesc",
+        minWidth: 120,
+        width: 120,
+      },
+      {
+        headerName: "订单类型",
+        field: "orderTypeDesc",
+        minWidth: 120,
+        width: 120,
+      },
+      {
+        headerName: "目标交期1｜数量",
+        field: "targetCycle1",
         minWidth: 140,
+        width: 140,
         cellRenderer: ({ data }: any) => {
-          let onlienColorStr = "";
-          data.onlineColors &&
-            data.onlineColors.forEach((item: any) => {
-              onlienColorStr += ` <span>${item.colorName}</span> 、`;
+          return data.targetCycle1
+        }
+      },
+      {
+        headerName: "目标交期2｜数量",
+        field: "targetCycle2",
+        minWidth: 140,
+        width: 140,
+        cellRenderer: ({ data }: any) => {
+          return data.targetCycle2
+        }
+      },
+      {
+        headerName: "目标交期3｜数量",
+        field: "targetCycle3",
+        minWidth: 140,
+        width: 140,
+        cellRenderer: ({ data }: any) => {
+          return data.targetCycle3
+        }
+      },
+      {
+        headerName: "是否超期",
+        field: "deferStatusDesc",
+        width: 80,
+        cellRenderer: ({ data }: any) => {
+          if (data.deferStatus == 1) {
+            return `<span style="color: red;">
+             超期
+            </span>`;
+          } else {
+            return "未超期";
+          }
+        },
+      },
+      {
+        headerName: "供应商款号",
+        field: "styleNo",
+        minWidth: 160,
+        width: 160,
+      },
+      // {
+      //   headerName: "版号",
+      //   field: "bomNo",
+      //   cellRendererFramework: "CellBomNo",
+      //   cellRendererParams: {
+      //     showBomInfo: showBomInfo,
+      //     printBomInfo: printBomInfo,
+      //     wachInfo: wachInfo,
+      //   },
+      //   minWidth: 90,
+      //   width: 120,
+      // },
+      {
+        headerName: "版本创建时间",
+        field: "bomCreated",
+        width: 140,
+      },
+      {
+        headerName: "下单数量",
+        field: "quantity",
+        minWidth: 100,
+        width: 100,
+        showTotal: true,
+      },
+      {
+        headerName: "供应商名称",
+        field: "supplierName",
+        minWidth: 210,
+        width: 210,
+      },
+      {
+        headerName: "未准交原因",
+        field: "notSubmitReasonList",
+        width: 160,
+        // autoHeight: true,
+        wrapText: true,
+        cellRenderer: ({ data }: any) => {
+          const arr: any = []
+          if(data.notSubmitReasonList && data.notSubmitReasonList.length) {
+            data.notSubmitReasonList.forEach((item: any) => {
+              arr.push(`<span class="el-tag el-tag--light el-tag--small" style="margin-right:2px">${item}</span>`)
             });
-          return onlienColorStr;
-        },
+          }
+          return arr.join('')
+        }
       },
       {
-        headerName: "拍摄颜色",
-        minWidth: 140,
-        cellRenderer: ({ data }: any) => {
-          let shootColorsStr = "";
-          data.shootColors &&
-            data.shootColors.forEach((item: any) => {
-              shootColorsStr += ` <span>${item.colorName}</span> 、`;
-            });
-          return shootColorsStr;
-        },
+        headerName: "未准交原因状态",
+        field: "notSubmittingStatusDesc",
+        width: 120,
       },
       {
-        headerName: "拍摄件数",
-        field: "piecesCount",
-        minWidth: 140,
+        headerName: "原因提交人",
+        field: "notSubmittingReasonUpdateName",
+        width: 100,
       },
       {
-        headerName: "拍摄尺码",
-        minWidth: 140,
-        cellRenderer: ({ data }: any) => {
-          let csAndSizesStr = "";
-          data.csAndSizes &&
-            data.csAndSizes.forEach((item: any) => {
-              csAndSizesStr += ` <span>${item}</span> 、`;
-            });
-          return csAndSizesStr;
-        },
+        headerName: "确认人",
+        field: "notSubmittingStatusConfirmName",
+        width: 100,
       },
       {
-        headerName: "腰型",
-        field: "waistType",
-        minWidth: 140,
+        headerName: "确认时间",
+        field: "notSubmittingStatusConfirmTime",
+        width: 140,
       },
       {
-        headerName: "活动场景",
-        field: "activityDesc",
-        minWidth: 140,
+        headerName: "生产跟单",
+        field: "productionDocumentaryName",
+        minWidth: 120,
+        width: 120,
       },
       {
-        headerName: "商品卖点",
-        field: "productSellingPointTypeDesc",
-        minWidth: 140,
+        headerName: "应付总金额",
+        field: "goodsTotalAmount",
+        minWidth: 100,
+        width: 100,
       },
       {
-        headerName: "活动强度",
-        field: "activityIntensityDesc",
-        minWidth: 140,
+        headerName: "承诺总数量",
+        field: "allCommitmentQuantity",
+        minWidth: 100,
+        width: 100,
       },
       {
-        headerName: "运营主推颜色",
-        minWidth: 140,
-        cellRenderer: ({ data }: any) => {
-          let operationColorsStr = "";
-          data.operationColors &&
-            data.operationColors.forEach((item: any) => {
-              operationColorsStr += ` <span>${item.colorName}</span> 、`;
-            });
-          return operationColorsStr;
-        },
+        headerName: "待交付总数量",
+        field: "allToBeDeliveredQuantity",
+        minWidth: 110,
+        width: 110,
+        showTotal: true,
       },
       {
-        headerName: "拍摄修图优先级",
-        field: "priorityDesc",
-        minWidth: 140,
+        headerName: "已发货总数量",
+        field: "totalQuantityShipped",
+        minWidth: 120,
+        width: 120,
+        showTotal: true,
       },
       {
-        headerName: "是否需要调样",
-        field: "sampleDesc",
-        minWidth: 140,
+        headerName: "已入库总数量",
+        field: "storedTotalQuantity",
+        minWidth: 120,
+        width: 120,
       },
       {
-        headerName: "注意事项",
-        field: "fbiWarning",
-        minWidth: 140,
+        headerName: "已质检总数量",
+        field: "inspectedTotalQuantity",
+        minWidth: 130,
+        width: 130,
+      },
+      {
+        headerName: "质检合格总数量",
+        field: "qualifiedTotalNumber",
+        minWidth: 130,
+        width: 130,
+      },
+      {
+        headerName: "质检不合格总数量",
+        field: "unqualifiedInspectionTotalNumber",
+        minWidth: 130,
+        width: 130,
+      },
+      {
+        headerName: "核对时间",
+        field: "checkTime",
+        minWidth: 180,
+        width: 180,
+      },
+      {
+        headerName: "关联采购单号",
+        field: "parentPurchaseId",
+        minWidth: 180,
+        width: 180,
       },
       {
         headerName: "备注",
         field: "remark",
-        minWidth: 140,
-      },
-      {
-        field: "action",
-        headerName: "操作",
-        pinned: "right",
-        autoHeight: true,
-        minWidth: 120,
-        width: 120,
-        buttonGroup: [
-          {
-            text: "编辑",
-            event: "custom",
-            handle: ({ row }: any) => {
-              console.log(11111111, row);
-            },
+        cellRendererFramework: "CellItemEdit",
+        cellRendererParams: {
+          dataKey: "remark",
+          type: "textarea",
+          url: "/purchase/slt/batchUpdateRemark",
+          params: (row: any) => {
+            return {
+              orderIds: [row.id],
+            };
           },
-        ],
+          callBack: () => {},
+        },
+        wrapText: true,
+        // autoHeight: true,
+        minWidth: 280,
+        width: 280,
       },
-    ];
+    ]
   },
   popupGroup: [
     {
@@ -504,7 +616,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           style: "margin-bottom: 20px;",
           span: 6,
           label: "任务名称",
-          type: "text",
+          type: "LabelText",
           key: "",
           // relation: "data.taskName",
           value: data.taskName,
@@ -513,7 +625,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           style: "margin-bottom: 20px;",
           span: 6,
           label: "任务状态",
-          type: "text",
+          type: "LabelText",
           key: "taskStatusDesc",
           value: data.taskCenterId,
           // relation: "data.taskCenterId",
@@ -522,7 +634,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           span: 6,
           style: "margin-bottom: 20px;",
           label: "拍摄模式",
-          type: "text",
+          type: "LabelText",
           key: "photoModelDesc",
           value: data.photoModelDesc,
           // relation: "data.photoModelDesc",
@@ -531,7 +643,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           style: "margin-bottom: 20px;",
           span: 6,
           label: "搭配师",
-          type: "text",
+          type: "LabelText",
           key: "matchmaker",
           value: "",
           relation: "data.matchmaker",
@@ -548,11 +660,11 @@ export const configOption = (store: any, showInfo: any, data: any) => {
             {
               valuekey: [
                 {
-                  type: "text",
+                  type: "LabelText",
                   key: "name",
                 },
                 {
-                  type: "text",
+                  type: "LabelText",
                   key: "age",
                 },
               ],
@@ -572,7 +684,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           style: "margin-bottom: 20px;",
           span: 12,
           label: "任务时间",
-          type: "text",
+          type: "LabelText",
           key: "",
           value: "",
           relation: ["data.planStartAt", "data.planFinishAt"],
@@ -586,7 +698,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
       style: "margin-bottom: 20px; margin-top: 0",
       children: [
         {
-          type: "form",
+          type: "Form",
           span: 20,
           value: "",
           labelWidth: "100px",
@@ -613,6 +725,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
       children: [
         {
           type: "Form",
+          key: "searchForm",
           span: 24,
           value: "",
           labelWidth: "100px",
@@ -633,15 +746,17 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           span: 24,
           style: "height: 300px",
           key: "downTable",
-          url: "/purchase/slt/details",
-          method: "GET",
+          triggerQuery: true,
+          dependencies: "searchForm",
+          url: "/purchase/slt/selectPurchaseOrderPage",
+          // method: "GET",
           searchBefore: (selfComp: any, row: any) => {
             console.log(selfComp, row);
           },
-          params: {
-            orderId: "",
-            purchaseStatusList: "",
-          },
+          // params: {
+          //   orderId: "",
+          //   purchaseStatusList: "",
+          // },
           searchAfter: (res: any) => {
             console.log(res);
           },
@@ -656,51 +771,51 @@ export const configOption = (store: any, showInfo: any, data: any) => {
         },
       ],
     },
-    {
-      type: "DetileFooter",
-      children: [
-        {
-          label: "确认",
-          type: "primary",
-          isShow: "true",
-          target: "DialogInfo",
-          // disabled: "false",
-          handle: () => {
-            showInfo();
-          },
-        },
-        {
-          label: "取消",
-          type: "",
-          // key: "matchmaker",
-          value: "",
-          relation: "",
-          handle: () => {
-            // showInfo();
-          },
-        },
-        {
-          label: "驳回任务",
-          type: "primary",
-          // key: "matchmaker",
-          value: "",
-          relation: "",
-          handle: () => {
-            // showInfo();
-          },
-        },
-        {
-          label: "任务完成",
-          type: "success",
-          // key: "matchmaker",
-          value: "",
-          relation: "",
-          handle: () => {
-            // showInfo();
-          },
-        },
-      ],
-    },
+    // {
+    //   type: "DetileFooter",
+    //   children: [
+    //     {
+    //       label: "确认",
+    //       type: "primary",
+    //       isShow: "true",
+    //       target: "DialogInfo",
+    //       // disabled: "false",
+    //       handle: () => {
+    //         showInfo();
+    //       },
+    //     },
+    //     {
+    //       label: "取消",
+    //       type: "",
+    //       // key: "matchmaker",
+    //       value: "",
+    //       relation: "",
+    //       handle: () => {
+    //         // showInfo();
+    //       },
+    //     },
+    //     {
+    //       label: "驳回任务",
+    //       type: "primary",
+    //       // key: "matchmaker",
+    //       value: "",
+    //       relation: "",
+    //       handle: () => {
+    //         // showInfo();
+    //       },
+    //     },
+    //     {
+    //       label: "任务完成",
+    //       type: "success",
+    //       // key: "matchmaker",
+    //       value: "",
+    //       relation: "",
+    //       handle: () => {
+    //         // showInfo();
+    //       },
+    //     },
+    //   ],
+    // },
     {
       type: "Dialog",
       label: "测试弹窗",
@@ -737,7 +852,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           span: 24,
           labelWidth: "100px",
           label: "任务名称",
-          type: "text",
+          type: "LabelText",
           key: "",
           // relation: "data.taskName",
           value: data.taskName,
@@ -747,7 +862,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           span: 24,
           labelWidth: "100px",
           label: "任务状态",
-          type: "text",
+          type: "LabelText",
           key: "taskStatusDesc",
           value: data.taskCenterId,
           // relation: "data.taskCenterId",
@@ -757,7 +872,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           labelWidth: "100px",
           style: "margin-bottom: 20px;",
           label: "拍摄模式",
-          type: "text",
+          type: "LabelText",
           key: "photoModelDesc",
           value: data.photoModelDesc,
           // relation: "data.photoModelDesc",
@@ -767,7 +882,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           span: 24,
           labelWidth: "100px",
           label: "搭配师",
-          type: "text",
+          type: "LabelText",
           key: "matchmaker",
           value: data.matchmaker,
           // relation: "data.matchmaker",
@@ -785,11 +900,11 @@ export const configOption = (store: any, showInfo: any, data: any) => {
             {
               valuekey: [
                 {
-                  type: "text",
+                  type: "LabelText",
                   key: "name",
                 },
                 {
-                  type: "text",
+                  type: "LabelText",
                   key: "age",
                 },
               ],

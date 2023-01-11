@@ -1,90 +1,61 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2022-08-22 15:59:37
- * @LastEditors: zengkai
+ * @LastEditTime: 2023-01-11 20:35:35
+ * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/components/ButtonGroup.vue
+ * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
 -->
 <template>
-  <el-form
-    :class="['search-form-box']"
-    :style="componentOption.style"
-    :size="componentOption.size"
-    inline
-  >
-    <el-form-item
-      v-for="item in buttonGroup"
-      :key="item.text"
-      :style="item.style || ''"
-    >
+  <div class="button-group" :style="componentOption.style">
+    <template v-for="item in buttonGroup" :key="item.text">
       <template v-if="!item.slot">
-        <el-button
-          v-if="item.event === 'query'"
-          :type="item.buttonType || 'primary'"
-          :size="item.size || 'small'"
-          @click="queryData()"
-          >{{ item.text }}</el-button
-        >
-        <el-button
-          v-else-if="item.event === 'reset'"
-          :type="item.buttonType || 'primary'"
-          :size="item.size || 'small'"
-          @click="reset()"
-          >{{ item.text }}</el-button
-        >
-        <el-button
-          v-else-if="item.event === 'download'"
-          :type="item.buttonType || 'primary'"
-          :size="item.size || 'small'"
-          @click="download(item)"
-          >{{ item.text }}</el-button
-        >
-        <el-button
-          v-else-if="item.event === 'export'"
-          :type="item.buttonType || 'primary'"
-          :size="item.size || 'small'"
-          @click="exportData(item)"
-          >{{ item.text }}</el-button
-        >
         <!-- 文件上传 -->
-        <fileUpload
-          v-else-if="item.event === 'upload'"
+        <Upload
+          v-if="item.event === 'upload'"
           :url="item.url"
           :text="item.text"
           @on-success="queryData"
           :buttonType="item.buttonType"
+          :size="size"
         >
-        </fileUpload>
+        </Upload>
+        <el-button
+          v-else-if="item.event === 'custom'"
+          :type="item.buttonType || 'primary'"
+          :size="size"
+          @click="item.handle({ option: item, pageKey: pageKey })"
+          :disabled="item.disabled && item.disabled()"
+          >{{ item.text }}</el-button
+        >
         <el-button
           v-else
           :type="item.buttonType || 'primary'"
-          :size="item.size || 'small'"
-          @click="item.handle({ option: item, pageKey: pageKey })"
-          :disabled="item.disabled && item.disabled()"
+          :size="size"
+          @click="handleClick(item)"
           >{{ item.text }}</el-button
         >
       </template>
       <template v-else>
         <slot :name="item.slot + '_'"></slot>
       </template>
-    </el-form-item>
-  </el-form>
+    </template>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from "vue";
 import { useStore } from "vuex";
 // import { useRoute } from "vue-router";
 import { downLoadData } from "@/utils/index";
-// import { ElMessage } from "element-plus"
-import fileUpload from "@/components/fileUpload.vue";
+import { ElMessage } from "element-plus"
+import Upload from "@/components/Upload.vue";
+import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";
 
 export default defineComponent({
   name: "ButtonGroup",
-  components: { fileUpload },
+  components: { Upload },
   props: {
     pageKey: {
-      // 页面唯一key
       type: String,
       default: "",
     },
@@ -95,80 +66,115 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    // const route = useRoute();
-    // 获取页面配置信息
-    // const pageKey = props.pageKey || route.name;
-    // const pageConfigData = store.getters['dbsPageConfig/getPageConfigData'](pageKey);
-    const formData = {};
     const state = reactive({
-      buttonGroup: <any>[],
-      size: "default",
-      style: "",
-      ...props.componentOption,
+      buttonGroup: computed(() => {
+        return props.componentOption.buttonGroup.filter((item: any) => {
+          if (typeof item.isShow === "function") {
+            if (item.relation) {
+              const components = {}
+              item.relation.forEach(item => {
+                const comp = getRelationComp(store, props.pageKey, item)
+                components[comp.key] = comp
+              })
+              return item.isShow(components)
+            }
+          }
+          return item.isShow === undefined || item.isShow
+        });
+      }),
+      size: props.componentOption.size || "default",
     });
-    (state.buttonGroup = computed(() => {
-      return props.componentOption.buttonGroup.filter((item: any) => {
-        return (
-          item.isShow === undefined ||
-          (typeof item.isShow === "function" && item.isShow(formData))
-        );
+    function handleClick(item) {
+      switch (item.event) {
+        case 'query': queryData(item.target)
+          break;
+        case 'reset': reset(item)
+          break;
+        case 'export': exportData(item)
+          break;
+        case 'download': download(item)
+          break;
+      }
+    }
+    // 查询
+    function queryData(target: string) {
+      store.dispatch("queryList", {
+        pageKey: props.pageKey,
+        target: target
       });
-    })),
-      // 下载模板
-      function download(item: any) {
-        if (item.url.indexOf("https://") > -1) {
-          window.open(item.url, "_blank");
-        } else {
-          downLoadData({
-            url: item.url,
-            fileName: item.fileName || "",
-            method: item.method,
-            store: store,
-          });
+    }
+    // 重置
+    function reset(item: any) {
+      const formComp: any = getTargetComp(store, props.pageKey, item.target);
+      formComp.formGroup.forEach((item: any) => {
+        if (item.type !== 'Tab' && item.type !== 'TabStep') {
+          formComp.formData[item.prop] = item.value;
         }
-      };
+      });
+      if (item.queryTarget) {
+        queryData(item.queryTarget)
+      }
+    }
+    // 下载模板
+    function download(item: any) {
+      if (item.url.indexOf("https://") > -1) {
+        window.open(item.url, "_blank");
+      } else {
+        downLoadData({
+          url: store.state.baseUrl + item.url,
+          fileName: item.fileName || "",
+          method: item.method,
+          store: store,
+        });
+      }
+    };
     // 导出
-    // function exportData(item: any) {
-    //   for (let i = 0, components = pageConfigData.components; i < components.length; i++) {
-    //     if (components[i].key === item.target) {
-    //       const tableComp = components[i];
-    //       if (tableComp.data.totalNum == 0) return ElMessage.warning("无可导出数据");
-    //       let exportParams = {}
-    //       if (tableComp.exportBySelectionData) {
-    //         // 根据选择数据导出
-    //         exportParams = tableComp.exportBySelectionData(tableComp.selectedRows)
-    //         // if (!exportParams) return ElMessage.warning("请选择要导出的数据");
-    //         if (!exportParams) {
-    //           let formData: any = tableComp.formData || {};
-    //           exportParams = { ...formData, ...tableComp.pageInfo }
-    //         }
-    //       } else {
-    //         // 根据查询参数导出
-    //         let formData: any = tableComp.formData || {};
-    //         exportParams = { ...formData, ...tableComp.pageInfo }
-    //       }
-    //       const params = {
-    //         url: item.url,
-    //         fileName: (item.fileName || route.meta.title),
-    //         params: exportParams,
-    //         store: store
-    //       }
-    //       downLoadData(params);
-    //       break;
-    //     }
-    //   }
-    // }
+    function exportData(item: any) {
+      const tableComp: any = getTargetComp(store, props.pageKey, item.target);
+      if (tableComp.data.totalNum == 0) return ElMessage.warning("无可导出数据");
+      let exportParams = {}
+      if (tableComp.exportBySelectionData) {
+        // 根据选择数据导出
+        exportParams = tableComp.exportBySelectionData(tableComp.selectedRows)
+        // if (!exportParams) return ElMessage.warning("请选择要导出的数据");
+        if (!exportParams) {
+          let formData: any = tableComp.formData || {};
+          exportParams = { ...formData, ...tableComp.pageInfo }
+        }
+      } else {
+        // 根据查询参数导出
+        let formData: any = tableComp.formData || {};
+        exportParams = { ...formData, ...tableComp.pageInfo }
+      }
+      const params = {
+        url: store.state.baseUrl + item.url,
+        fileName: item.fileName,
+        params: exportParams,
+        store: store
+      }
+      downLoadData(params);
+    }
     return {
       ...toRefs(state),
-      // pageKey,
-      // download,
+      handleClick,
+      download,
+      queryData
       // exportData
     };
   },
 });
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+  .button-group {
+    display: flex;
+    margin-bottom: 5px;
+    .el-button {
+      margin-right: 5px;
+      margin-left: 0;
+    }
+  }
+</style>
 <style>
 /* .upload {
   text-align: left !important;

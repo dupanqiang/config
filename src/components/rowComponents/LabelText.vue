@@ -1,9 +1,9 @@
 <!--
  * @Author: zengkai
  * @Date: 2022-07-06 13:54:40
- * @LastEditTime: 2022-08-19 16:09:44
- * @LastEditors: zengkai
- * @FilePath: /dfs-page-vue/src/components/rowComponents/detileText.vue
+ * @LastEditTime: 2023-01-10 14:51:23
+ * @LastEditors: zhao yongfei
+ * @FilePath: /dfs-page-config/src/components/rowComponents/LabelText.vue
 -->
 <template>
   <div>
@@ -21,7 +21,7 @@
 import { reactive, toRefs, defineComponent } from "vue";
 import "./common.less";
 export default defineComponent({
-  name: "text",
+  name: "LabelText",
   props: {
     componentOption: {
       type: Object,

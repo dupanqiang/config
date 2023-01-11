@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2022-07-30 18:38:02
+ * @LastEditTime: 2023-01-11 14:27:50
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/components/CommonDialog.vue
+ * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
 -->
 <template>
   <el-dialog
@@ -20,7 +20,7 @@
       <div v-if="typeof data.infoText == 'function'" v-html="data.infoText(selectedRows)"></div>
       <p v-else>{{ data.infoText }}</p>
     </template>
-    <SubmitForm
+    <!-- <SubmitForm
       ref="formRef"
       :labelWidth="data.labelWidth"
       size="small"
@@ -28,7 +28,7 @@
       :formGroup="formGroup"
       :inline="data.inline"
     >
-    </SubmitForm>
+    </SubmitForm> -->
     <template #footer>
       <span class="dialog-footer">
         <template v-for="item in buttonGroup" :key="item.event">
@@ -44,9 +44,9 @@ import { defineComponent, reactive, toRefs, ref, nextTick } from "vue";
 import service from "@/utils/service";
 import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
-import SubmitForm from "./SubmitForm.vue"
+// import SubmitForm from "./SubmitForm.vue"
 export default defineComponent({
-  components: { SubmitForm },
+  // components: { SubmitForm },
   props: {
     popupData: {
       type: Object,

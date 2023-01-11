@@ -2,18 +2,30 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 11:53:20
  * @description: 
- * @LastEditTime: 2023-01-10 10:40:40
+ * @LastEditTime: 2023-01-10 13:53:13
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/vite.config.ts
  */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import basicSsl from '@vitejs/plugin-basic-ssl'
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { resolve } from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), basicSsl()],
+  plugins: [
+    vue(),
+    basicSsl(), 
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
+    Components({
+      resolvers: [ElementPlusResolver()],
+    })
+  ],
   server: {
     port: 8000,
     host: "devfe.doublefs.com",

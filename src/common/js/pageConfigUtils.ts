@@ -1,15 +1,16 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2022-08-11 20:37:09
+ * @LastEditTime: 2023-01-11 13:45:48
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/common/js/pageConfig.ts
+ * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
  * 
  * @param { string } pageKey 页面状态管理键名（全局唯一）
  * @param { object } configData 页面配置数据
  * @param { object } store 状态管理store
  */
+import { formatDate } from "@/utils";
 import service from "@/utils/service";
   // 初始化
   const initPage = (configData: any, store: any) => {
@@ -43,16 +44,24 @@ import service from "@/utils/service";
   }
   
   // 获取目标对象
-  function getTargetComp({ getters }: any, pageKey: string, target: string) {
-    const getPageConfigData = getters['getPageConfigData'] || getters.getPageConfigData;
+  let component:any = {}
+  function getTargetComp({ getters }: any, pageKey: string, comKey: string) {
+    component = {}
+    const getPageConfigData = getters.getPageConfigData;
     if (!getPageConfigData(pageKey)) return {};
-    const components = getPageConfigData(pageKey).components;
+    const components = getPageConfigData(pageKey);
+    getComp(components, comKey)
+    return component
+  }
+  function getComp(components, comKey) {
     for (let i = 0; i < components.length; i++) {
-      if (components[i].key === target) {
-        return components[i];
-      }
+      if (components[i].children) getComp(components[i].children, comKey)
+      if (components[i].key === comKey) component = components[i]
     }
-    return {}
+  }
+  // 获取依赖对象
+  function getRelationComp(store, pageKey: string, comKey: string) {
+    return getTargetComp(store, pageKey, comKey);
   }
   // 获取下拉框数据
   function getSelectOption(state: any, item: any ) {
@@ -72,12 +81,49 @@ import service from "@/utils/service";
       })
     }
   }
-    
+  // 获取form参数
+  const getFormData = (formComp: any) => {
+    let data: any = {};
+    const formData = formComp.formData;
+    formComp.formGroup.forEach((item: any) => {
+      // 如果是隐藏的表单，取默认值
+      if (
+        item.isShow === undefined ||
+        item.isShow === true ||
+        (item.isShow.prop && formData[item.isShow.prop] == item.isShow.value)
+      ) {
+        data[item.prop] = formData[item.prop];
+      } else {
+        data[item.prop] = item.value;
+      }
+      // console.log(formData)
+      // 处理时间
+      if (item.type === "Daterange" || item.type === "DateTimerange") {
+        if (!data[item.prop]) {
+          data[item.startTime] = "";
+          data[item.endTime] = "";
+        } else {
+          data[item.startTime] = formatDate(
+            data[item.prop][0],
+            item.type === "Daterange" ? "yyyy-MM-dd" : "yyyy-MM-dd HH:mm:ss"
+          );
+          data[item.endTime] = formatDate(
+            data[item.prop][1],
+            item.type === "Daterange" ? "yyyy-MM-dd" : "yyyy-MM-dd HH:mm:ss"
+          );
+        }
+        delete data[item.prop];
+      }
+    });
+    return data;
+  }
   export {
     initPage,
     queryData,
     tableQuery,
     getTargetComp,
-    getSelectOption
+    getSelectOption,
+    getFormData,
+    getRelationComp
   }
   

@@ -1,7 +1,5 @@
 <template>
-  <div style="height: 100vh">
-    <Page :configOption="configOption" pageKey="page1" :data="dataInfo" />
-  </div>
+  <Page :configOption="configOption" pageKey="example" :data="dataInfo" />
 </template>
 
 <script lang="ts">
@@ -10,16 +8,13 @@ import { useStore } from "vuex";
 import { configOption } from "./configOption";
 import Page from "@/components/Page.vue";
 export default defineComponent({
-  name: "DfsPageVue",
+  name: "example",
   components: {
     Page,
   },
   props: {},
   setup() {
     const store = useStore();
-    // store.state.baseUrl = "https://gateway-qa.doublefs.com";
-    store.state.uploadFileUrl =
-      store.state.baseUrl + `/open/api/base/file/upload`;
     const state = reactive({
       dataInfo: {
         taskId: 100744,

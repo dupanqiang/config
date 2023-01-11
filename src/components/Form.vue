@@ -1,13 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-01-09 20:43:24
+ * @LastEditTime: 2023-01-11 16:57:09
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
 -->
 <template>
   <el-form
+    class="form-group"
     ref="formRef"
     :model="formData"
     :size="size"
@@ -200,18 +201,19 @@
       />
       <slot v-if="item.slot" :name="item.slot"> </slot>
     </el-form-item>
+    <slot></slot>
     <span
       @click="isOpen"
       class="form-move-search"
       v-if="formGroup.length > 4 && showCloseButton"
     >
-      <em :class="open ? 'el-icon-top' : 'el-icon-bottom'"></em>
-      {{ open ? "收起筛选项" : "展开筛选项" }}
+      <!-- <em :class="open ? 'el-icon-top' : 'el-icon-bottom'"></em> -->
+      {{ open ? "收起" : "展开" }}
     </span>
   </el-form>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from "vue";
+import { defineComponent, reactive, ref, toRefs, watch } from "vue";
 import { useStore } from "vuex";
 import store from "@/store"
 import { getSelectOption } from "@/common/js/pageConfigUtils";
@@ -239,16 +241,15 @@ export default defineComponent({
       fileUrlUploadImg:
         store.state.baseUrl + "/media-management-service/v2/image/upload/",
       labelWidth: "110px",
-      formItemWidth: "280px",
+      formItemWidth: "180px",
       size: "small",
-      showCloseButton: false,
+      showCloseButton: props.componentOption.showCloseButton || false,
       formGroup: <any>[],
       inline: true,
       allDisabled: false,
-      ...props.componentOption,
-      formData: { ...props.componentOption.value },
+      formData: props.componentOption.formData
     });
-
+    
     state.formGroup = computed(() => {
       return props.componentOption.formGroup.filter((item: any) => {
         return (
@@ -284,40 +285,46 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.el-form {
-  position: relative;
-  .btn-box {
-    display: block;
-    text-align: center;
-    margin-top: 20px;
+.form-group {
+  .form-move-search {
+    font-size: 12px;
+    color: #409eff;
+    cursor: pointer;
   }
-  .mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 2;
+  .hide-item {
+    display: none;
+  }
+  .el-select {
+    flex: 1;
   }
 }
-.hide-item {
-  display: none;
+.form-group.el-form--inline .el-form-item {
+  margin-bottom: 5px;
+  margin-right: 5px;
 }
-.el-form-item {
-  align-items: center;
-}
-.form-move-search {
-  margin-left: 5px;
-  font-size: 12px;
-  display: inline-block;
-  color: #409eff;
-  padding-top: 4px;
-  cursor: pointer;
-}
-&:deep(.el-checkbox) {
-  font-weight: normal;
-}
-&:deep(.el-upload-list__item) {
-  transition: none;
-}
+// .el-form {
+//   position: relative;
+//   .btn-box {
+//     display: block;
+//     text-align: center;
+//     margin-top: 20px;
+//   }
+//   .mask {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     height: 100%;
+//     width: 100%;
+//     z-index: 2;
+//   }
+// }
+// .el-form-item {
+//   align-items: center;
+// }
+// &:deep(.el-checkbox) {
+//   font-weight: normal;
+// }
+// &:deep(.el-upload-list__item) {
+//   transition: none;
+// }
 </style>
