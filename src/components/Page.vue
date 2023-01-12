@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-01-12 01:39:01
+ * @LastEditTime: 2023-01-13 01:42:37
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -13,29 +13,29 @@
       <template v-slot:list>
         <template v-for="comp in pageConfigData.components" :key="comp.widget">
           <!-- 头部状态按钮 -->
-          <StatusGroup v-if="comp.widget === 'statusGroup'" :statusComp="comp" :pageKey="pageConfigData.pageKey"></StatusGroup>
-          <dbsFormNew v-if="comp.widget === 'searchForm'" :formComp="comp" :pageKey="pageConfigData.pageKey"></dbsFormNew>
+          <!-- <StatusGroup v-if="comp.widget === 'statusGroup'" :statusComp="comp" :pageKey="pageConfigData.pageKey"></StatusGroup> -->
+          <!-- <dbsFormNew v-if="comp.widget === 'searchForm'" :formComp="comp" :pageKey="pageConfigData.pageKey"></dbsFormNew> -->
           <slot v-if="comp.widget === 'searchForm'" name="slot1"></slot>
-          <dbsAgGrid v-if="comp.widget === 'Table'" :tableComp="comp" :pageKey="pageConfigData.pageKey">
+          <!-- <dbsAgGrid v-if="comp.widget === 'Table'" :tableComp="comp" :pageKey="pageConfigData.pageKey">
             <template v-slot:[comp.configFlag?.slotName]>
               <slot :name="comp.configFlag?.slotName"></slot>
             </template>
-          </dbsAgGrid>
+          </dbsAgGrid> -->
         </template>
       </template>
       <!-- 详情页 -->
       <template v-slot:details>
         <template v-for="downComp in pageConfigData.downComponents" :key="downComp.key">
-          <dbsFormNew v-if="downComp.widget === 'searchForm'" :formComp="downComp" :pageKey="pageConfigData.pageKey">
+          <!-- <dbsFormNew v-if="downComp.widget === 'searchForm'" :formComp="downComp" :pageKey="pageConfigData.pageKey">
             <template v-for="item in downComp.buttonGroup.filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
               <slot :name="item.slot"></slot>
             </template>
-          </dbsFormNew>
-          <dbsAgGrid
+          </dbsFormNew> -->
+          <!-- <dbsAgGrid
             v-if="downComp.widget === 'Table'"
             :tableComp="downComp"
             :pageKey="pageConfigData.pageKey"
-          ></dbsAgGrid>
+          ></dbsAgGrid> -->
         </template>
       </template>
     </SplitScreenTempl>

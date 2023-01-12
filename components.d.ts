@@ -50,7 +50,7 @@ declare module '@vue/runtime-core' {
     Page: typeof import('./src/components/Page.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    RowItem: typeof import('./src/components/RowItem.vue')['default']
+    RowItem: typeof import('./src/components/rowItem.vue')['default']
     SearchTab: typeof import('./src/components/SearchTab.vue')['default']
     SplitScreenTempl: typeof import('./src/components/SplitScreenTempl.vue')['default']
     TagArr: typeof import('./src/components/rowComponents/tagArr.vue')['default']
