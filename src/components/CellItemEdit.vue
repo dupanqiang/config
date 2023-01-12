@@ -1,10 +1,10 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2022-07-30 18:38:09
+ * @LastEditTime: 2023-01-12 01:00:37
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
- * @FilePath: /dfs-page-vue/src/components/CellItemEdit.vue
+ * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
 -->
 <template>
 <div v-if="type" :style="{...(typeof params.style == 'function' ? (params.style(params.data) || {}) : params.style || {}), 'min-height': (params.minHeight || 30) + 'px'}" style="display: flex; align-items: center;">
@@ -81,14 +81,14 @@
 import { reactive, toRefs, ref, defineComponent, onMounted, nextTick, getCurrentInstance } from "vue";
 import { formatDate } from '@/utils';
 import { ElInput, ElDatePicker, ElSelect, ElOption, ElMessage } from "element-plus";
-import { Edit } from '@element-plus/icons'
+// import { Edit } from '@element-plus/icons'
 export default defineComponent({
   components: {
     ElInput,
     ElDatePicker,
     ElSelect,
     ElOption,
-    Edit
+    // Edit
   },
   setup() {
     const { ctx }:any = getCurrentInstance();

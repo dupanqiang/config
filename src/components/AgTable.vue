@@ -4,7 +4,7 @@
  * @LastEditTime: 2023-01-11 22:10:31
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-config/src/components/AgGridTable.vue
+ * @FilePath: /dfs-page-config/src/components/AgTable.vue
 -->
 <!--
  * enableCellTextSelection=true  ensureDomOrder=true 允许选中文本

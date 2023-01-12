@@ -742,7 +742,7 @@ export const configOption = (store: any, showInfo: any, data: any) => {
           buttonGroup: options.buttonGroup(),
         },
         {
-          type: "AgGridTable",
+          type: "AgTable",
           span: 24,
           style: "height: 300px",
           key: "downTable",

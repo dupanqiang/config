@@ -1,13 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-11 23:00:14
+ * @LastEditTime: 2023-01-12 01:39:15
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example2/index.vue
 -->
 <template>
-  <Page :configOption="pageConfigData.components" pageKey="example2" />
+  <Page :pageConfigData="pageConfigData" />
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from "vue";
@@ -33,6 +33,7 @@ export default defineComponent({
       data: {}
     });
     const pageConfigData = reactive({
+      pageKey: "example2",
       components: [
         {
           type: "Form",
@@ -50,7 +51,7 @@ export default defineComponent({
               type: "ButtonGroup",
               span: 24,
               size: "small",
-              parentStyle: "display: inline-block;",
+              style: "vertical-align: top; display: inline-block;",
               buttonGroup: statusOpt.buttonGroup(),
             },
           ]
@@ -62,11 +63,11 @@ export default defineComponent({
           buttonGroup: statusOpt.buttonGroup2(print),
         },
         {
-          type: "AgGridTable",
+          type: "AgTable",
           span: 24,
           style: "height: 300px",
           key: "table",
-          triggerQuery: true,
+          initQuery: true,
           dependencies: "searchForm",
           url: "/purchase/slt/selectPurchaseOrderPage",
           // method: "GET",

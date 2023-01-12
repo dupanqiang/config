@@ -1,7 +1,7 @@
 <!--
  * @Author: zengkai
  * @Date: 2022-05-31 18:31:12
- * @LastEditTime: 2023-01-11 22:08:27
+ * @LastEditTime: 2023-01-12 01:31:51
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/rowItem.vue
 -->
@@ -35,7 +35,7 @@ import { defineComponent, ref } from "vue";
 import Card from "@/components/Card.vue";
 import Form from "@/components/Form.vue";
 import ButtonGroup from "@/components/ButtonGroup.vue";
-import AgGridTable from "@/components/AgGridTable.vue";
+import AgTable from "@/components/AgTable.vue";
 // import ElTable from "@/components/ElTable.vue"
 import CardText from "./rowComponents/cardText.vue";
 import ImageOne from "./rowComponents/imageOne.vue";
@@ -57,7 +57,7 @@ export default defineComponent({
     Card,
     Form,
     ButtonGroup,
-    AgGridTable,
+    AgTable,
     CardText,
     // DataList,
     // BasicInfo,

@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 11:53:20
  * @description: 
- * @LastEditTime: 2023-01-11 15:41:49
+ * @LastEditTime: 2023-01-12 01:26:45
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/App.vue
 -->
@@ -19,5 +19,8 @@
   store.state.uploadFileUrl = store.state.baseUrl + `/open/api/base/file/upload`;
 </script>
 <style>
-
+html, body {
+  height: 100%;
+  margin: 0;
+}
 </style>

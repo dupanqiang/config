@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-01-11 20:35:35
+ * @LastEditTime: 2023-01-12 01:37:00
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -18,23 +18,22 @@
           @on-success="queryData"
           :buttonType="item.buttonType"
           :size="size"
-        >
-        </Upload>
+        ></Upload>
         <el-button
           v-else-if="item.event === 'custom'"
           :type="item.buttonType || 'primary'"
           :size="size"
           @click="item.handle({ option: item, pageKey: pageKey })"
           :disabled="item.disabled && item.disabled()"
-          >{{ item.text }}</el-button
-        >
+        >{{ item.text }}
+        </el-button>
         <el-button
           v-else
           :type="item.buttonType || 'primary'"
           :size="size"
           @click="handleClick(item)"
-          >{{ item.text }}</el-button
-        >
+        >{{ item.text }}
+        </el-button>
       </template>
       <template v-else>
         <slot :name="item.slot + '_'"></slot>
@@ -169,7 +168,7 @@ export default defineComponent({
   .button-group {
     display: flex;
     margin-bottom: 5px;
-    .el-button {
+    &:deep(.el-button) {
       margin-right: 5px;
       margin-left: 0;
     }
