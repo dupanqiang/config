@@ -1,12 +1,13 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-01-11 16:57:09
+ * @LastEditTime: 2023-01-13 19:45:19
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
 -->
 <template>
+<el-config-provider :locale="locale">
   <el-form
     class="form-group"
     ref="formRef"
@@ -17,7 +18,7 @@
   >
     <div v-if="allDisabled" class="mask"></div>
     <el-form-item
-      v-for="(item, index) in formGroup"
+      v-for="(item, index) in elementGroup"
       :key="item.prop"
       :label="item.label"
       :prop="item.prop || ''"
@@ -26,9 +27,9 @@
       "
       :class="[item.className, !open && index > 4 ? 'hide-item' : '']"
       :style="{
-        width: item.width ? item.width : formItemWidth,
+        width: item.width || formItemWidth,
         display: item.type === 'Tab' || item.type === 'TabStep' ? 'block' : '',
-        ...item.style,
+        ...item.style
       }"
     >
       <!-- tab切换 -->
@@ -199,21 +200,23 @@
         :imgLength="100"
         :maxSize="5"
       />
-      <slot v-if="item.slot" :name="item.slot"> </slot>
+      <slot v-if="item.slot" :name="item.slotName"></slot>
     </el-form-item>
     <slot></slot>
     <span
       @click="isOpen"
       class="form-move-search"
-      v-if="formGroup.length > 4 && showCloseButton"
+      v-if="elementGroup.length > 4 && showCloseButton"
     >
       <!-- <em :class="open ? 'el-icon-top' : 'el-icon-bottom'"></em> -->
       {{ open ? "收起" : "展开" }}
     </span>
   </el-form>
+</el-config-provider>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs, watch } from "vue";
+import locale from "element-plus/lib/locale/lang/zh-cn";
 import { useStore } from "vuex";
 import store from "@/store"
 import { getSelectOption } from "@/common/js/pageConfigUtils";
@@ -240,18 +243,17 @@ export default defineComponent({
       open: true,
       fileUrlUploadImg:
         store.state.baseUrl + "/media-management-service/v2/image/upload/",
-      labelWidth: "110px",
-      formItemWidth: "180px",
-      size: "small",
+      labelWidth: props.componentOption.labelWidth || "110px",
+      formItemWidth: props.componentOption.formItemWidth || "180px",
+      size: props.componentOption.size || "small",
       showCloseButton: props.componentOption.showCloseButton || false,
-      formGroup: <any>[],
-      inline: true,
+      elementGroup: <any>[],
+      inline: props.componentOption.inline || true,
       allDisabled: false,
       formData: props.componentOption.formData
     });
-    
-    state.formGroup = computed(() => {
-      return props.componentOption.formGroup.filter((item: any) => {
+    state.elementGroup = computed(() => {
+      return props.componentOption.elementGroup.filter((item: any) => {
         return (
           item.isShow === undefined ||
           (typeof item.isShow === "function" && item.isShow(state.formData))
@@ -260,7 +262,7 @@ export default defineComponent({
     });
     // 下拉数据接口获取
     function getSelectData() {
-      state.formGroup.forEach((item: any) => {
+      state.elementGroup.forEach((item: any) => {
         // state.formData[item.prop] =
         //   typeof item.value == "object"
         //     ? JSON.parse(JSON.stringify(item.value))
@@ -276,6 +278,7 @@ export default defineComponent({
     getSelectData();
     return {
       ...toRefs(state),
+       locale,
       formRef,
       isOpen,
       getSelectData,

@@ -2,52 +2,74 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-01-13 01:42:37
+ * @LastEditTime: 2023-01-13 19:52:48
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
 <template>
   <div class="ag-grid-container">
-    <SplitScreenTempl v-if="pageConfigData.splitScreen">
-      <!-- 列表页 -->
-      <template v-slot:list>
-        <template v-for="comp in pageConfigData.components" :key="comp.widget">
-          <!-- 头部状态按钮 -->
-          <!-- <StatusGroup v-if="comp.widget === 'statusGroup'" :statusComp="comp" :pageKey="pageConfigData.pageKey"></StatusGroup> -->
-          <!-- <dbsFormNew v-if="comp.widget === 'searchForm'" :formComp="comp" :pageKey="pageConfigData.pageKey"></dbsFormNew> -->
-          <slot v-if="comp.widget === 'searchForm'" name="slot1"></slot>
-          <!-- <dbsAgGrid v-if="comp.widget === 'Table'" :tableComp="comp" :pageKey="pageConfigData.pageKey">
-            <template v-slot:[comp.configFlag?.slotName]>
-              <slot :name="comp.configFlag?.slotName"></slot>
-            </template>
-          </dbsAgGrid> -->
-        </template>
-      </template>
-      <!-- 详情页 -->
-      <template v-slot:details>
-        <template v-for="downComp in pageConfigData.downComponents" :key="downComp.key">
-          <!-- <dbsFormNew v-if="downComp.widget === 'searchForm'" :formComp="downComp" :pageKey="pageConfigData.pageKey">
-            <template v-for="item in downComp.buttonGroup.filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
-              <slot :name="item.slot"></slot>
-            </template>
-          </dbsFormNew> -->
-          <!-- <dbsAgGrid
-            v-if="downComp.widget === 'Table'"
-            :tableComp="downComp"
-            :pageKey="pageConfigData.pageKey"
-          ></dbsAgGrid> -->
-        </template>
-      </template>
-    </SplitScreenTempl>
-    <template v-else v-for="comp in pageConfigData.components" :key="comp.key">
+    <template v-for="comp in pageConfigData.components" :key="comp.key">
+      <slot v-if="comp.slot" :name="comp.slot"></slot>
       <component
+        v-else-if="comp.type === 'SplitScreen'"
         :is="comp.type"
         :componentOption="comp"
         :pageKey="pageConfigData.pageKey"
       >
+        <template v-slot:top>
+          <template v-for="(comp, index) in comp.topComponents" :key="comp.key || index">
+            <component
+              :is="comp.type"
+              :componentOption="comp"
+              :pageKey="pageConfigData.pageKey"
+            >
+              <template v-for="item in comp.elementGroup||[].filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
+                <slot :name="item.slot"></slot>
+              </template>
+              <template v-for="comp in comp.children" :key="comp.key">
+                <component
+                  :is="comp.type"
+                  :componentOption="comp"
+                  :pageKey="pageConfigData.pageKey"
+                >
+                </component>
+              </template>
+            </component>
+          </template>
+        </template>
+        <template v-slot:bottom>
+          <template v-for="comp in comp.downComponents" :key="comp.key">
+            <component
+              :is="comp.type"
+              :componentOption="comp"
+              :pageKey="pageConfigData.pageKey"
+            >
+              <template v-for="item in comp.elementGroup||[].filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
+                <slot :name="item.slot"></slot>
+              </template>
+              <template v-for="comp in comp.children" :key="comp.key">
+                <component
+                  :is="comp.type"
+                  :componentOption="comp"
+                  :pageKey="pageConfigData.pageKey"
+                >
+                </component>
+              </template>
+            </component>
+          </template>
+        </template>
+      </component>
+      <component
+        v-else
+        :is="comp.type"
+        :componentOption="comp"
+        :pageKey="pageConfigData.pageKey"
+      >
+        <template v-for="item in comp.elementGroup||[].filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
+          <slot :name="item.slot"></slot>
+        </template>
         <template v-for="comp in comp.children" :key="comp.key">
           <component
-            :style="comp.style"
             :is="comp.type"
             :componentOption="comp"
             :pageKey="pageConfigData.pageKey"
@@ -55,18 +77,6 @@
           </component>
         </template>
       </component>
-      <!-- 头部状态按钮 -->
-      <!-- <StatusGroup v-if="comp.widget === 'statusGroup'" :comp="comp" :pageKey="pageConfigData.pageKey"></StatusGroup>
-      <searchForm v-if="comp.widget === 'searchForm'" :comp="comp" :pageKey="pageConfigData.pageKey">
-        <template v-for="item in comp.formGroup.filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
-          <slot :name="item.slot"></slot>
-        </template>
-        <template v-for="item in comp.buttonGroup.filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
-          <slot :name="item.slot"></slot>
-        </template>
-      </searchForm>
-      <slot v-if="comp.widget === 'searchForm'" name="slot1"></slot>
-      <Table v-if="comp.widget === 'Table'" :comp="comp" :pageKey="pageConfigData.pageKey"></Table> -->
     </template>
   </div>
   <CommonDialog ref="commonDialogRef" :popupData="popupData" :selectedRows="selectedRows" :selectedNodes="selectedNodes" @on-success="handleSuccess"></CommonDialog>
@@ -78,9 +88,6 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { initPage, tableQuery, queryData, getTargetComp } from "@/common/js/pageConfigUtils";
 import { handleEnter } from "@/utils";
-import Form from "@/components/Form.vue";
-import ButtonGroup from "@/components/ButtonGroup.vue";
-import AgTable from "@/components/AgTable.vue";
 import CommonDialog from "./CommonDialog.vue";
 import CellOperationBtn from "@/components/CellOperationBtn.vue"
 import CellItemEdit from "@/components/CellItemEdit.vue"
@@ -88,9 +95,6 @@ import { ElMessage } from "element-plus";
 
 export default defineComponent({
   components: {
-    Form,
-    ButtonGroup,
-    AgTable,
     CommonDialog,
     CellOperationBtn,
     CellItemEdit
@@ -113,11 +117,18 @@ export default defineComponent({
     })
 
     let pageConfigData = props.pageConfigData;
+    let components = []
+    pageConfigData.components.forEach(copm => {
+      if (copm.type === 'SplitScreen') {
+        if (copm.topComponents && copm.downComponents) {
+          components = copm.topComponents.concat(copm.downComponents)
+        }
+      } else {
+        components = pageConfigData.components
+      }
+    })
     // 将handleFn添加到form对象
-    addHandleFn(pageConfigData.components);
-    if (pageConfigData.downComponents) {
-      addHandleFn(pageConfigData.downComponents);
-    }
+    addHandleFn(components);
     
     function handleFn({option, row}: any) {
       // 跳转
@@ -182,16 +193,13 @@ export default defineComponent({
     // 将handleFn添加到form对象
     function addHandleFn(components: any[]) {
       components.forEach((item: any) => {
-        if (item.widget == "searchForm" || item.widget == "Table") {
-          item.handle = handleFn
-        }
+        // if (item.type == "Form" || item.widget == "AgTable") {
+        //   item.handle = handleFn
+        // }
         // 设置form按钮插槽的slotName
-        if (item.widget == "searchForm" && item.buttonGroup) {
-          watch(() => item.buttonGroup, () => {
-            setSlotName(item.buttonGroup)
-          }, {immediate: true})
-          watch(() => item.formGroup, (formGroup) => {
-            formGroup && setSlotName(formGroup)
+        if ((item.type == "Form" || item.type == "ButtonGroup") && item.elementGroup) {
+          watch(() => item.elementGroup, (elementGroup) => {
+            elementGroup && setSlotName(elementGroup)
           }, {immediate: true})
         }
       });
@@ -203,7 +211,7 @@ export default defineComponent({
       })
     }
     // 初始化页面
-    initPage({pageKey: pageConfigData.pageKey, components: pageConfigData.components}, store);
+    initPage({pageKey: pageConfigData.pageKey, components: components}, store);
 
     // 查询
     function getData() {

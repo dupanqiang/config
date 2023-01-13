@@ -1,10 +1,10 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-11 21:57:33
+ * @LastEditTime: 2023-01-13 16:10:19
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-config/src/views/example2/statusOpt.ts
+ * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
  */
 import { computed } from "vue";
 let statusOpt = {
@@ -114,10 +114,15 @@ let statusOpt = {
         itemValue: 'name',
         multiple: true,
         placeholder: "未准交原因",
+      },
+      {
+        slot: "aaaaa",
+        width: "120px",
+        style: {color: "red", "border-radius": "4px", "box-shadow": "0 0 0 1px #DCDFE6 inset", "padding-left": "8px"},
         isShow: (formatDate) => {
           return formatDate.deferStatus == 1
         }
-      },
+      }
     ];
   },
   buttonGroup: () => {
@@ -138,9 +143,20 @@ let statusOpt = {
       { text: "下载", type: "button", event: "download", url: "/purchase/paymentRequest/export", isShow: true},
       { text: "打印采购单", type: "button", event: "custom", target: "table", handle: print },
       { text: "上传", type: "button", event: "upload", buttonType: "warning", url: '/inspection/importQualityInspectionMisjudgment' },
-      { text: "批量修改未准交原因", target: "table", type: "primary", handleFn: () => {}, relation: ["searchForm", "table"], isShow: (components) => {
-        return components.searchForm.formData.deferStatus == 1
-      }}
+      {
+        slot: "bbbbb",
+        text: "手动创建采购单",
+        style: {color: "red", "border-radius": "4px", "box-shadow": "0 0 0 1px #DCDFE6 inset", "padding-left": "8px"},
+        relation: ["searchForm", "table"],
+        isShow: (components) => {
+          return !components.searchForm.formData.deferStatus
+        }
+      },
+      { text: "批量修改未准交原因", target: "table", type: "primary", handleFn: () => {}, relation: ["searchForm", "table"],
+        isShow: (components) => {
+          return components.searchForm.formData.deferStatus == 1
+        }
+      }
     ];
   },
   columns: (

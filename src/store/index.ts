@@ -35,14 +35,14 @@ export default createStore({
     },
     // 更新form表单和按钮
     updateSearchForm(state: any, payload: { formComp: any; status: number }) {
-      payload.formComp.formGroup = payload.formComp.searchFormFn(
+      payload.formComp.elementGroup = payload.formComp.searchFormFn(
         payload.status
       );
-      payload.formComp.buttonGroup = payload.formComp.searchHandleFn(
+      payload.formComp.elementGroup = payload.formComp.searchHandleFn(
         payload.status
       );
       // 重置formData
-      payload.formComp.formGroup.forEach((item: any) => {
+      payload.formComp.elementGroup.forEach((item: any) => {
         payload.formComp.formData[item.prop] = item.value;
       });
       // formBindFunction(state, payload.formComp);
@@ -172,13 +172,13 @@ function initData(event: any, components: any[], pageKey: string) {
     if (comp.type == "Form") {
       comp.formData = {};
       // 设置formData对象
-      if (comp.formGroup && comp.formGroup.length) {
-        comp.formGroup.forEach((item: any) => {
+      if (comp.elementGroup && comp.elementGroup.length) {
+        comp.elementGroup.forEach((item: any) => {
           item.value = item.value ? item.value : null;
           comp.formData[item.prop] = item.value;
         });
       } else {
-        comp.formGroup = [];
+        comp.elementGroup = [];
       }
       // formBindFunction(event.state, comp);
     }
@@ -247,12 +247,12 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
         if (item.field == "action") {
           item.cellRendererFramework = "CellOperationBtn";
           item.cellRendererParams = {
-            buttonGroup: item.buttonGroup,
+            elementGroup: item.elementGroup,
             cycleButton: item.cycleButton || "",
             className: item.className,
           };
           const evevsList = ["query", "reset", "download", "export", "custom"];
-          item.buttonGroup.forEach((item: any) => {
+          item.elementGroup.forEach((item: any) => {
             if (!evevsList.includes(item.event)) {
               item.handle = tableComp.handle;
             }
@@ -264,9 +264,9 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
       if (lastColumn.field == "action") {
         lastColumn.cellRendererFramework = "CellOperationBtn";
         lastColumn.cellRendererParams = {
-          buttonGroup: lastColumn.buttonGroup,
+          elementGroup: lastColumn.elementGroup,
         };
-        lastColumn.buttonGroup.forEach((item: any) => {
+        lastColumn.elementGroup.forEach((item: any) => {
           item.handle = tableComp.handle;
         });
       }
@@ -277,13 +277,13 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
 // function formBindFunction(state: any, formComp: any) {
 //   // 按钮绑定方法
 //   const evevsList = ["query", "reset", "download", "export", "custom"];
-//   formComp.buttonGroup.forEach((item: any) => {
+//   formComp.elementGroup.forEach((item: any) => {
 //     if (!evevsList.includes(item.event)) {
 //       item.handle = formComp.handle;
 //     }
 //   });
 //   // 下拉框接口查询
-//   formComp.formGroup.forEach((item: any) => {
+//   formComp.elementGroup.forEach((item: any) => {
 //     if (item.type === "Select" && item.url) {
 //       getSelectOption(state, item);
 //     }

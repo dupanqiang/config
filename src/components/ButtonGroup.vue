@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-01-12 01:37:00
+ * @LastEditTime: 2023-01-13 20:25:54
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -20,11 +20,10 @@
           :size="size"
         ></Upload>
         <el-button
-          v-else-if="item.event === 'custom'"
+          v-else-if="item.event"
           :type="item.buttonType || 'primary'"
           :size="size"
-          @click="item.handle({ option: item, pageKey: pageKey })"
-          :disabled="item.disabled && item.disabled()"
+          @click="handleClick(item)"
         >{{ item.text }}
         </el-button>
         <el-button
@@ -32,6 +31,7 @@
           :type="item.buttonType || 'primary'"
           :size="size"
           @click="handleClick(item)"
+          :disabled="item.disabled && item.disabled()"
         >{{ item.text }}
         </el-button>
       </template>
@@ -67,14 +67,10 @@ export default defineComponent({
     const store = useStore();
     const state = reactive({
       buttonGroup: computed(() => {
-        return props.componentOption.buttonGroup.filter((item: any) => {
+        return props.componentOption.elementGroup.filter((item: any) => {
           if (typeof item.isShow === "function") {
             if (item.relation) {
-              const components = {}
-              item.relation.forEach(item => {
-                const comp = getRelationComp(store, props.pageKey, item)
-                components[comp.key] = comp
-              })
+              const components = getRelationComp(store, props.pageKey, item.relation)
               return item.isShow(components)
             }
           }
@@ -93,7 +89,15 @@ export default defineComponent({
           break;
         case 'download': download(item)
           break;
+        default: customClick(item)
       }
+    }
+    function customClick(item) {
+      let components = []
+      if (item.relation) {
+        components = getRelationComp(store, props.pageKey, item.relation)
+      }
+      item.handleClick(components)
     }
     // 查询
     function queryData(target: string) {
@@ -105,7 +109,7 @@ export default defineComponent({
     // 重置
     function reset(item: any) {
       const formComp: any = getTargetComp(store, props.pageKey, item.target);
-      formComp.formGroup.forEach((item: any) => {
+      formComp.elementGroup.forEach((item: any) => {
         if (item.type !== 'Tab' && item.type !== 'TabStep') {
           formComp.formData[item.prop] = item.value;
         }

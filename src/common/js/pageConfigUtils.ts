@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-01-11 13:45:48
+ * @LastEditTime: 2023-01-13 20:24:42
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -14,14 +14,9 @@ import { formatDate } from "@/utils";
 import service from "@/utils/service";
   // 初始化
   const initPage = (configData: any, store: any) => {
-    let components = configData.components;
-    if (configData.splitScreen && configData.downComponents) {
-      components = components.concat(configData.downComponents)
-    }
-   
     store.dispatch("init", {
       pageKey: configData.pageKey,
-      components: components
+      components: configData.components
     })
   }
   
@@ -60,8 +55,13 @@ import service from "@/utils/service";
     }
   }
   // 获取依赖对象
-  function getRelationComp(store, pageKey: string, comKey: string) {
-    return getTargetComp(store, pageKey, comKey);
+  function getRelationComp(store, pageKey: string, relation: string[]) {
+    const components = []
+    relation.forEach(key => {
+      const comp = getTargetComp(store, pageKey, key);
+      components[key] = comp
+    })
+    return components
   }
   // 获取下拉框数据
   function getSelectOption(state: any, item: any ) {
@@ -85,7 +85,7 @@ import service from "@/utils/service";
   const getFormData = (formComp: any) => {
     let data: any = {};
     const formData = formComp.formData;
-    formComp.formGroup.forEach((item: any) => {
+    formComp.elementGroup.forEach((item: any) => {
       // 如果是隐藏的表单，取默认值
       if (
         item.isShow === undefined ||
@@ -96,7 +96,6 @@ import service from "@/utils/service";
       } else {
         data[item.prop] = item.value;
       }
-      // console.log(formData)
       // 处理时间
       if (item.type === "Daterange" || item.type === "DateTimerange") {
         if (!data[item.prop]) {

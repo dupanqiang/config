@@ -1,153 +1,200 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-11-25 14:35:27
+ * @LastEditTime: 2023-01-13 19:59:00
+ * @LastEditors: zhao yongfei
+ * @Description: 采购单的配置
+ * @FilePath: /dfs-page-config/src/views/example/index.vue
+-->
 <template>
-  <Page :configOption="configOption" pageKey="example" :data="dataInfo" />
+  <Page :pageConfigData="pageConfigData">
+    <template v-slot:aaaaa>
+      aaaaa
+    </template>
+    <template v-slot:aaaaa1>
+      aaaaa1
+    </template>
+    <template v-slot:bbbbb>
+      <span style="color: red; font-size: 14px;">手动创建采购单</span>
+    </template>
+    <template v-slot:bbbbb1>
+      <span style="color: red; font-size: 14px;">手动创建采购单1</span>
+    </template>
+    <template v-slot:slot3>
+      <el-input size="small"></el-input>
+    </template>
+  </Page>
 </template>
-
 <script lang="ts">
-import { reactive, toRefs, defineComponent } from "vue";
+import { defineComponent, reactive, ref, toRefs } from "vue";
+import { statusOpt } from "./statusOpt";
 import { useStore } from "vuex";
-import { configOption } from "./configOption";
-import Page from "@/components/Page.vue";
+import CellId from "./components/CellId.vue";
+import { downLoadData } from "@/utils/index";
+
+const VITE_NODE_ENV = import.meta.env.VITE_NODE_ENV
+
 export default defineComponent({
-  name: "example",
+  name: "example2",
   components: {
-    Page,
+    CellId
   },
-  props: {},
   setup() {
+    const baseUrl = import.meta.env.VITE_APP_API;
     const store = useStore();
     const state = reactive({
-      dataInfo: {
-        taskId: 100744,
-        taskCenterId: 34074,
-        taskName: "测试删除csId",
-        taskType: 1,
-        taskTypeDesc: "拍照任务",
-        taskStatus: 1,
-        taskStatusDesc: "已创建",
-        photoModel: 1,
-        photoModelDesc: "静物",
-        taskOwnerUserName: "程小维",
-        planStartAt: null,
-        planFinishAt: null,
-        taskStartTime: null,
-        matchmaker: "",
-        modelIds: [],
-        modelDetails: [
-          {
-            name: "张三",
-            age: 26,
-          },
-          {
-            name: "李四",
-            age: 26,
-          },
-          {
-            name: "王二",
-            age: 26,
-          },
-        ],
-        rekursionData: [
-          {
-            name: "测试2",
-            arrTets: [
-              {
-                like: "看电影",
-                name: "星际穿越",
-              },
-              {
-                like: "唱歌",
-                name: "夜曲",
-              },
-            ],
-          },
-        ],
-        parentTaskId: 0,
-        remark: "",
-        sort: 0,
-        designDraft: [
-          "面料特征:双向弹",
-          "面料特征:透气",
-          "活动强度:低强度运动",
-          "活动场景:骑行",
-          "元素:无钢圈杯",
-          "元素:纽扣",
-          "元素:双排扣",
-          "元素:抽绳",
-        ],
-        createdUserName: "程小维",
-        listItem: [
-          {
-            id: 104812,
-            selectionSpuId: 166640,
-            crawlerColorSizeId: 100701,
-            originalSkuId: 100701,
-            supplierStylesCode: "test0112001",
-            completePhotoStatus: 2,
-          },
-        ],
-        csIdNum: "0/1",
-        photoNum: "0/0",
-        frozen: 2,
-        receiveTime: null,
-        photoFinishTime: null,
-        taskFinishTime: null,
-        completePhotoStatus: 2,
-        completePhotoStatusDesc: "是",
-        selectionSpuIds: [166640],
-        crawlerColorSizeIds: [100701],
-        supplierStylesCodes: ["test0112001"],
-
-        // 提交
-        submit: {
-          roleCn: "买手",
-          yn: 1,
-          roleIdList: [1, 2],
-          payee: "收款人1",
-          dueBank: "收款银行1",
-          dueBranchBank: "收款银行支行1",
-          payAccount: "收款账号1",
-          contractType: 1,
-          contractCode: "合同编号1234567",
-          Daterange: ["2021-09-01", "2022-09-01"],
-          upload: ["2021-09-01", "2022-09-01"],
-          remark: "角色描述1",
-        },
-      },
-      configOption: {},
+      data: {}
     });
-    state.configOption = configOption(store, showInfo, state.dataInfo);
-    function showInfo() {
-      // store.getters;
-      // const configData = store.getters["pageConfig/getPageConfigData"]("page1");
-      console.log(111111111, JSON.stringify(state.dataInfo));
-
-      // alert("测试按钮点击");
+    const pageConfigData = reactive({
+      pageKey: "example",
+      components: [
+        {
+          type: "SplitScreen",
+          topComponents: [
+            {
+              type: "Form",
+              key: "searchForm",
+              labelWidth: "100px",
+              formItemWidth: "200px",
+              size: "small",
+              inline: true,
+              showCloseButton: true,
+              elementGroup: statusOpt.topOption.formGroup(state),
+              children: [
+                {
+                  type: "ButtonGroup",
+                  size: "small",
+                  style: "vertical-align: top; display: inline-block;",
+                  elementGroup: statusOpt.topOption.buttonGroup(),
+                },
+              ]
+            },
+            {
+              type: "ButtonGroup",
+              size: "small",
+              elementGroup: statusOpt.topOption.buttonGroup2(print),
+            },
+            {
+              slot: "slot3"
+            },
+            {
+              type: "AgTable",
+              key: "table",
+              initQuery: true,
+              dependencies: "searchForm",
+              url: "/purchase/slt/selectPurchaseOrderPage",
+              // method: "GET",
+              searchBefore: (selfComp: any, row: any) => {
+                // console.log(selfComp, row);
+              },
+              // params: {
+              //   orderId: "",
+              //   purchaseStatusList: "",
+              // },
+              searchAfter: (res: any) => {
+                // console.log(res);
+              },
+              columns: statusOpt.topOption.columns(showBomInfo),
+              data: {
+                result: [],
+                totalNum: 0,
+              },
+              exportBySelectionData: (selData: any) => {
+                if (!selData) return false
+                const list = selData.map((item: any) => {
+                  return item.id
+                })
+                if (!list.length) return false
+                return list
+              },
+              configFlag: {
+                checkboxSelection: true,
+                // isRowClick: true,
+                // total: true,
+              },
+            }
+          ],
+          downComponents: [
+            {
+              type: "Form",
+              key: "searchForm1",
+              size: "small",
+              showCloseButton: true,
+              elementGroup: statusOpt.bottomOption.formGroup(state),
+              children: [
+                {
+                  type: "ButtonGroup",
+                  span: 24,
+                  size: "small",
+                  style: "vertical-align: top; display: inline-block;",
+                  elementGroup: statusOpt.bottomOption.buttonGroup(),
+                },
+              ]
+            },
+            {
+              type: "ButtonGroup",
+              size: "small",
+              elementGroup: statusOpt.bottomOption.buttonGroup2(print),
+            },
+            {
+              slot: "slot3"
+            },
+            {
+              type: "AgTable",
+              key: "table1",
+              initQuery: true,
+              dependencies: "searchForm1",
+              url: "/purchase/slt/selectPurchaseOrderPage",
+              // method: "GET",
+              searchBefore: (selfComp: any, row: any) => {
+                // console.log(selfComp, row);
+              },
+              // params: {
+              //   orderId: "",
+              //   purchaseStatusList: "",
+              // },
+              searchAfter: (res: any) => {
+                // console.log(res);
+              },
+              columns: statusOpt.bottomOption.columns(showBomInfo),
+              data: {
+                result: [],
+                totalNum: 0,
+              },
+              exportBySelectionData: (selData: any) => {
+                if (!selData) return false
+                const list = selData.map((item: any) => {
+                  return item.id
+                })
+                if (!list.length) return false
+                return list
+              },
+              configFlag: {
+                checkboxSelection: true,
+                // isRowClick: true,
+                // total: true,
+              },
+            }
+          ]
+        }
+      ]
+    });
+    function showBomInfo(row: any) {
+      state.data = row;
+    }
+    function print(option: any, selArr: any[]) {
+      console.log(option)
+    }
+    function getData() {
+      // tableQuery(store, 'purchaseList', 'table')
     }
     return {
       ...toRefs(state),
-      showInfo,
+      pageConfigData,
+      getData
     };
   },
 });
 </script>
 
-<style lang="less" scoped>
-.rowStyle {
-  display: flex;
-}
-.dataInfoHeader {
-  font-size: 12px;
-  padding: 10px;
-  .datainfoItem {
-    margin-bottom: 20px;
-  }
-}
-.downFileBtn {
-  text-align: right;
-  margin-bottom: 10px;
-}
-.colorItem {
-  display: inline-block;
-  margin-right: 5px;
-}
-</style>
+<style lang="less" scoped></style>

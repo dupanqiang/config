@@ -34,7 +34,7 @@
 import { defineComponent, ref } from "vue";
 import Card from "@/components/Card.vue";
 import Form from "@/components/Form.vue";
-import ButtonGroup from "@/components/ButtonGroup.vue";
+import elementGroup from "@/components/elementGroup.vue";
 import AgTable from "@/components/AgTable.vue";
 // import ElTable from "@/components/ElTable.vue"
 import CardText from "./rowComponents/cardText.vue";
@@ -56,7 +56,7 @@ export default defineComponent({
   components: {
     Card,
     Form,
-    ButtonGroup,
+    elementGroup,
     AgTable,
     CardText,
     // DataList,

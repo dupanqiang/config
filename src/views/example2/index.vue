@@ -1,20 +1,28 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-12 01:39:15
+ * @LastEditTime: 2023-01-13 18:57:34
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example2/index.vue
 -->
 <template>
-  <Page :pageConfigData="pageConfigData" />
+  <Page :pageConfigData="pageConfigData">
+    <template v-slot:aaaaa>
+      aaaaa
+    </template>
+    <template v-slot:bbbbb>
+      <span style="color: red; font-size: 14px;">手动创建采购单</span>
+    </template>
+    <template v-slot:slot3>
+      <el-input size="small"></el-input>
+    </template>
+  </Page>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import { statusOpt } from "./statusOpt";
 import { useStore } from "vuex";
-import { ElMessage, ElMessageBox } from "element-plus";
-import CellBomNo from "./components/CellBomNo.vue";
 import CellId from "./components/CellId.vue";
 import { downLoadData } from "@/utils/index";
 
@@ -24,7 +32,6 @@ export default defineComponent({
   name: "example2",
   components: {
     CellId,
-    CellBomNo,
   },
   setup() {
     const baseUrl = import.meta.env.VITE_APP_API;
@@ -45,14 +52,14 @@ export default defineComponent({
           size: "small",
           inline: true,
           showCloseButton: true,
-          formGroup: statusOpt.formGroup(state),
+          elementGroup: statusOpt.formGroup(state),
           children: [
             {
               type: "ButtonGroup",
               span: 24,
               size: "small",
               style: "vertical-align: top; display: inline-block;",
-              buttonGroup: statusOpt.buttonGroup(),
+              elementGroup: statusOpt.buttonGroup(),
             },
           ]
         },
@@ -60,12 +67,13 @@ export default defineComponent({
           type: "ButtonGroup",
           span: 24,
           size: "small",
-          buttonGroup: statusOpt.buttonGroup2(print),
+          elementGroup: statusOpt.buttonGroup2(print),
+        },
+        {
+          slot: "slot3"
         },
         {
           type: "AgTable",
-          span: 24,
-          style: "height: 300px",
           key: "table",
           initQuery: true,
           dependencies: "searchForm",

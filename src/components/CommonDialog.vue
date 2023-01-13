@@ -25,13 +25,13 @@
       :labelWidth="data.labelWidth"
       size="small"
       :formData="formData"
-      :formGroup="formGroup"
+      :elementGroup="elementGroup"
       :inline="data.inline"
     >
     </SubmitForm> -->
     <template #footer>
       <span class="dialog-footer">
-        <template v-for="item in buttonGroup" :key="item.event">
+        <template v-for="item in elementGroup" :key="item.event">
           <el-button v-if="item.event === 'cancel'" @click="closeDialog" size="small">{{ item.text }}</el-button>
           <el-button v-if="item.event === 'submit'" type="primary" @click="submit" size="small">{{ item.text }}</el-button>
         </template>
@@ -52,8 +52,8 @@ export default defineComponent({
       type: Object,
       default: {
         data: {
-          formGroup: [],
-          buttonGroup: []
+          elementGroup: [],
+          elementGroup: []
         }
       }
     },
@@ -65,18 +65,18 @@ export default defineComponent({
     const store = useStore();
     const state = reactive({
       data: <any> {},
-      formGroup: [],
-      buttonGroup:<any> [],
+      elementGroup: [],
+      elementGroup:<any> [],
       formData:<any> {},
       dialog: false,
     });
     function showDialog() {
       state.formData = {};
       state.data = props.popupData.data;
-      state.buttonGroup = props.popupData.data.buttonGroup;
-      state.formGroup = state.data.formGroup || [];
+      state.elementGroup = props.popupData.data.elementGroup;
+      state.elementGroup = state.data.elementGroup || [];
       if (props.popupData.type == "popup") {
-        state.formGroup.forEach((item: any) => {
+        state.elementGroup.forEach((item: any) => {
           // 编辑
           if (props.popupData.edit) {
             state.formData[item.prop] = typeof item.getProp == "function" ? item.getProp(props.selectedRows[0]) : ((props.selectedRows[0][item.prop] || props.selectedRows[0][item.prop] == 0) ? props.selectedRows[0][item.prop] : item.value);

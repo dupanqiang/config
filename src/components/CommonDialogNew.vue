@@ -50,8 +50,8 @@ export default defineComponent({
     const store = useStore();
     const state = reactive({
       data: <any>{},
-      formGroup: [],
-      buttonGroup: <any>[],
+      elementGroup: [],
+      elementGroup: <any>[],
       formData: <any>{},
       dialog: true,
     });

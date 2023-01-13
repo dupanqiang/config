@@ -1,16 +1,16 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 18:27:03
- * @LastEditTime: 2022-08-08 15:41:19
+ * @LastEditTime: 2023-01-13 19:08:52
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/components/SplitScreenTempl.vue
+ * @FilePath: /dfs-page-config/src/components/SplitScreen.vue
 -->
 
 <template>
   <div class="parent" ref="parentRef">
     <div class="pannel-container top-pannel" ref="listRef">
-      <slot name="list"></slot>
+      <slot name="top"></slot>
     </div>
     <div class="drag-trigger" ref="dragRef">
       <div class="trigger-bar">
@@ -18,12 +18,12 @@
       </div>
     </div>
     <div class="pannel-container bottom-pannel" ref="detailRef">
-      <slot name="details"></slot>
+      <slot name="bottom"></slot>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRefs } from "vue";
+import { defineComponent, onMounted, ref, toRefs } from "vue";
 import CellItemEdit from "@/components/CellItemEdit.vue"
 export default defineComponent({
   components: {CellItemEdit},
@@ -32,9 +32,6 @@ export default defineComponent({
     const listRef = ref();
     const detailRef = ref();
     const dragRef = ref();
-    const state = reactive({
-      
-    });
     onMounted(() => {
       // 拖动相关
       setTimeout(() => {
@@ -84,8 +81,7 @@ export default defineComponent({
       parentRef,
       listRef,
       detailRef,
-      dragRef,
-      ...toRefs(state)
+      dragRef
     };
   },
 });

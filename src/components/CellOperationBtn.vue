@@ -10,7 +10,7 @@
   <div @click.stop v-if="row.type !== 'total'">
     <div v-if="!params.cycleButton">
       <el-button
-        v-for="item in buttonGroup"
+        v-for="item in elementGroup"
         :key="item.label"
         v-show="
           params.data.type !== 'total' &&
@@ -38,7 +38,7 @@
         :key="dataIndex"
       >
         <el-button
-          v-for="item in buttonGroup"
+          v-for="item in elementGroup"
           :key="item.label"
           v-show="
             params.data.type !== 'total' &&
@@ -81,12 +81,12 @@ export default defineComponent({
     const state = reactive({
       row: {},
       params: {},
-      buttonGroup: [],
+      elementGroup: [],
     });
     onMounted(() => {
       state.row = ctx.params.data;
       state.params = ctx.params;
-      state.buttonGroup = ctx.params.buttonGroup;
+      state.elementGroup = ctx.params.elementGroup;
     });
     return {
       ...toRefs(state),
