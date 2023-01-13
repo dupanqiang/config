@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-13 19:59:00
+ * @LastEditTime: 2023-01-13 23:46:00
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -20,13 +20,10 @@
     <template v-slot:bbbbb1>
       <span style="color: red; font-size: 14px;">手动创建采购单1</span>
     </template>
-    <template v-slot:slot3>
-      <el-input size="small"></el-input>
-    </template>
   </Page>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs } from "vue";
+import { defineComponent, reactive, toRefs } from "vue";
 import { statusOpt } from "./statusOpt";
 import { useStore } from "vuex";
 import CellId from "./components/CellId.vue";
@@ -43,7 +40,11 @@ export default defineComponent({
     const baseUrl = import.meta.env.VITE_APP_API;
     const store = useStore();
     const state = reactive({
-      data: {}
+      data: {},
+      lableList: [
+        {name: 'aaa'},
+        {name: 'bbb'}
+      ]
     });
     const pageConfigData = reactive({
       pageKey: "example",
@@ -75,13 +76,11 @@ export default defineComponent({
               elementGroup: statusOpt.topOption.buttonGroup2(print),
             },
             {
-              slot: "slot3"
-            },
-            {
               type: "AgTable",
               key: "table",
               initQuery: true,
               dependencies: "searchForm",
+              target: 'table1',
               url: "/purchase/slt/selectPurchaseOrderPage",
               // method: "GET",
               searchBefore: (selfComp: any, row: any) => {
@@ -109,8 +108,8 @@ export default defineComponent({
               },
               configFlag: {
                 checkboxSelection: true,
-                // isRowClick: true,
-                // total: true,
+                isRowClick: true,
+                total: true,
               },
             }
           ],
@@ -124,7 +123,6 @@ export default defineComponent({
               children: [
                 {
                   type: "ButtonGroup",
-                  span: 24,
                   size: "small",
                   style: "vertical-align: top; display: inline-block;",
                   elementGroup: statusOpt.bottomOption.buttonGroup(),
@@ -137,26 +135,23 @@ export default defineComponent({
               elementGroup: statusOpt.bottomOption.buttonGroup2(print),
             },
             {
-              slot: "slot3"
-            },
-            {
               type: "AgTable",
               key: "table1",
-              initQuery: true,
               dependencies: "searchForm1",
-              url: "/purchase/slt/selectPurchaseOrderPage",
-              // method: "GET",
+              url: "/inspection/taskOrder/detail",
+              method: "POST",
               searchBefore: (selfComp: any, row: any) => {
-                // console.log(selfComp, row);
+                // console.log(selfComp)
+                // console.log(row)
+                selfComp.params = {
+                  // inspectionTaskOrderId: row.data.id
+                  inspectionTaskOrderId: 128
+                }
               },
-              // params: {
-              //   orderId: "",
-              //   purchaseStatusList: "",
-              // },
               searchAfter: (res: any) => {
                 // console.log(res);
               },
-              columns: statusOpt.bottomOption.columns(showBomInfo),
+              columns: statusOpt.bottomOption.columns(),
               data: {
                 result: [],
                 totalNum: 0,

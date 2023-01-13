@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-01-11 22:10:31
+ * @LastEditTime: 2023-01-13 23:10:01
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/AgTable.vue
@@ -163,7 +163,7 @@ export default defineComponent({
     if (state.configFlag.isRowClick) {
       // 如果设置行点击，数据变化的时候重置oldRowIndex
       watch(
-        () => props.tableComp.data.result,
+        () => tableComp.data.result,
         () => {
           oldRowIndex = -1;
         }
@@ -187,7 +187,7 @@ export default defineComponent({
     }
     if (state.configFlag.total) {
       watch(
-        () => props.tableComp.data.result,
+        () => tableComp.data.result,
         () => {
           getTotal();
         }
@@ -203,7 +203,7 @@ export default defineComponent({
           obj[item.field] = "总计";
         } else if (item.showTotal) {
           obj[item.field] = getTotalQuantity(
-            props.tableComp.data.result,
+            tableComp.data.result,
             item.field
           );
         } else {

@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-13 20:33:23
+ * @LastEditTime: 2023-01-14 00:02:23
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -309,39 +309,6 @@ let statusOpt = {
           width: 120,
         },
         {
-          headerName: "原因提交人",
-          field: "notSubmittingReasonUpdateName",
-          width: 100,
-        },
-        {
-          headerName: "确认人",
-          field: "notSubmittingStatusConfirmName",
-          width: 100,
-        },
-        {
-          headerName: "确认时间",
-          field: "notSubmittingStatusConfirmTime",
-          width: 140,
-        },
-        {
-          headerName: "生产跟单",
-          field: "productionDocumentaryName",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "应付总金额",
-          field: "goodsTotalAmount",
-          minWidth: 100,
-          width: 100,
-        },
-        {
-          headerName: "承诺总数量",
-          field: "allCommitmentQuantity",
-          minWidth: 100,
-          width: 100,
-        },
-        {
           headerName: "待交付总数量",
           field: "allToBeDeliveredQuantity",
           minWidth: 110,
@@ -354,42 +321,6 @@ let statusOpt = {
           minWidth: 120,
           width: 120,
           showTotal: true,
-        },
-        {
-          headerName: "已入库总数量",
-          field: "storedTotalQuantity",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "已质检总数量",
-          field: "inspectedTotalQuantity",
-          minWidth: 130,
-          width: 130,
-        },
-        {
-          headerName: "质检合格总数量",
-          field: "qualifiedTotalNumber",
-          minWidth: 130,
-          width: 130,
-        },
-        {
-          headerName: "质检不合格总数量",
-          field: "unqualifiedInspectionTotalNumber",
-          minWidth: 130,
-          width: 130,
-        },
-        {
-          headerName: "核对时间",
-          field: "checkTime",
-          minWidth: 180,
-          width: 180,
-        },
-        {
-          headerName: "关联采购单号",
-          field: "parentPurchaseId",
-          minWidth: 180,
-          width: 180,
         },
         {
           headerName: "备注",
@@ -410,6 +341,34 @@ let statusOpt = {
           // autoHeight: true,
           minWidth: 280,
           width: 280,
+        },
+        {
+          field: "action",
+          headerName: "操作",
+          width: 120,
+          minWidth: 120,
+          pinned: "right",
+          // autoHeight: true,
+          elementGroup: [
+            {
+              text: "供应商设置",
+              type: "text",
+              event: "custom",
+              handleClick: ({ row, gridOption }: any) => {
+                console.log(row, gridOption)
+              },
+              // isShow: (data: any) => !data,
+            },
+            {
+              text: "OEM供应商报价",
+              type: "text",
+              event: "custom",
+              handleClick: ({ row }: any) => {
+                console.log(row)
+              },
+              isShow: (data: any) => !data,
+            },
+          ],
         },
       ];
       return columns;
@@ -570,258 +529,115 @@ let statusOpt = {
         }
       ];
     },
-    columns: (
-      showBomInfo: Function
-    ) => {
+    columns: () => {
       let columns = [
         {
-          headerName: "采购单号",
-          field: "id",
-          width: 80,
-          cellRendererFramework: "CellId",
-          cellRendererParams: {
-            callBackFn: (row: any) => {
-              console.log(row)
-              // router.push({
-              //   name: "progressTracking",
-              //   params: { progressTrackingId: row.id },
-              // });
-            },
-          },
-        },
-        {
-          headerName: "聚水潭采购单号",
-          field: "poId",
-          width: 120,
-          cellStyle: { textAlign: "left" },
-        },
-        {
-          headerName: "采购单优先级",
-          field: "orderPriorityNewDesc",
-          width: 90,
-          // cellRenderer: ({ data }: any) => {
-          //   if (data.orderPriorityNewDesc.substring(1) != 6)
-          //     return data.orderPriorityNewDesc;
-          // },
-        },
-        {
-          headerName: "采购单状态",
-          field: "purchaseStatusDesc",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "采购类型",
-          field: "purchaseTypeDesc",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "订单类型",
-          field: "orderTypeDesc",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "目标交期1｜数量",
-          field: "targetCycle1",
-          minWidth: 140,
-          width: 140,
-          cellRenderer: ({ data }: any) => {
-            return data.targetCycle1
-          }
-        },
-        {
-          headerName: "目标交期2｜数量",
-          field: "targetCycle2",
-          minWidth: 140,
-          width: 140,
-          cellRenderer: ({ data }: any) => {
-            return data.targetCycle2
-          }
-        },
-        {
-          headerName: "目标交期3｜数量",
-          field: "targetCycle3",
-          minWidth: 140,
-          width: 140,
-          cellRenderer: ({ data }: any) => {
-            return data.targetCycle3
-          }
-        },
-        {
-          headerName: "是否超期",
-          field: "deferStatusDesc",
-          width: 80,
-          cellRenderer: ({ data }: any) => {
-            if (data.deferStatus == 1) {
-              return `<span style="color: red;">
-               超期
-              </span>`;
-            } else {
-              return "未超期";
-            }
-          },
-        },
-        {
-          headerName: "供应商款号",
-          field: "styleNo",
-          minWidth: 160,
-          width: 160,
-        },
-        {
-          headerName: "版号",
-          field: "bomNo",
-          // cellRendererFramework: "CellBomNo",
-          // cellRendererParams: {
-          //   showBomInfo: showBomInfo,
-          // },
-          // minWidth: 90,
-          // width: 120,
-        },
-        {
-          headerName: "版本创建时间",
-          field: "bomCreated",
-          width: 140,
-        },
-        {
-          headerName: "下单数量",
-          field: "quantity",
-          minWidth: 100,
-          width: 100,
-          showTotal: true,
-        },
-        {
-          headerName: "供应商名称",
-          field: "supplierName",
-          minWidth: 210,
-          width: 210,
-        },
-        {
-          headerName: "未准交原因",
-          field: "notSubmitReasonList",
-          width: 160,
-          // autoHeight: true,
-          wrapText: true,
-          cellRenderer: ({ data }: any) => {
-            const arr: any = []
-            if(data.notSubmitReasonList && data.notSubmitReasonList.length) {
-              data.notSubmitReasonList.forEach((item: any) => {
-                arr.push(`<span class="el-tag el-tag--light el-tag--small" style="margin-right:2px">${item}</span>`)
-              });
-            }
-            return arr.join('')
-          }
-        },
-        {
-          headerName: "未准交原因状态",
-          field: "notSubmittingStatusDesc",
-          width: 120,
-        },
-        {
-          headerName: "原因提交人",
-          field: "notSubmittingReasonUpdateName",
-          width: 100,
-        },
-        {
-          headerName: "确认人",
-          field: "notSubmittingStatusConfirmName",
-          width: 100,
-        },
-        {
-          headerName: "确认时间",
-          field: "notSubmittingStatusConfirmTime",
-          width: 140,
-        },
-        {
-          headerName: "生产跟单",
-          field: "productionDocumentaryName",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "应付总金额",
-          field: "goodsTotalAmount",
-          minWidth: 100,
-          width: 100,
-        },
-        {
-          headerName: "承诺总数量",
-          field: "allCommitmentQuantity",
-          minWidth: 100,
-          width: 100,
-        },
-        {
-          headerName: "待交付总数量",
-          field: "allToBeDeliveredQuantity",
-          minWidth: 110,
-          width: 110,
-          showTotal: true,
-        },
-        {
-          headerName: "已发货总数量",
-          field: "totalQuantityShipped",
-          minWidth: 120,
-          width: 120,
-          showTotal: true,
-        },
-        {
-          headerName: "已入库总数量",
-          field: "storedTotalQuantity",
-          minWidth: 120,
-          width: 120,
-        },
-        {
-          headerName: "已质检总数量",
-          field: "inspectedTotalQuantity",
-          minWidth: 130,
-          width: 130,
-        },
-        {
-          headerName: "质检合格总数量",
-          field: "qualifiedTotalNumber",
-          minWidth: 130,
-          width: 130,
-        },
-        {
-          headerName: "质检不合格总数量",
-          field: "unqualifiedInspectionTotalNumber",
-          minWidth: 130,
-          width: 130,
-        },
-        {
-          headerName: "核对时间",
-          field: "checkTime",
+          field: "skuCode",
+          headerName: "sku编码",
           minWidth: 180,
-          width: 180,
+          width: 180
         },
         {
-          headerName: "关联采购单号",
-          field: "parentPurchaseId",
-          minWidth: 180,
-          width: 180,
+          field: "normalCheckDesc",
+          headerName: "sku抽检类型",
+          minWidth: 120,
+          width: 120
         },
         {
-          headerName: "备注",
-          field: "remark",
-          cellRendererFramework: "CellItemEdit",
-          cellRendererParams: {
-            dataKey: "remark",
-            type: "textarea",
-            url: "/purchase/slt/batchUpdateRemark",
-            params: (row: any) => {
-              return {
-                orderIds: [row.id],
-              };
-            },
-            callBack: () => {},
-          },
-          wrapText: true,
-          // autoHeight: true,
-          minWidth: 280,
-          width: 280,
+          field: "firstOrderDesc",
+          headerName: "首单",
+          minWidth: 120,
+          width: 120
         },
-      ];
+        {
+          field: "normalCheckNum",
+          headerName: "正常抽检样本量",
+          minWidth: 120,
+          width: 120
+        },
+        {
+          field: "addCheckNum",
+          headerName: "加抽样本量",
+          minWidth: 120,
+          width: 120
+        },
+        {
+          field: "normalRe",
+          headerName: "正常质检RE",
+          minWidth: 120,
+          width: 120
+        },
+        {
+          field: "addRe",
+          headerName: "加抽RE",
+          minWidth: 120,
+          width: 120
+        },
+        {
+          field: "supplierStylesCode",
+          headerName: "款号",
+          minWidth: 170,
+          width: 170,
+        },
+        {
+          field: "isSample",
+          headerName: "是否有样衣",
+          minWidth: 100,
+          width: 100,
+          cellRenderer: ({data}: any) => {
+            return data.isSample == 1 ? '<span style="color: red">是</span>' : '否'
+          }
+        },
+        {
+          field: "boxNum",
+          headerName: "装箱数量",
+          minWidth: 100,
+          width: 100
+        },
+        {
+          field: "skuInspectionQty",
+          headerName: "已质检数量",
+          minWidth: 100,
+          width: 100
+        },
+        {
+          field: "skuQualifiedQty",
+          headerName: "质检合格数量",
+          minWidth: 100,
+          width: 100
+        },
+        {
+          field: "skuUnqualifiedQty",
+          headerName: "质检不合格数量",
+          minWidth: 120,
+          width: 120
+        },
+        {
+          field: "skuConfirmQty",
+          headerName: "确认不合格数量",
+          minWidth: 120,
+          width: 120
+        },
+        {
+          field: "action",
+          headerName: "操作 ",
+          width: 100,
+          minWidth: 100,
+          pinned: "right",
+          elementGroup: [
+            {
+              text: "装箱红冲",
+              type: "button",
+              event: "popup",
+              target: "hong-chong",
+              handleClick: () => {
+                console.log(111)
+              },
+              disabled: (row: any) => row.taskStatus == 5 || row.taskStatus == 6
+            }
+          ]
+        }
+      ]
       return columns;
     }
   }

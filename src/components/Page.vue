@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-01-13 19:52:48
+ * @LastEditTime: 2023-01-13 21:07:06
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -18,6 +18,7 @@
       >
         <template v-slot:top>
           <template v-for="(comp, index) in comp.topComponents" :key="comp.key || index">
+            <slot v-if="comp.slot" :name="comp.slot"></slot>
             <component
               :is="comp.type"
               :componentOption="comp"
@@ -27,6 +28,7 @@
                 <slot :name="item.slot"></slot>
               </template>
               <template v-for="comp in comp.children" :key="comp.key">
+                <slot v-if="comp.slot" :name="comp.slot"></slot>
                 <component
                   :is="comp.type"
                   :componentOption="comp"
@@ -39,6 +41,7 @@
         </template>
         <template v-slot:bottom>
           <template v-for="comp in comp.downComponents" :key="comp.key">
+            <slot v-if="comp.slot" :name="comp.slot"></slot>
             <component
               :is="comp.type"
               :componentOption="comp"
@@ -48,6 +51,7 @@
                 <slot :name="item.slot"></slot>
               </template>
               <template v-for="comp in comp.children" :key="comp.key">
+                <slot v-if="comp.slot" :name="comp.slot"></slot>
                 <component
                   :is="comp.type"
                   :componentOption="comp"
@@ -69,6 +73,7 @@
           <slot :name="item.slot"></slot>
         </template>
         <template v-for="comp in comp.children" :key="comp.key">
+          <slot v-if="comp.slot" :name="comp.slot"></slot>
           <component
             :is="comp.type"
             :componentOption="comp"

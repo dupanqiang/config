@@ -1,15 +1,15 @@
 <!--
- * @Author: your name
- * @Date: 2021-11-16 21:56:24
- * @LastEditTime: 2022-05-11 21:26:23
+ * @author: zhao yongfei
+ * @Date: 2023-01-10 13:02:15
+ * @description: 
+ * @LastEditTime: 2023-01-13 21:18:13
  * @LastEditors: zhao yongfei
- * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: /odm-pc/src/components/ColumnCheck.vue
+ * @FilePath: /dfs-page-config/src/components/ColumnCheck.vue
 -->
 <template>
   <div ref="elColumnCheckedPanel" v-show="show" :style="{left: left, top: top, bottom: bottom}" class="header-checked" @click.stop>
     <p class="header-checked-header">
-      自定义字段显示信息
+      自定义显示字段
     </p>
     <div class="header-checked-body">
       <el-checkbox
@@ -152,6 +152,7 @@ export default defineComponent({
       line-height: 28px;
       color: #fff;
       font-weight: bold;
+      margin: 0;
     }
     .header-checked-body {
       max-height: 70vh;
@@ -159,6 +160,7 @@ export default defineComponent({
       .el-checkbox {
         display: block;
         padding: 6px;
+        height: 20px;
       }
     }
     .header-checked-footer {
