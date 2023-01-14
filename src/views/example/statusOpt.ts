@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-14 00:02:23
+ * @LastEditTime: 2023-01-14 11:02:16
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -245,10 +245,8 @@ let statusOpt = {
           width: 80,
           cellRenderer: ({ data }: any) => {
             if (data.deferStatus == 1) {
-              return `<span style="color: red;">
-               超期
-              </span>`;
-            } else {
+              return `<span style="color: red;">超期</span>`;
+            } else if (data.deferStatus == 0){
               return "未超期";
             }
           },

@@ -1,13 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-12-15 16:02:31
- * @LastEditTime: 2022-07-30 18:43:31
+ * @LastEditTime: 2023-01-14 10:31:28
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/utils/service.ts
+ * @FilePath: /dfs-page-config/src/utils/service.ts
  */
 import axios from "axios";
-import { ElMessage } from "element-plus";
 // import { isPlainObject } from "lodash";
 
 // 记录和显示错误

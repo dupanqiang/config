@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-01-11 14:27:50
+ * @LastEditTime: 2023-01-14 10:30:49
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -52,7 +52,6 @@ export default defineComponent({
       type: Object,
       default: {
         data: {
-          elementGroup: [],
           elementGroup: []
         }
       }
