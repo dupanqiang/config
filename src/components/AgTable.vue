@@ -379,14 +379,14 @@ export default defineComponent({
     // 设置条数
     function sizeChange(pageSize: any) {
       tableComp.pageInfo.pageSize = pageSize;
-      store.dispatch("tableQuery", { tableComp: tableComp });
+      store.dispatch("_TABLE_QUERY", { tableComp: tableComp });
     }
     // 翻页
     function currentChange(currentPage: any) {
       tableComp.pageInfo.currentPage = currentPage;
       tableComp.pageInfo.pageNum = currentPage;
 
-      store.dispatch("tableQuery", { tableComp: tableComp });
+      store.dispatch("_TABLE_QUERY", { tableComp: tableComp });
     }
     return {
       ...toRefs(state),

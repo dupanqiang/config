@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-01-14 10:51:22
+ * @LastEditTime: 2023-01-14 13:10:45
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -90,8 +90,7 @@
 <script lang="ts">
 import { defineComponent, ref, reactive, toRefs, watch, onActivated } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
-import { initPage, tableQuery, queryData, getTargetComp } from "@/common/js/pageConfigUtils";
+import { initPage, _TABLE_QUERY, queryData, getTargetComp } from "@/common/js/pageConfigUtils";
 import { handleEnter } from "@/utils";
 import CommonDialog from "./CommonDialog.vue";
 import CellOperationBtn from "@/components/CellOperationBtn.vue"
@@ -112,7 +111,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const router = useRouter();
     const commonDialogRef = ref();
     let target: string;
     const state = reactive({
@@ -136,52 +134,32 @@ export default defineComponent({
     addHandleFn(components);
     
     function handleFn({option, row}: any) {
-      // 跳转
-      if (option.event == "jump") {
-        if (option.jumpParams) {
-          const routerParams: any = {};
-          if (option.jumpParams.params) {
-            const params = option.jumpParams.params;
-            Object.keys(params).forEach((key: string) => {
-              if (typeof params[key] === 'function') {
-                routerParams[key] = params[key](row)
-              } else {
-                routerParams[key] = params[key]
-              }
-            });
-          }
-          router.push({name: option.jumpParams.name, params: routerParams})
-        } else if (option.jumpFn) {
-          option.jumpFn(row)
-        }
+      // 自定义方法
+      if (option.unwantSelectData && option.handleFn) { // 不需要table数据
+        option.handleFn(option)
+      } else if (option.handleFn) {
+        state.selectedRows = row ? [row] : getTargetComp(store, pageConfigData.pageKey, option.target).selectedRows || [];
+        if (state.selectedRows.length == 0) return ElMessage.warning("请选择数据");
+        option.handleFn(option, state.selectedRows)
       } else {
-        // 自定义方法
-        if (option.unwantSelectData && option.handleFn) { // 不需要table数据
-          option.handleFn(option)
-        } else if (option.handleFn) {
-          state.selectedRows = row ? [row] : getTargetComp(store, pageConfigData.pageKey, option.target).selectedRows || [];
-          if (state.selectedRows.length == 0) return ElMessage.warning("请选择数据");
-          option.handleFn(option, state.selectedRows)
-        } else {
-          // 弹窗
-          for (let i = 0, popupGroup = pageConfigData.popupGroup; i < popupGroup.length; i++) {
-            if (popupGroup[i].key === option.target) {
-              state.popupData = popupGroup[i];
-              target = popupGroup[i].target;
-              break;
-            }
+        // 弹窗
+        for (let i = 0, popupGroup = pageConfigData.popupGroup; i < popupGroup.length; i++) {
+          if (popupGroup[i].key === option.target) {
+            state.popupData = popupGroup[i];
+            target = popupGroup[i].target;
+            break;
           }
-          state.selectedRows = row ? [row] : getTargetComp(store ,pageConfigData.pageKey, state.popupData.target).selectedRows || [];
-          state.selectedNodes = getTargetComp(store ,pageConfigData.pageKey, state.popupData.target).selectedNodes || [];
-          if (state.selectedRows.length == 0 && !option.unwantSelectData) return ElMessage.warning("请选择数据");
-          // 显示弹窗之前钩子
-          if (state.popupData.showDialogBefore) {
-            if (state.popupData.showDialogBefore(state.selectedRows) === false) {
-              return
-            }
-          }
-          commonDialogRef.value.dialog = true;
         }
+        state.selectedRows = row ? [row] : getTargetComp(store ,pageConfigData.pageKey, state.popupData.target).selectedRows || [];
+        state.selectedNodes = getTargetComp(store ,pageConfigData.pageKey, state.popupData.target).selectedNodes || [];
+        if (state.selectedRows.length == 0 && !option.unwantSelectData) return ElMessage.warning("请选择数据");
+        // 显示弹窗之前钩子
+        if (state.popupData.showDialogBefore) {
+          if (state.popupData.showDialogBefore(state.selectedRows) === false) {
+            return
+          }
+        }
+        commonDialogRef.value.dialog = true;
       }
     }
     
@@ -220,7 +198,7 @@ export default defineComponent({
 
     // 查询
     function getData() {
-      tableQuery(store, pageConfigData.pageKey, target)
+      _TABLE_QUERY(store, pageConfigData.pageKey, target)
     }
     onActivated(() => {
       // 回车查询

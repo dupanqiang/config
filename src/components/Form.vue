@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-01-13 19:45:19
+ * @LastEditTime: 2023-01-14 13:02:51
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
@@ -237,12 +237,12 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const usStore = useStore();
+    const store = useStore()
     const formRef = ref();
     const state = reactive({
       open: true,
       fileUrlUploadImg:
-        store.state.baseUrl + "/media-management-service/v2/image/upload/",
+        store.state._BASE_URL + "/media-management-service/v2/image/upload/",
       labelWidth: props.componentOption.labelWidth || "110px",
       formItemWidth: props.componentOption.formItemWidth || "180px",
       size: props.componentOption.size || "small",

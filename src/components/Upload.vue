@@ -53,7 +53,7 @@ export default defineComponent({
     const store = useStore()
     const state = reactive({
       uploadUrl: computed(
-        () => store.state.baseUrl + props.url
+        () => store.state._BASE_URL + props.url
       ),
     });
     const uploading = ref(false);

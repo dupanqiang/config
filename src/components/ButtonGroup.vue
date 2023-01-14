@@ -100,7 +100,7 @@ export default defineComponent({
     }
     // 查询
     function queryData(target: string) {
-      store.dispatch("queryList", {
+      store.dispatch("_QUERY_LIST", {
         pageKey: props.pageKey,
         target: target
       });
@@ -123,7 +123,7 @@ export default defineComponent({
         window.open(item.url, "_blank");
       } else {
         downLoadData({
-          url: store.state.baseUrl + item.url,
+          url: store.state._BASE_URL + item.url,
           fileName: item.fileName || "",
           method: item.method,
           store: store,
@@ -149,7 +149,7 @@ export default defineComponent({
         exportParams = { ...formData, ...tableComp.pageInfo }
       }
       const params = {
-        url: store.state.baseUrl + item.url,
+        url: store.state._BASE_URL + item.url,
         fileName: item.fileName,
         params: exportParams,
         store: store

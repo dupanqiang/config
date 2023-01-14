@@ -79,7 +79,7 @@ export default defineComponent({
           );
           let paramsKey = state.data.method == "GET" ? "params" : "data";
           service({
-            url: store.state.baseUrl + state.data.url,
+            url: store.state._BASE_URL + state.data.url,
             [paramsKey]: formData || {},
             method: state.data.method || "POST",
           })

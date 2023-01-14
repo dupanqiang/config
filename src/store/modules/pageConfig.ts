@@ -1,10 +1,10 @@
 /*
  * @Author: 赵永飞
  * @Date: 2021-09-06 16:57:52
- * @LastEditTime: 2022-08-11 20:39:51
+ * @LastEditTime: 2023-01-14 13:54:50
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-vue/src/store/modules/pageConfig.ts
+ * @FilePath: /dfs-page-config/src/store/modules/pageConfig.ts
  */
 import { formatDate, handleEnter } from "@/utils";
 import { getTargetComp, getSelectOption } from "@/common/js/pageConfigUtils";
@@ -16,7 +16,7 @@ const state = {
 // getters
 const getters = {
   // 获取页面配置数据
-  getPageConfigData(state: any) {
+  _GET_CONFIG_DATA(state: any) {
     return function (key: string) {
       return state.pageConfigData[key];
     };
@@ -42,7 +42,6 @@ const mutations = {
   },
   // 储存table数据
   updateRowData(state: any, payload: { tableComp: any; res: any }) {
-    console.log(state)
     if (payload.res) {
       payload.tableComp.data.result = payload.res.result || [];
       payload.tableComp.data.totalNum = payload.res.totalNum || 0;
@@ -57,7 +56,7 @@ const mutations = {
 // actions
 const actions = {
   // 初始化入口
-  async init(event: any, payload: any) {
+  async _INIT_PAGE(event: any, payload: any) {
     const { state, commit, dispatch } = event;
     // 初始化配置信息
     initData(event, payload);
@@ -79,12 +78,12 @@ const actions = {
           const formData = getFormData(firstComp); // formData查询参数
           const ownParams = getOwnSearchData(comp); // 自身查询参数
           comp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
-          dispatch("tableQuery", { tableComp: comp });
+          dispatch("_TABLE_QUERY", { tableComp: comp });
         }
       });
       // 回车查询
       handleEnter(() => {
-        event.dispatch("queryList", {
+        event.dispatch("_QUERY_LIST", {
           formComp: firstComp,
           pageKey: payload.pageKey,
         });
@@ -93,7 +92,7 @@ const actions = {
       // 绑定函数
       // tableBindFunction(event, payload);
       // table直接查询
-      dispatch("tableQuery", { tableComp: firstComp });
+      dispatch("_TABLE_QUERY", { tableComp: firstComp });
     }
     components.forEach((co: any) => {
       if (co.widget === "searchForm") {
@@ -107,11 +106,11 @@ const actions = {
   updateColumns(event: any, payload: {pageKey: string, tableComp: any; status: number }) {
     if (payload.tableComp.columnsFn)
       payload.tableComp.columns = payload.tableComp.columnsFn(payload.status);
-      const pageConfigData = event.getters["getPageConfigData"](payload.pageKey);
+      const pageConfigData = event.getters["_GET_CONFIG_DATA"](payload.pageKey);
       tableBindFunction(event, pageConfigData)
   },
   // 查询
-  queryList(event: any, payload: { formComp: any; pageKey: string }) {
+  _QUERY_LIST(event: any, payload: { formComp: any; pageKey: string }) {
     payload.formComp.effects.forEach((item: any) => {
       const comp = getTargetComp(event, payload.pageKey, item.target);
       if (comp.widget == "table") {
@@ -119,13 +118,12 @@ const actions = {
         Object.keys(formData).forEach((key: string) => {
           comp.formData[key] = formData[key];
         });
-        event.dispatch("tableQuery", { tableComp: comp });
+        event.dispatch("_TABLE_QUERY", { tableComp: comp });
       }
     });
   },
   // 查询列表查询
-  tableQuery(event: any, { tableComp, row }: any) {
-    console.log(event)
+  _TABLE_QUERY(event: any, { tableComp, row }: any) {
     if (tableComp.searchBefore) {
       if (tableComp.searchBefore(tableComp, row) === false) {
         return;
@@ -138,7 +136,7 @@ const actions = {
     // 查询
     let paramsKey = tableComp.method == "GET" ? "params" : "data";
     service({
-      url: event.state.baseUrl + tableComp.url,
+      url: event.state._BASE_URL + tableComp.url,
       [paramsKey]: params || {},
       method: tableComp.method || "POST",
     })
@@ -189,7 +187,7 @@ function tableBindFunction(event: any, configData: any) {
           comp.effects[0].target
         );
         comp.onRowClickedFn = (row: any) => {
-          event.dispatch("tableQuery", {
+          event.dispatch("_TABLE_QUERY", {
             tableComp: targetTableComp,
             row: row,
           });
@@ -218,7 +216,7 @@ function tableBindFunction(event: any, configData: any) {
             let paramsKey =
               cellRendererParams.method == "GET" ? "params" : "data";
             service({
-              url: event.state.baseUrl + cellRendererParams.url,
+              url: event.state._BASE_URL + cellRendererParams.url,
               [paramsKey]: params,
               method: cellRendererParams.method || "POST",
             }).then((res: any) => {
@@ -288,7 +286,6 @@ function getFormData(formComp: any) {
     } else {
       formData[item.prop] = item.value;
     }
-    // console.log(formData)
     // 处理时间
     if (item.type === "Daterange" || item.type === "DateTimerange") {
       if (!formData[item.prop]) {

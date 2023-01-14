@@ -66,7 +66,7 @@ export default defineComponent({
     function getOptionData() {
       let paramsKey = option.method == "POST" ? "data" : "params"
       service({
-        url: store.state.baseUrl + option.url,
+        url: store.state._BASE_URL + option.url,
         [paramsKey]: option.params || {},
         method: option.method || "GET"
       })
@@ -92,7 +92,7 @@ export default defineComponent({
           })
         });
       }
-      store.dispatch("dbsPageConfig/queryList", {
+      store.dispatch("dbsPageConfig/_QUERY_LIST", {
         formComp: formComp,
         pageKey: pageKey
       });

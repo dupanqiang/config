@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-01-13 20:24:42
+ * @LastEditTime: 2023-01-14 13:09:52
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -14,7 +14,7 @@ import { formatDate } from "@/utils";
 import service from "@/utils/service";
   // 初始化
   const initPage = (configData: any, store: any) => {
-    store.dispatch("init", {
+    store.dispatch("_INIT_PAGE", {
       pageKey: configData.pageKey,
       components: configData.components
     })
@@ -22,7 +22,7 @@ import service from "@/utils/service";
   
   // form查询
   const queryData = (pageKey: string, store: any) => {
-    const components = store.getters['getPageConfigData'](pageKey).components;
+    const components = store.getters['_GET_CONFIG_DATA'](pageKey).components;
     let formComp = null;
     for (let i = 0; i < components.length; i++) {
       if (components[i].widget === "searchForm") {
@@ -30,21 +30,21 @@ import service from "@/utils/service";
       }
     }
     
-    store.dispatch("queryList", { formComp: formComp, pageKey: pageKey })
+    store.dispatch("_QUERY_LIST", { formComp: formComp, pageKey: pageKey })
   }
   // table查询
-  const tableQuery = (store: any, pageKey: string, target: string) => {
+  const _TABLE_QUERY = (store: any, pageKey: string, target: string) => {
     const tableComp = getTargetComp(store, pageKey, target);
-    store.dispatch("tableQuery", {tableComp: tableComp});
+    store.dispatch("_TABLE_QUERY", {tableComp: tableComp});
   }
   
   // 获取目标对象
   let component:any = {}
   function getTargetComp({ getters }: any, pageKey: string, comKey: string) {
     component = {}
-    const getPageConfigData = getters.getPageConfigData;
-    if (!getPageConfigData(pageKey)) return {};
-    const components = getPageConfigData(pageKey);
+    const _GET_CONFIG_DATA = getters._GET_CONFIG_DATA;
+    if (!_GET_CONFIG_DATA(pageKey)) return {};
+    const components = _GET_CONFIG_DATA(pageKey);
     getComp(components, comKey)
     return component
   }
@@ -70,7 +70,7 @@ import service from "@/utils/service";
     } else {
       let paramsKey = item.method == "POST" ? "data" : "params"
       service({
-        url: state.baseUrl + item.url,
+        url: state._BASE_URL + item.url,
         [paramsKey]: item.params || {},
         method: item.method || "GET"
       })
@@ -119,7 +119,7 @@ import service from "@/utils/service";
   export {
     initPage,
     queryData,
-    tableQuery,
+    _TABLE_QUERY,
     getTargetComp,
     getSelectOption,
     getFormData,

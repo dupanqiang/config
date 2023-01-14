@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-13 17:16:32
  * @description: 
- * @LastEditTime: 2023-01-13 17:46:30
+ * @LastEditTime: 2023-01-14 13:10:24
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ComponentItem.vue
 -->
@@ -65,7 +65,6 @@ export default defineComponent({
     },
   },
   setup(props) {
-    console.log(props.configOption)
     props.configOption.forEach((item: any) => {
       if ((item.type == "Form"  || item.type == "ButtonGroup") && item.elementGroup) {
         watch(() => item.elementGroup, (option) => {

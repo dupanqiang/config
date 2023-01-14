@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-01-14 10:30:49
+ * @LastEditTime: 2023-01-14 13:07:22
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -65,7 +65,6 @@ export default defineComponent({
     const state = reactive({
       data: <any> {},
       elementGroup: [],
-      elementGroup:<any> [],
       formData:<any> {},
       dialog: false,
     });
@@ -108,7 +107,7 @@ export default defineComponent({
           const formData = state.data.params(props.selectedRows, state.formData)
           let paramsKey = state.data.method == "GET" ? "params" : "data"
           service({
-            url: store.state.baseUrl + state.data.url,
+            url: store.state._BASE_URL + state.data.url,
             [paramsKey]: formData || {},
             method: state.data.method || "POST"
           })

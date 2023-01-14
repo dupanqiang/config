@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-01-13 23:20:24
+ * @LastEditTime: 2023-01-14 13:59:18
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -15,20 +15,24 @@ export default createStore({
   // plugins: [createPersistedState()],
   state: {
     // 页面配置数据
-    pageConfigData: {}
+    _CONFIG_DATA: {},
+    _BASE_URL: ""
   },
   getters: {
     // 获取页面配置数据
-    getPageConfigData(state: any) {
+    _GET_CONFIG_DATA(state: any) {
       return function (key: string) {
-        return state.pageConfigData[key];
+        return state._CONFIG_DATA[key];
       };
     },
   },
   mutations: {
+    saveUrl(state: any, payload: any) {
+      state._BASE_URL = payload;
+    },
     // 储存页面配置数据
     savaPageConfigData(state: any, payload: any) {
-      state.pageConfigData[payload.pageKey] = payload.components;
+      state._CONFIG_DATA[payload.pageKey] = payload.components;
     },
     // 储存table数据
     updateRowData(state: any, payload: { tableComp: any; res: any }) {
@@ -45,20 +49,19 @@ export default createStore({
   },
   actions: {
     // 初始化入口
-    async init(event: any, configData: any) {
-      const { state, commit, dispatch } = event;
+    _INIT_PAGE(event: any, configData: any) {
       // 存储配置信息
-      commit("savaPageConfigData", configData);
+      event.commit("savaPageConfigData", configData);
       // 初始化配置信息
       initData(event, configData.components, configData.pageKey);
     },
     // 查询
-    queryList(event: any, { pageKey, target }) {
+    _QUERY_LIST(event: any, { pageKey, target }) {
       const tableComp:any = getTargetComp(event, pageKey, target);
-      event.dispatch("tableQuery", { tableComp, pageKey });
+      event.dispatch("_TABLE_QUERY", { tableComp, pageKey });
     },
     // 查询列表查询
-    tableQuery(event: any, { tableComp, pageKey, row }: any) {
+    _TABLE_QUERY(event: any, { tableComp, pageKey, row }: any) {
       if (tableComp.searchBefore) {
         if (tableComp.searchBefore(tableComp, row) === false) {
           return;
@@ -74,12 +77,12 @@ export default createStore({
       const ownParams = getOwnSearchData(tableComp, formComp); // 自身查询参数
       tableComp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
 
-      event.state.loading = true;
+      // event.state.loading = true;
       const params = handleParams(tableComp);
       // 查询
       let paramsKey = tableComp.method == "GET" ? "params" : "data";
       service({
-        url: event.state.baseUrl + tableComp.url,
+        url: event.state._BASE_URL + tableComp.url,
         [paramsKey]: params || {},
         method: tableComp.method || "POST",
       })
@@ -90,7 +93,7 @@ export default createStore({
           event.commit("updateRowData", { tableComp: tableComp, res: res });
         })
         .finally(() => {
-          event.state.loading = false;
+          // event.state.loading = false;
         });
     },
   },
@@ -117,7 +120,7 @@ function initData(event: any, components: any[], pageKey: string) {
         comp.pageInfo = { pageNum: 1, currentPage: 1, pageSize: 50 };
       }
       if (comp.initQuery) {
-        event.dispatch("tableQuery", { pageKey: pageKey, tableComp: comp });
+        event.dispatch("_TABLE_QUERY", { pageKey: pageKey, tableComp: comp });
       }
       tableBindFunction(event, comp, pageKey);
     }
@@ -129,7 +132,7 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
   if (tableComp.configFlag && tableComp.configFlag.isRowClick) {
     const targetTableComp = getTargetComp(event, pageKey, tableComp.target);
     tableComp.onRowClickedFn = (row: any) => {
-      event.dispatch("tableQuery", {
+      event.dispatch("_TABLE_QUERY", {
         pageKey: pageKey,
         tableComp: targetTableComp,
         row: row,
@@ -159,7 +162,7 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
         let paramsKey =
           cellRendererParams.method == "GET" ? "params" : "data";
         service({
-          url: event.state.baseUrl + cellRendererParams.url,
+          url: event.state._BASE_URL + cellRendererParams.url,
           [paramsKey]: params,
           method: cellRendererParams.method || "POST",
         }).then((res: any) => {

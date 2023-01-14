@@ -181,7 +181,7 @@ export default defineComponent({
       console.log(option)
     }
     function getData() {
-      // tableQuery(store, 'purchaseList', 'table')
+      // _TABLE_QUERY(store, 'purchaseList', 'table')
     }
     return {
       ...toRefs(state),
