@@ -1,11 +1,12 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-14 11:02:16
+ * @LastEditTime: 2023-01-16 21:14:12
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
  */
+import { ElMessage } from "element-plus";
 import { computed } from "vue";
 let statusOpt = {
   topOption: {
@@ -142,7 +143,7 @@ let statusOpt = {
           url: "/purchase/slt/exportSltOrderExcel",
         },
         { text: "下载", type: "button", event: "download", url: "/purchase/paymentRequest/export", isShow: true},
-        { text: "打印采购单", type: "button", event: "custom", target: "table", handleClick: print },
+        { text: "打印采购单", type: "button", target: "table", handleClick: print, relation: ["searchForm", "table"] },
         { text: "上传", type: "button", event: "upload", buttonType: "warning", url: '/inspection/importQualityInspectionMisjudgment' },
         {
           slot: "bbbbb",
@@ -152,6 +153,15 @@ let statusOpt = {
           isShow: (components) => {
             return !components.searchForm.formData.deferStatus
           }
+        },
+        { text: "测试弹窗", type: "button", event: "dialog", target: "dialog_test",
+          relation: ["searchForm", "table"],
+          showDialogBefore: (component) => {
+            if (!component.table.selectedRows.length) {
+              ElMessage.warning("请选择数据")
+              return false
+            }
+          } 
         },
         { text: "批量修改未准交原因", target: "table", type: "primary", handleClick: () => {}, relation: ["searchForm", "table"],
           isShow: (components) => {
@@ -638,7 +648,26 @@ let statusOpt = {
       ]
       return columns;
     }
-  }
+  },
+  popupGroup: [
+    { type: "confirmPopup", key: "confirm", target: "table",
+      data: {
+        title: "确认",
+        width: "400px",
+        infoText: "确认入库？",
+        url: "/purchase/inbound/confirmInbound",
+        params: (selectedRows: any[]) => {
+          return selectedRows.map((item: any) => {
+            return item.id
+          })
+        },
+        buttonGroup: [
+          { text: "取消", event: "cancel" },
+          { text: "确认", event: "submit" },
+        ]
+      }
+    },
+  ]
 };
 
 export { statusOpt };

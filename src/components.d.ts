@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     CardText: typeof import('./components/rowComponents/cardText.vue')['default']
     CellItemEdit: typeof import('./components/CellItemEdit.vue')['default']
     CellOperationBtn: typeof import('./components/CellOperationBtn.vue')['default']
+    ChildrenComponent: typeof import('./components/ChildrenComponent.vue')['default']
     Col: typeof import('./components/rowComponents/col.vue')['default']
     ColumnCheck: typeof import('./components/ColumnCheck.vue')['default']
     CommonDialog: typeof import('./components/CommonDialog.vue')['default']

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-01-14 13:02:51
+ * @LastEditTime: 2023-01-16 21:34:17
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
@@ -215,14 +215,14 @@
 </el-config-provider>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref, toRefs, watch } from "vue";
+import { defineComponent, computed, reactive, ref, toRefs } from "vue";
 import locale from "element-plus/lib/locale/lang/zh-cn";
 import { useStore } from "vuex";
 import store from "@/store"
-import { getSelectOption } from "@/common/js/pageConfigUtils";
+import service from "@/utils/service";
+import { getSelectOption, getRelationComp } from "@/common/js/pageConfigUtils";
 import SearchTab from "@/components/SearchTab.vue";
 import uploadComp from "@/components/uploadComp.vue";
-import { computed } from "@vue/reactivity";
 
 export default defineComponent({
   components: { SearchTab, uploadComp },
@@ -239,21 +239,24 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
     const formRef = ref();
+    const component = props.componentOption
     const state = reactive({
       open: true,
       fileUrlUploadImg:
         store.state._BASE_URL + "/media-management-service/v2/image/upload/",
-      labelWidth: props.componentOption.labelWidth || "110px",
-      formItemWidth: props.componentOption.formItemWidth || "180px",
-      size: props.componentOption.size || "small",
-      showCloseButton: props.componentOption.showCloseButton || false,
+      labelWidth: component.labelWidth || "110px",
+      formItemWidth: component.formItemWidth || "180px",
+      size: component.size || "small",
+      showCloseButton: component.showCloseButton || false,
       elementGroup: <any>[],
-      inline: props.componentOption.inline || true,
+      inline: component.inline || true,
       allDisabled: false,
-      formData: props.componentOption.formData
+      formData: component.formData
     });
+    component.submit = submit
+    component.reset = reset
     state.elementGroup = computed(() => {
-      return props.componentOption.elementGroup.filter((item: any) => {
+      return component.elementGroup.filter((item: any) => {
         return (
           item.isShow === undefined ||
           (typeof item.isShow === "function" && item.isShow(state.formData))
@@ -270,6 +273,51 @@ export default defineComponent({
         if ((item.type === "Select" || item.type === "Cascader") && item.url) {
           getSelectOption(store.state, item);
         }
+      });
+    }
+    function reset() {
+      component.elementGroup.forEach((item: any) => {
+        if (item.type !== 'Tab' && item.type !== 'TabStep') {
+          state.formData[item.prop] = item.value;
+        }
+      });
+      formRef.value.resetFields();
+    }
+    function submit(fn) {
+      if (component.validate) {
+        if (component.submitBefore) {
+          let components = []
+          if (component.relation) {
+            components = getRelationComp(store, props.pageKey, component.relation)
+          }
+          if (component.submitBefore(components) === false) {
+            return
+          }
+        }
+        formRef.value.validate((valid: boolean) => {
+          if (valid) {
+            doSubmit(fn)
+          }
+        })
+      } else {
+        doSubmit(fn)
+      }
+    }
+    function doSubmit(fn) {
+      let paramsKey = component.method == "GET" ? "params" : "data"
+      service({
+        url: store.state._BASE_URL + component.url,
+        [paramsKey]: state.formData || {},
+        method: component.method || "POST"
+      })
+      .then((res: any) => {
+        fn()
+        component.submitAfter&&component.submitAfter(res)
+      }).catch((err: any)=>{
+        console.log(err)
+      })
+      .finally(() => {
+        // store.commit("setLoading", false);
       });
     }
     function isOpen() {

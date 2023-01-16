@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-01-14 14:07:34
+ * @LastEditTime: 2023-01-16 20:06:39
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -22,7 +22,7 @@ export default createStore({
     // 获取页面配置数据
     _GET_CONFIG_DATA(state: any) {
       return function (key: string) {
-        return state._CONFIG_DATA[key];
+        return state._CONFIG_DATA[key]['components'];
       };
     },
   },
@@ -32,7 +32,10 @@ export default createStore({
     },
     // 储存页面配置数据
     savaPageConfigData(state: any, payload: any) {
-      state._CONFIG_DATA[payload.pageKey] = payload.components;
+      state._CONFIG_DATA[payload.pageKey] = {
+        components: payload.components
+      };
+      state.dialogRef = payload.dialogRef
     },
     // 储存table数据
     updateRowData(state: any, payload: { tableComp: any; res: any }) {

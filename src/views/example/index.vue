@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-13 23:46:00
+ * @LastEditTime: 2023-01-16 21:34:42
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -21,6 +21,7 @@
       <span style="color: red; font-size: 14px;">手动创建采购单1</span>
     </template>
   </Page>
+  <!-- <ComponentItem :configOption="pageConfigData.components" :pageKey="pageConfigData.pageKey"></ComponentItem> -->
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
@@ -32,7 +33,7 @@ import { downLoadData } from "@/utils/index";
 const VITE_NODE_ENV = import.meta.env.VITE_NODE_ENV
 
 export default defineComponent({
-  name: "example2",
+  name: "example",
   components: {
     CellId
   },
@@ -169,6 +170,68 @@ export default defineComponent({
                 // isRowClick: true,
                 // total: true,
               },
+            },
+            {
+              type: "dialog",
+              key: "dialog_test",
+              target: "table",
+              title: "提交审核",
+              width: "500px",
+              children: [
+                {
+                  type: "Form",
+                  key: "searchForm2",
+                  value: "",
+                  labelWidth: "100px",
+                  formItemWidth: "200px",
+                  size: "small",
+                  url: "/logistics/tracking/updateTrackingNo",
+                  method: "POST",
+                  relation: ["table"],
+                  validate: true,
+                  submitBefore: (component) => {
+                    console.log(component)
+                    // return false
+                  },
+                  submitAfter: (res) => {
+                    console.log(res)
+                  },
+                  elementGroup: [
+                    {
+                      type: "Input",
+                      prop: "originalTrackingNo",
+                      value: "",
+                      label: "老运单号",
+                      width: '100%',
+                      style: {'margin-bottom': "15px"},
+                      rules: [
+                        { required: true, message: '不能为空' }
+                      ],
+                      placeholder: "请输入",
+                    },
+                    {
+                      type: "Input",
+                      prop: "trackingNo",
+                      value: "",
+                      label: "新单号",
+                      width: '100%',
+                      rules: [
+                        { required: true, message: '不能为空' }
+                      ],
+                      placeholder: "请输入",
+                    }
+                  ]
+                },
+                {
+                  type: "ButtonGroup",
+                  style: {'justify-content': 'center'},
+                  size: "small",
+                  elementGroup: [
+                    { text: "取消", type: "button", buttonType: "default", event: "cancel", restTarget: "searchForm2" },
+                    { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
+                  ]
+                }
+              ]
             }
           ]
         }

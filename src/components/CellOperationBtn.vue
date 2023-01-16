@@ -1,23 +1,15 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-14 00:01:34
+ * @LastEditTime: 2023-01-16 12:59:55
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperationBtn.vue
 -->
-<!--
- * @Author: zhao yongfei
- * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2022-08-10 15:23:13
- * @LastEditors: dupan
- * @Description: table内字段编辑
- * @FilePath: /fe-supply-chain/src/components/CellOperationBtn.vue
--->
 <template>
   <div @click.stop v-if="params.node && !params.node.rowPinned" class="cell-operation-btn-box">
     <template v-for="item in elementGroup" :key="item.label">
-      <span 
+      <span
         class="text-btn"
         :style="item.style"
         v-if="item.type === 'text'"

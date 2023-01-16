@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-13 17:16:32
  * @description: 
- * @LastEditTime: 2023-01-14 13:10:24
+ * @LastEditTime: 2023-01-16 15:23:53
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ComponentItem.vue
 -->
@@ -10,23 +10,23 @@
   <div class="ag-grid-container">
     <template v-for="comp in configOption" :key="comp.key">
       <component
-        v-if="comp.type === 'SplitScreenTempl'"
+        v-if="comp.type === 'SplitScreen'"
         :is="comp.type"
         :componentOption="comp"
         :pageKey="pageKey"
       >
         <template v-slot:top>
           <ComponentItem
-            v-if="comp.children && itemChild.children.length"
+            v-if="comp.topComponents && comp.topComponents.length"
             :pageKey="pageKey"
-            :configOption="itemChild.children"
+            :configOption="comp.topComponents"
           ></ComponentItem>
         </template>
         <template v-slot:bottom>
           <ComponentItem
-            v-if="comp.children && itemChild.children.length"
+            v-if="comp.downComponents && comp.downComponents.length"
             :pageKey="pageKey"
-            :configOption="itemChild.children"
+            :configOption="comp.downComponents"
           ></ComponentItem>
         </template>
       </component>
@@ -52,6 +52,8 @@
 
 <script lang="ts">
 import { defineComponent, watch } from "vue";
+import { initPage } from "@/common/js/pageConfigUtils";
+import { useStore } from "vuex"
 
 export default defineComponent({
   props: {
@@ -64,7 +66,8 @@ export default defineComponent({
       default: [],
     },
   },
-  setup(props) {
+  setup(props: any) {
+    const store = useStore()
     props.configOption.forEach((item: any) => {
       if ((item.type == "Form"  || item.type == "ButtonGroup") && item.elementGroup) {
         watch(() => item.elementGroup, (option) => {
@@ -74,6 +77,9 @@ export default defineComponent({
         }, {immediate: true})
       }
     });
+    if (!store.state._CONFIG_DATA[props.pageKey]) {
+      initPage({pageKey: props.pageKey, components: props.configOption}, store);
+    }
   },
 });
 </script>

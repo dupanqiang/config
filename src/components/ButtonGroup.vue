@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-01-14 10:30:15
+ * @LastEditTime: 2023-01-16 21:22:32
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -39,15 +39,17 @@
         <slot :name="item.slot + '_'"></slot>
       </template>
     </template>
+    <slot></slot>
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, computed, toRefs } from "vue";
+import { defineComponent, ref, reactive, computed, toRefs } from "vue";
 import { useStore } from "vuex";
 // import { useRoute } from "vue-router";
 import { downLoadData } from "@/utils/index";
 import Upload from "@/components/Upload.vue";
 import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";
+import { ElMessage } from "element-plus";
 
 export default defineComponent({
   name: "ButtonGroup",
@@ -64,6 +66,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
+    const dialogRef = ref()
     const state = reactive({
       buttonGroup: computed(() => {
         return props.componentOption.elementGroup.filter((item: any) => {
@@ -88,6 +91,12 @@ export default defineComponent({
           break;
         case 'download': download(item)
           break;
+        case 'dialog': dialog(item)
+          break;
+        case 'cancel': closeDialog(item.restTarget)
+          break;
+        case 'submit': submit(item)
+          break;
         default: customClick(item)
       }
     }
@@ -108,11 +117,7 @@ export default defineComponent({
     // 重置
     function reset(item: any) {
       const formComp: any = getTargetComp(store, props.pageKey, item.target);
-      formComp.elementGroup.forEach((item: any) => {
-        if (item.type !== 'Tab' && item.type !== 'TabStep') {
-          formComp.formData[item.prop] = item.value;
-        }
-      });
+      formComp.reset()
       if (item.queryTarget) {
         queryData(item.queryTarget)
       }
@@ -156,11 +161,43 @@ export default defineComponent({
       }
       downLoadData(params);
     }
+    function dialog(item) {
+      if (item.showDialogBefore) {
+        let components = []
+        if (item.relation) {
+          components = getRelationComp(store, props.pageKey, item.relation)
+        }
+        if (item.showDialogBefore(components) === false) {
+          return
+        }
+      }
+      store.state.dialogRef.option = item
+      store.state.dialogRef.dialog = true
+    }
+    function closeDialog(target?) {
+      store.state.dialogRef.dialog = false
+      if (target) {
+        const formComp: any = getTargetComp(store, props.pageKey, target);
+        formComp.reset()
+      }
+    }
+    function submit(item) {
+      const component = getTargetComp(store, props.pageKey, item.target)
+      component.submit((res) => {
+        console.log(res)
+        closeDialog(item.target)
+        ElMessage.success("操作成功")
+        if (item.queryTarget) {
+          queryData(item.queryTarget)
+        }
+      })
+    }
     return {
       ...toRefs(state),
       handleClick,
       download,
-      queryData
+      queryData,
+      dialogRef
       // exportData
     };
   },

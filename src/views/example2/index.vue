@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-13 18:57:34
+ * @LastEditTime: 2023-01-16 17:04:00
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example2/index.vue
@@ -18,6 +18,7 @@
       <el-input size="small"></el-input>
     </template>
   </Page>
+  <!-- <ComponentItem :configOption="pageConfigData.components" :pageKey="pageConfigData.pageKey"></ComponentItem> -->
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref, toRefs } from "vue";
@@ -67,7 +68,7 @@ export default defineComponent({
           type: "ButtonGroup",
           span: 24,
           size: "small",
-          elementGroup: statusOpt.buttonGroup2(print),
+          elementGroup: statusOpt.buttonGroup2(print)
         },
         {
           slot: "slot3"

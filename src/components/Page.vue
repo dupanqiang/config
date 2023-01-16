@@ -2,13 +2,13 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-01-14 13:10:45
+ * @LastEditTime: 2023-01-16 20:06:15
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
 <template>
   <div class="ag-grid-container">
-    <template v-for="comp in pageConfigData.components" :key="comp.key">
+    <template v-for="comp in pageConfigData.components.filter(item => item.type !== 'dialog')" :key="comp.key">
       <slot v-if="comp.slot" :name="comp.slot"></slot>
       <component
         v-else-if="comp.type === 'SplitScreen'"
@@ -17,7 +17,7 @@
         :pageKey="pageConfigData.pageKey"
       >
         <template v-slot:top>
-          <template v-for="(comp, index) in comp.topComponents" :key="comp.key || index">
+          <template v-for="(comp, index) in comp.topComponents.filter(item => item.type !== 'dialog')" :key="comp.key || index">
             <slot v-if="comp.slot" :name="comp.slot"></slot>
             <component
               :is="comp.type"
@@ -27,20 +27,12 @@
               <template v-for="item in comp.elementGroup||[].filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
                 <slot :name="item.slot"></slot>
               </template>
-              <template v-for="comp in comp.children" :key="comp.key">
-                <slot v-if="comp.slot" :name="comp.slot"></slot>
-                <component
-                  :is="comp.type"
-                  :componentOption="comp"
-                  :pageKey="pageConfigData.pageKey"
-                >
-                </component>
-              </template>
+              <ChildrenComponent :configOption="comp.children" :pageKey="pageConfigData.pageKey"></ChildrenComponent>
             </component>
           </template>
         </template>
         <template v-slot:bottom>
-          <template v-for="comp in comp.downComponents" :key="comp.key">
+          <template v-for="comp in comp.downComponents.filter(item => item.type !== 'dialog')" :key="comp.key">
             <slot v-if="comp.slot" :name="comp.slot"></slot>
             <component
               :is="comp.type"
@@ -50,15 +42,7 @@
               <template v-for="item in comp.elementGroup||[].filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
                 <slot :name="item.slot"></slot>
               </template>
-              <template v-for="comp in comp.children" :key="comp.key">
-                <slot v-if="comp.slot" :name="comp.slot"></slot>
-                <component
-                  :is="comp.type"
-                  :componentOption="comp"
-                  :pageKey="pageConfigData.pageKey"
-                >
-                </component>
-              </template>
+              <ChildrenComponent :configOption="comp.children" :pageKey="pageConfigData.pageKey"></ChildrenComponent>
             </component>
           </template>
         </template>
@@ -72,34 +56,25 @@
         <template v-for="item in comp.elementGroup||[].filter(item => item.slot)" :key="item.slot" v-slot:[item.slotName]>
           <slot :name="item.slot"></slot>
         </template>
-        <template v-for="comp in comp.children" :key="comp.key">
-          <slot v-if="comp.slot" :name="comp.slot"></slot>
-          <component
-            :is="comp.type"
-            :componentOption="comp"
-            :pageKey="pageConfigData.pageKey"
-          >
-          </component>
-        </template>
+        <ChildrenComponent :configOption="comp.children" :pageKey="pageConfigData.pageKey"></ChildrenComponent>
       </component>
     </template>
   </div>
-  <CommonDialog ref="commonDialogRef" :popupData="popupData" :selectedRows="selectedRows" :selectedNodes="selectedNodes" @on-success="handleSuccess"></CommonDialog>
+  <CommonDialog ref="dialogRef" :option="option" :pageKey="pageConfigData.pageKey"></CommonDialog>
+  <!-- <CommonDialog ref="commonDialogRef" :popupData="popupData" :selectedRows="selectedRows" :selectedNodes="selectedNodes" @on-success="handleSuccess"></CommonDialog> -->
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, reactive, toRefs, watch, onActivated } from "vue";
 import { useStore } from "vuex";
-import { initPage, _TABLE_QUERY, queryData, getTargetComp } from "@/common/js/pageConfigUtils";
+import { initPage, tableQuery, queryData, getTargetComp } from "@/common/js/pageConfigUtils";
 import { handleEnter } from "@/utils";
-import CommonDialog from "./CommonDialog.vue";
 import CellOperationBtn from "@/components/CellOperationBtn.vue"
 import CellItemEdit from "@/components/CellItemEdit.vue"
 import { ElMessage } from "element-plus";
 
 export default defineComponent({
   components: {
-    CommonDialog,
     CellOperationBtn,
     CellItemEdit
   },
@@ -111,7 +86,7 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const commonDialogRef = ref();
+    const dialogRef = ref();
     let target: string;
     const state = reactive({
       popupData: <any> undefined,
@@ -159,7 +134,7 @@ export default defineComponent({
             return
           }
         }
-        commonDialogRef.value.dialog = true;
+        dialogRef.value.dialog = true;
       }
     }
     
@@ -194,11 +169,11 @@ export default defineComponent({
       })
     }
     // 初始化页面
-    initPage({pageKey: pageConfigData.pageKey, components: components}, store);
+    initPage({pageKey: pageConfigData.pageKey, components: components, dialogRef: dialogRef}, store);
 
     // 查询
     function getData() {
-      _TABLE_QUERY(store, pageConfigData.pageKey, target)
+      tableQuery(store, pageConfigData.pageKey, target)
     }
     onActivated(() => {
       // 回车查询
@@ -208,7 +183,7 @@ export default defineComponent({
     })
     return {
       ...toRefs(state),
-      commonDialogRef,
+      dialogRef,
       handleSuccess
     }
   },

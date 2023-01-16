@@ -1,10 +1,10 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-13 16:10:19
+ * @LastEditTime: 2023-01-16 16:46:53
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
+ * @FilePath: /dfs-page-config/src/views/example2/statusOpt.ts
  */
 import { computed } from "vue";
 let statusOpt = {

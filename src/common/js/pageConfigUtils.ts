@@ -1,13 +1,14 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-01-14 13:09:52
+ * @LastEditTime: 2023-01-16 19:42:07
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
  * 
  * @param { string } pageKey 页面状态管理键名（全局唯一）
- * @param { object } configData 页面配置数据
+ * @param { object } components 页面配置组件
+ * @param { object } dialogs 弹窗组件
  * @param { object } store 状态管理store
  */
 import { formatDate } from "@/utils";
@@ -16,9 +17,26 @@ import service from "@/utils/service";
   const initPage = (configData: any, store: any) => {
     store.dispatch("_INIT_PAGE", {
       pageKey: configData.pageKey,
-      components: configData.components
+      components: configData.components,
+      dialogRef: configData.dialogRef
     })
   }
+  // const initPage = (configData: any, store: any) => {
+  //   let components = []
+  //   configData.components.forEach((copm:any) => {
+  //     if (copm.type === 'SplitScreen') {
+  //       if (copm.topComponents && copm.downComponents) {
+  //         components = copm.topComponents.concat(copm.downComponents)
+  //       } else {
+  //         components = configData.components
+  //       }
+  //     }
+  //   })
+  //   store.dispatch("_INIT_PAGE", {
+  //     pageKey: configData.pageKey,
+  //     components: components
+  //   })
+  // }
   
   // form查询
   const queryData = (pageKey: string, store: any) => {
@@ -29,11 +47,10 @@ import service from "@/utils/service";
         formComp = components[i];
       }
     }
-    
     store.dispatch("_QUERY_LIST", { formComp: formComp, pageKey: pageKey })
   }
   // table查询
-  const _TABLE_QUERY = (store: any, pageKey: string, target: string) => {
+  const tableQuery = (store: any, pageKey: string, target: string) => {
     const tableComp = getTargetComp(store, pageKey, target);
     store.dispatch("_TABLE_QUERY", {tableComp: tableComp});
   }
@@ -119,7 +136,7 @@ import service from "@/utils/service";
   export {
     initPage,
     queryData,
-    _TABLE_QUERY,
+    tableQuery,
     getTargetComp,
     getSelectOption,
     getFormData,
