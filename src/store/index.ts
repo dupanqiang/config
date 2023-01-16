@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-01-14 13:59:18
+ * @LastEditTime: 2023-01-14 14:07:34
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -16,7 +16,7 @@ export default createStore({
   state: {
     // 页面配置数据
     _CONFIG_DATA: {},
-    _BASE_URL: ""
+    _BASE_URL: import.meta.env.VITE_APP_API
   },
   getters: {
     // 获取页面配置数据
