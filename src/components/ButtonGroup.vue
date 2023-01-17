@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-01-16 21:22:32
+ * @LastEditTime: 2023-01-17 10:51:54
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -66,7 +66,6 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore();
-    const dialogRef = ref()
     const state = reactive({
       buttonGroup: computed(() => {
         return props.componentOption.elementGroup.filter((item: any) => {
@@ -171,11 +170,13 @@ export default defineComponent({
           return
         }
       }
-      store.state.dialogRef.option = item
-      store.state.dialogRef.dialog = true
+      const dialogRef = store.getters['_GET_DIALOGREF'](props.pageKey)
+      dialogRef.option = item
+      dialogRef.dialog = true
     }
     function closeDialog(target?) {
-      store.state.dialogRef.dialog = false
+      const dialogRef = store.getters['_GET_DIALOGREF'](props.pageKey)
+      dialogRef.dialog = false
       if (target) {
         const formComp: any = getTargetComp(store, props.pageKey, target);
         formComp.reset()
@@ -196,8 +197,7 @@ export default defineComponent({
       ...toRefs(state),
       handleClick,
       download,
-      queryData,
-      dialogRef
+      queryData
       // exportData
     };
   },

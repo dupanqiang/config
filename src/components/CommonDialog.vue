@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-01-16 20:04:58
+ * @LastEditTime: 2023-01-16 21:37:02
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -68,35 +68,6 @@ export default defineComponent({
     function closeDialog() {
       state.dialog = false;
     }
-    // 提交
-    // function submit() {
-    //   formRef.value.formRef.validate((valid: boolean) => {
-    //     if (valid) {
-    //       if (props.popupData.data.submitBefore) {
-    //         const checkResult = props.popupData.data.submitBefore();
-    //         if(checkResult === false) return;
-    //       }
-    //       store.commit("setLoading", true);
-    //       const formData = state.data.params(props.selectedRows, state.formData)
-    //       let paramsKey = state.data.method == "GET" ? "params" : "data"
-    //       service({
-    //         url: store.state._BASE_URL + state.data.url,
-    //         [paramsKey]: formData || {},
-    //         method: state.data.method || "POST"
-    //       })
-    //       .then((res: any) => {
-    //         ElMessage.success("操作成功");
-    //         closeDialog()
-    //         context.emit("onSuccess", res);
-    //       }).catch((err: any)=>{
-    //         console.log(err)
-    //       })
-    //       .finally(() => {
-    //         store.commit("setLoading", false);
-    //       });
-    //     }
-    //   });
-    // }
     return {
       ...toRefs(state),
       store,
