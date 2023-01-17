@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-12 01:00:37
+ * @LastEditTime: 2023-01-17 17:31:16
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
@@ -12,7 +12,7 @@
     {{ params.data[params.dataKey] }}
   </template>
   <template v-else>
-    <div v-if="showInput" @click.stop>
+    <div v-if="showInput" @click.stop style="flex: 1;">
       <el-input
         v-if="type === 'text' || type === 'number'"
         ref="inputRef"
@@ -26,6 +26,7 @@
         ref="inputRef"
         :type="type"
         size="small"
+        :rows="1"
         v-model="modelData"
         @blur="editBlur()"
         @keydown.stop
@@ -69,10 +70,10 @@
         </el-option>
       </el-select>
     </div>
-    <span v-show="!showInput && (params.data && !params.data.hideEdit)">
+    <span v-show="!showInput && (params.data && !params.data.hideEdit)" style="display: flex; width: 100%;">
       <slot v-if="params.isSlot"></slot>
-      <span v-else style="white-space: break-spaces;">{{ modelData }}</span>
-      <edit class="el-icon-edit" @click.stop="showEditInput()"/>
+      <span v-else class="edit-info">{{ modelData }}</span>
+      <el-icon class="el-icon-edit" @click.stop="showEditInput()"><EditPen /></el-icon>
     </span>
   </template>
 </div>
@@ -81,14 +82,14 @@
 import { reactive, toRefs, ref, defineComponent, onMounted, nextTick, getCurrentInstance } from "vue";
 import { formatDate } from '@/utils';
 import { ElInput, ElDatePicker, ElSelect, ElOption, ElMessage } from "element-plus";
-// import { Edit } from '@element-plus/icons'
+import { EditPen } from '@element-plus/icons-vue'
 export default defineComponent({
   components: {
     ElInput,
     ElDatePicker,
     ElSelect,
     ElOption,
-    // Edit
+    EditPen
   },
   setup() {
     const { ctx }:any = getCurrentInstance();
@@ -183,30 +184,42 @@ export default defineComponent({
   },
 });
 </script>
-<!-- 
-<style lang="less" scoped>
-.ag-cell {
-  .el-input {
-    width: 100% !important;
-    .el-input__inner {
-      height: 24px;
-      line-height: 24px;
-      border: none;
-    }
-  }
-  .el-textarea {
-    padding: 4px 0;
-    .el-textarea__inner {
-      border: none;
-    }
-  }
-  .el-icon-edit {
-    margin-left: 4px;
-    position: relative;
-    top: 3px;
-  }
-  .el-select__popper {
-    transform: translateY(-6px);
-  }
+
+<style lang="less">
+.el-icon-edit {
+  color: #67c23a;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
-</style> -->
+.edit-info {
+  // white-space: break-spaces;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+// .ag-cell {
+//   .el-input {
+//     width: 100% !important;
+//     .el-input__inner {
+//       height: 24px;
+//       line-height: 24px;
+//       border: none;
+//     }
+//   }
+//   .el-textarea {
+//     padding: 4px 0;
+//     .el-textarea__inner {
+//       border: none;
+//     }
+//   }
+//   .el-icon-edit {
+//     margin-left: 4px;
+//     position: relative;
+//     top: 3px;
+//   }
+//   .el-select__popper {
+//     transform: translateY(-6px);
+//   }
+// }
+</style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-17 16:40:12
+ * @LastEditTime: 2023-01-17 17:12:11
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperation.vue
@@ -90,6 +90,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  padding: 0 4px;
   .text-btn {
     color: #00aff7;
     margin: 2px;
