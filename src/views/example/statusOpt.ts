@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-16 21:14:12
+ * @LastEditTime: 2023-01-17 16:20:40
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -161,7 +161,7 @@ let statusOpt = {
               ElMessage.warning("请选择数据")
               return false
             }
-          } 
+          }
         },
         { text: "批量修改未准交原因", target: "table", type: "primary", handleClick: () => {}, relation: ["searchForm", "table"],
           isShow: (components) => {
@@ -353,15 +353,14 @@ let statusOpt = {
         {
           field: "action",
           headerName: "操作",
-          width: 120,
+          width: 180,
           minWidth: 120,
           pinned: "right",
-          // autoHeight: true,
+          autoHeight: true,
           elementGroup: [
             {
               text: "供应商设置",
               type: "text",
-              event: "custom",
               handleClick: ({ row, gridOption }: any) => {
                 console.log(row, gridOption)
               },
@@ -370,11 +369,13 @@ let statusOpt = {
             {
               text: "OEM供应商报价",
               type: "text",
-              event: "custom",
-              handleClick: ({ row }: any) => {
-                console.log(row)
-              },
-              isShow: (data: any) => !data,
+              event: "dialog",
+              target: "dialog_test",
+              formTarget: "searchForm2",
+              relation: ["searchForm", "table"],
+              showDialogBefore: (component) => {
+                console.log(component)
+              }
             },
           ],
         },

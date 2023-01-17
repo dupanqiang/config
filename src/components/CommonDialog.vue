@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-01-16 21:37:02
+ * @LastEditTime: 2023-01-17 16:15:26
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -30,12 +30,9 @@ export default defineComponent({
       required: true
     }
   },
-  // emits: ['onSuccess'],
-  setup(props: any, context) {
+  setup(props: any) {
     const store = useStore();
     const state = reactive({
-      data: <any> {},
-      elementGroup: [],
       option:<any> {},
       component: {},
       dialog: false,
@@ -64,7 +61,6 @@ export default defineComponent({
       //   formRef.value.getSelectData()
       // })
     }
-    // 关闭弹窗
     function closeDialog() {
       state.dialog = false;
     }
@@ -72,29 +68,11 @@ export default defineComponent({
       ...toRefs(state),
       store,
       showDialog,
-      // submit,
       closeDialog,
     };
   },
 });
 </script>
 <!-- <style lang="less" scoped>
-  &:deep(.el-form-item) {
-    margin-bottom: 15px;
-    display: flex;
-    .el-form-item__content {
-      flex: 1;
-    }
-  }
-  &:deep(.btn-box .el-form-item) {
-    display: inline-block;
-  }
-  .text-info {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  &:deep(.el-radio) {
-    margin: 4px;
-    margin-right: 15px;
-  }
+  
 </style> -->

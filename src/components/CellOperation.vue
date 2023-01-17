@@ -1,10 +1,10 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-16 12:59:55
+ * @LastEditTime: 2023-01-17 16:40:12
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
- * @FilePath: /dfs-page-config/src/components/CellOperationBtn.vue
+ * @FilePath: /dfs-page-config/src/components/CellOperation.vue
 -->
 <template>
   <div @click.stop v-if="params.node && !params.node.rowPinned" class="cell-operation-btn-box">
@@ -16,7 +16,7 @@
         v-show="(item.isShow === undefined || item.isShow === true || (typeof item.isShow == 'function' && item.isShow(row)) || item.isShow.prop && searchData[item.isShow.prop] == item.isShow.value)"
         :type="item.buttonType || 'primary'"
         :disabled="typeof item.disabled === 'function' ? item.disabled(row) : item.disabled"
-        @click="item.handleClick({option: item, row: (row ? row : groupRow), gridOption: params})">{{ item.text }}
+        @click="handleClick({option: item, row: (row ? row : groupRow), gridOption: params})">{{ item.text }}
       </span>
       <el-button
         v-else
@@ -24,23 +24,51 @@
         :type="item.buttonType || 'primary'"
         :disabled="typeof item.disabled === 'function' ? item.disabled(row) : item.disabled"
         size="small"
-        @click="item.handleClick({option: item, row: (row ? row : groupRow), gridOption: params})">{{ item.text }}
+        @click="handleClick({option: item, row: (row ? row : groupRow), gridOption: params})">{{ item.text }}
       </el-button>
     </template>
   </div>
 </template>
-<script>
+<script lang="ts">
 import { reactive, toRefs, defineComponent, onMounted, getCurrentInstance } from "vue";
+import store from "@/store"
+import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";
 export default defineComponent({
   setup() {
-    const { ctx } = getCurrentInstance();
+    const { ctx }:any = getCurrentInstance();
     const state = reactive({
       row: {},
-      params: {},
+      params:<any> {},
       elementGroup: [],
       // 分组时的数据
       groupRow: {}
     })
+    function handleClick(params) {
+      if (params.option.event === "dialog") {
+        dialog(params)
+      } else {
+        params.option.handleClick(params)
+      }
+    }
+    function dialog({option, row}) {
+      if (option.showDialogBefore) {
+        let components = []
+        if (option.relation) {
+          components = getRelationComp(store, state.params.pageKey, option.relation)
+        }
+        if (option.showDialogBefore(components, row) === false) {
+          return
+        }
+      }
+      const dialogRef = store.getters['_GET_DIALOGREF'](state.params.pageKey)
+      dialogRef.option = option
+      dialogRef.dialog = true
+
+      if(option.formTarget) {
+        const component = getTargetComp(store, state.params.pageKey, option.formTarget)
+        component.row = row
+      }
+    }
     onMounted(() => {
       state.row = ctx.params.data;
       state.params = ctx.params;
@@ -49,7 +77,8 @@ export default defineComponent({
       state.groupRow = childrenAfterFilter && childrenAfterFilter[0] ? childrenAfterFilter[0].data : {}
     });
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      handleClick
     };
   }
 });
@@ -57,7 +86,10 @@ export default defineComponent({
 
 <style lang="less">
 .cell-operation-btn-box {
-  padding: 4px 0;
+  min-height: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   .text-btn {
     color: #00aff7;
     margin: 2px;

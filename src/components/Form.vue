@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-01-16 21:34:17
+ * @LastEditTime: 2023-01-17 16:41:21
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
@@ -15,6 +15,7 @@
     :size="size"
     :inline="inline"
     :label-width="labelWidth"
+    :style="componentOption.style"
   >
     <div v-if="allDisabled" class="mask"></div>
     <el-form-item
@@ -218,7 +219,6 @@
 import { defineComponent, computed, reactive, ref, toRefs } from "vue";
 import locale from "element-plus/lib/locale/lang/zh-cn";
 import { useStore } from "vuex";
-import store from "@/store"
 import service from "@/utils/service";
 import { getSelectOption, getRelationComp } from "@/common/js/pageConfigUtils";
 import SearchTab from "@/components/SearchTab.vue";
@@ -251,7 +251,8 @@ export default defineComponent({
       elementGroup: <any>[],
       inline: component.inline || true,
       allDisabled: false,
-      formData: component.formData
+      formData: component.formData,
+      row: {}
     });
     component.submit = submit
     component.reset = reset
@@ -290,7 +291,7 @@ export default defineComponent({
           if (component.relation) {
             components = getRelationComp(store, props.pageKey, component.relation)
           }
-          if (component.submitBefore(components) === false) {
+          if (component.submitBefore({relation: components, formData: component.formData, row: component.row}) === false) {
             return
           }
         }

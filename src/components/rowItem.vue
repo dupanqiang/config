@@ -1,7 +1,7 @@
 <!--
  * @Author: zengkai
  * @Date: 2022-05-31 18:31:12
- * @LastEditTime: 2023-01-12 01:31:51
+ * @LastEditTime: 2023-01-17 11:16:59
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/rowItem.vue
 -->
@@ -44,7 +44,6 @@ import TagArr from "./rowComponents/tagArr.vue";
 import Tag from "./rowComponents/detileTag.vue";
 import LabelText from "./rowComponents/LabelText.vue";
 import TextArr from "./rowComponents/textArr.vue";
-// import Dialog from "./CommonDialogNew.vue";
 import Dialog from "./CommonDialog.vue";
 // 详情页底部按钮操作区
 // import DetileFooter from "./rowComponents/detileFooter.vue";

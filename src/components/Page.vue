@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-01-16 20:06:15
+ * @LastEditTime: 2023-01-17 14:52:43
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -60,22 +60,20 @@
       </component>
     </template>
   </div>
-  <CommonDialog ref="dialogRef" :option="option" :pageKey="pageConfigData.pageKey"></CommonDialog>
-  <!-- <CommonDialog ref="commonDialogRef" :popupData="popupData" :selectedRows="selectedRows" :selectedNodes="selectedNodes" @on-success="handleSuccess"></CommonDialog> -->
+  <CommonDialog ref="dialogRef" :pageKey="pageConfigData.pageKey"></CommonDialog>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, toRefs, watch, onActivated } from "vue";
+import { defineComponent, ref, toRefs, watch, onActivated } from "vue";
 import { useStore } from "vuex";
-import { initPage, tableQuery, queryData, getTargetComp } from "@/common/js/pageConfigUtils";
+import { initPage, queryData } from "@/common/js/pageConfigUtils";
 import { handleEnter } from "@/utils";
-import CellOperationBtn from "@/components/CellOperationBtn.vue"
+import CellOperation from "@/components/CellOperation.vue"
 import CellItemEdit from "@/components/CellItemEdit.vue"
-import { ElMessage } from "element-plus";
 
 export default defineComponent({
   components: {
-    CellOperationBtn,
+    CellOperation,
     CellItemEdit
   },
   props: {
@@ -87,13 +85,6 @@ export default defineComponent({
   setup(props) {
     const store = useStore();
     const dialogRef = ref();
-    let target: string;
-    const state = reactive({
-      popupData: <any> undefined,
-      selectedRows: [],
-      selectedNodes: []
-    })
-
     let pageConfigData = props.pageConfigData;
     let components = []
     pageConfigData.components.forEach(copm => {
@@ -105,63 +96,13 @@ export default defineComponent({
         components = pageConfigData.components
       }
     })
-    // 将handleFn添加到form对象
-    addHandleFn(components);
-    
-    function handleFn({option, row}: any) {
-      // 自定义方法
-      if (option.unwantSelectData && option.handleFn) { // 不需要table数据
-        option.handleFn(option)
-      } else if (option.handleFn) {
-        state.selectedRows = row ? [row] : getTargetComp(store, pageConfigData.pageKey, option.target).selectedRows || [];
-        if (state.selectedRows.length == 0) return ElMessage.warning("请选择数据");
-        option.handleFn(option, state.selectedRows)
-      } else {
-        // 弹窗
-        for (let i = 0, popupGroup = pageConfigData.popupGroup; i < popupGroup.length; i++) {
-          if (popupGroup[i].key === option.target) {
-            state.popupData = popupGroup[i];
-            target = popupGroup[i].target;
-            break;
-          }
-        }
-        state.selectedRows = row ? [row] : getTargetComp(store ,pageConfigData.pageKey, state.popupData.target).selectedRows || [];
-        state.selectedNodes = getTargetComp(store ,pageConfigData.pageKey, state.popupData.target).selectedNodes || [];
-        if (state.selectedRows.length == 0 && !option.unwantSelectData) return ElMessage.warning("请选择数据");
-        // 显示弹窗之前钩子
-        if (state.popupData.showDialogBefore) {
-          if (state.popupData.showDialogBefore(state.selectedRows) === false) {
-            return
-          }
-        }
-        dialogRef.value.dialog = true;
+    components.forEach((item: any) => {
+      if ((item.type == "Form" || item.type == "ButtonGroup") && item.elementGroup) {
+        watch(() => item.elementGroup, (elementGroup) => {
+          elementGroup && setSlotName(elementGroup)
+        }, {immediate: true})
       }
-    }
-    
-    function handleSuccess(res: any) {
-      state.popupData.data.isQueryList !== false && getData();
-      if (state.popupData.data.callback) {
-        state.popupData.data.callback(res, state.selectedRows, state.selectedNodes)
-      }
-      if (state.popupData.data.updateTabData) {
-        getTargetComp(store, pageConfigData.pageKey, state.popupData.data.updateTabData.target).updateTabData()
-      }
-    }
-
-    // 将handleFn添加到form对象
-    function addHandleFn(components: any[]) {
-      components.forEach((item: any) => {
-        // if (item.type == "Form" || item.widget == "AgTable") {
-        //   item.handle = handleFn
-        // }
-        // 设置form按钮插槽的slotName
-        if ((item.type == "Form" || item.type == "ButtonGroup") && item.elementGroup) {
-          watch(() => item.elementGroup, (elementGroup) => {
-            elementGroup && setSlotName(elementGroup)
-          }, {immediate: true})
-        }
-      });
-    }
+    });
     // 设置form按钮插槽的slotName
     function setSlotName(options: any[]) {
       options.forEach((item: any) => {
@@ -170,11 +111,6 @@ export default defineComponent({
     }
     // 初始化页面
     initPage({pageKey: pageConfigData.pageKey, components: components, dialogRef: dialogRef}, store);
-
-    // 查询
-    function getData() {
-      tableQuery(store, pageConfigData.pageKey, target)
-    }
     onActivated(() => {
       // 回车查询
       handleEnter(() => {
@@ -182,9 +118,8 @@ export default defineComponent({
       })
     })
     return {
-      ...toRefs(state),
-      dialogRef,
-      handleSuccess
+      dialogRef
+      
     }
   },
 });

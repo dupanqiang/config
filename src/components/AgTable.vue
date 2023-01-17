@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-01-13 23:10:01
+ * @LastEditTime: 2023-01-17 11:35:01
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/AgTable.vue
@@ -118,7 +118,7 @@ export default defineComponent({
       },
       columnDefs: tableComp.columns,
       configFlag: <any>{
-        rowHeight: 30,
+        rowHeight: 40,
         checkboxSelection: false, // 显示复选框
         rowSelection: "multiple", // Type of row selection, set to either 'single' or 'multiple' to enable selection
         rowMultiSelectWithClick: false, // to allow multiple rows to be selected with clicks

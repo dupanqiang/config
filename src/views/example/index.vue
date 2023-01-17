@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-16 21:34:42
+ * @LastEditTime: 2023-01-17 16:15:35
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -184,6 +184,7 @@ export default defineComponent({
                   value: "",
                   labelWidth: "100px",
                   formItemWidth: "200px",
+                  style: {'margin-bottom': "15px"},
                   size: "small",
                   url: "/logistics/tracking/updateTrackingNo",
                   method: "POST",
@@ -215,10 +216,26 @@ export default defineComponent({
                       value: "",
                       label: "新单号",
                       width: '100%',
+                      style: {'margin-bottom': "15px"},
                       rules: [
                         { required: true, message: '不能为空' }
                       ],
                       placeholder: "请输入",
+                    },
+                    {
+                      type: "Select",
+                      prop: "orderTypes",
+                      value: [],
+                      label: "订单类型",
+                      width: '100%',
+                      url: "/purchase/common/getOrderTypeEnum",
+                      options: [],
+                      multiple: true,
+                      changeQry: true,
+                      placeholder: "订单类型",
+                      rules: [
+                        { required: true, message: '不能为空' }
+                      ]
                     }
                   ]
                 },

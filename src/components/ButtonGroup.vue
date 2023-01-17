@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-01-17 10:51:54
+ * @LastEditTime: 2023-01-17 16:14:45
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -43,9 +43,8 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, reactive, computed, toRefs } from "vue";
+import { defineComponent, reactive, computed, toRefs } from "vue";
 import { useStore } from "vuex";
-// import { useRoute } from "vue-router";
 import { downLoadData } from "@/utils/index";
 import Upload from "@/components/Upload.vue";
 import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";

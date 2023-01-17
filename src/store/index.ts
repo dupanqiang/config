@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-01-17 10:52:04
+ * @LastEditTime: 2023-01-17 12:02:39
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -181,8 +181,8 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
     }
     // 操作栏
     if (item.field == "action") {
-      item.cellRendererFramework = "CellOperationBtn";
-      item.cellRendererParams = {...item}
+      item.cellRendererFramework = "CellOperation";
+      item.cellRendererParams = {...item, pageKey: pageKey}
     }
   })
 }
