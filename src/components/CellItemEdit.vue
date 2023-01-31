@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-17 17:31:16
+ * @LastEditTime: 2023-01-17 17:35:48
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
@@ -73,7 +73,7 @@
     <span v-show="!showInput && (params.data && !params.data.hideEdit)" style="display: flex; width: 100%;">
       <slot v-if="params.isSlot"></slot>
       <span v-else class="edit-info">{{ modelData }}</span>
-      <el-icon class="el-icon-edit" @click.stop="showEditInput()"><EditPen /></el-icon>
+      <el-icon class="el-icon-edit" style="color: #67c23a; width: 16px; height: 16px; cursor: pointer;" @click.stop="showEditInput()"><EditPen /></el-icon>
     </span>
   </template>
 </div>
@@ -186,12 +186,6 @@ export default defineComponent({
 </script>
 
 <style lang="less">
-.el-icon-edit {
-  color: #67c23a;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
 .edit-info {
   // white-space: break-spaces;
   overflow: hidden;

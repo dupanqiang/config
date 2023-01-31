@@ -1,13 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-12-15 16:02:31
- * @LastEditTime: 2023-01-14 10:31:28
+ * @LastEditTime: 2023-01-31 15:40:08
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/utils/service.ts
  */
 import axios from "axios";
-// import { isPlainObject } from "lodash";
 
 // 记录和显示错误
 function errorHandle(info: any, callback?: any, time?: number) {
@@ -27,8 +26,7 @@ let lang = navigator.language; //常规浏览器语言和IE浏览器
 
 const headerObj = {
   "Content-Type": "application/json;charset=UTF-8",
-  // token: "7777777!",
-  "system-source": "SLT",
+  "system-source": "WEB",
   system: "supplier",
   currency: "USD",
   lang: lang,
@@ -37,7 +35,6 @@ const headerObj = {
 
 // 创建一个 axios 实例
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_API,
   timeout: 1000 * 30,
   withCredentials: true,
   headers: headerObj,
@@ -56,10 +53,6 @@ service.interceptors.request.use(
         ?.userName
         ? encodeURIComponent(userInfo.supplierUserVo?.userName)
         : userInfo?.mobile;
-    }
-    // 内部系统访问，使用飞书登录校验
-    if (location.pathname === "/quotationManagement/bomInfo") {
-      config.headers["system-source"] = "WEB";
     }
     return config;
   },
@@ -106,18 +99,6 @@ service.interceptors.response.use(
   },
   (error) => {
     errorHandle(error.response);
-    let msg = JSON.parse(error?.response?.data?.msg);
-    if (error.response.status === 401 && msg.code == 1304) {
-      error.response.data.msg = "登录超时，请重新登录";
-      // localStorage.removeItem("login");
-      errorHandle(
-        error.response,
-        () => {
-          // window.location.href = window.location.origin + "/login";
-        },
-        2000
-      );
-    }
     return Promise.reject(error);
   }
 );
