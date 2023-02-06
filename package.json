@@ -1,6 +1,6 @@
 {
   "name": "dfs-page-config",
-  "version": "0.0.62",
+  "version": "0.0.71",
   "type": "module",
   "files": [
     "dist"
@@ -24,8 +24,9 @@
     "ag-grid-community": "^26.1.0",
     "ag-grid-enterprise": "^26.1.0",
     "ag-grid-vue3": "^25.3.1",
-    "element-plus": "^2.0.2",
     "axios": "^0.21.1",
+    "element-plus": "^2.0.2",
+    "sortablejs": "^1.15.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

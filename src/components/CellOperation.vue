@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-17 17:12:11
+ * @LastEditTime: 2023-02-03 17:16:39
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperation.vue
@@ -35,7 +35,6 @@ import store from "@/store"
 import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";
 export default defineComponent({
   setup() {
-    const { ctx }:any = getCurrentInstance();
     const state = reactive({
       row: {},
       params:<any> {},
@@ -70,10 +69,11 @@ export default defineComponent({
       }
     }
     onMounted(() => {
-      state.row = ctx.params.data;
-      state.params = ctx.params;
-      state.elementGroup = ctx.params.elementGroup;
-      const childrenAfterFilter = ctx.params.node.childrenAfterFilter
+      const { data:{params} }:any = getCurrentInstance();
+      state.row = params.data;
+      state.params = params;
+      state.elementGroup = params.elementGroup;
+      const childrenAfterFilter = params.node.childrenAfterFilter
       state.groupRow = childrenAfterFilter && childrenAfterFilter[0] ? childrenAfterFilter[0].data : {}
     });
     return {

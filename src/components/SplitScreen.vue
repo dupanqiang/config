@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 18:27:03
- * @LastEditTime: 2023-01-13 19:08:52
+ * @LastEditTime: 2023-02-02 15:33:09
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/SplitScreen.vue
@@ -26,6 +26,7 @@
 import { defineComponent, onMounted, ref, toRefs } from "vue";
 import CellItemEdit from "@/components/CellItemEdit.vue"
 export default defineComponent({
+  name: "SplitScreen",
   components: {CellItemEdit},
   setup() {
     const parentRef = ref();

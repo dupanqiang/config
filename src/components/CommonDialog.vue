@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-01-17 16:15:26
+ * @LastEditTime: 2023-02-02 15:34:22
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -24,6 +24,7 @@ import { defineComponent, reactive, toRefs, ref, nextTick } from "vue";
 import { getTargetComp } from "@/common/js/pageConfigUtils";
 import { useStore } from "vuex";
 export default defineComponent({
+  name: "CommonDialog",
   props: {
     pageKey: {
       type: String,

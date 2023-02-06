@@ -1,13 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-01-17 12:02:39
+ * @LastEditTime: 2023-02-06 17:12:26
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
  */
 import { createStore } from "vuex";
-import { handleEnter } from "@/utils";
 import { getTargetComp, getFormData } from "@/common/js/pageConfigUtils";
 import service from "@/utils/service";
 // import createPersistedState from "vuex-persistedstate";
@@ -44,13 +43,15 @@ export default createStore({
     },
     // 储存table数据
     updateRowData(state: any, payload: { tableComp: any; res: any }) {
-      if (payload.res) {
-        payload.tableComp.data.result = payload.res.result || [];
-        payload.tableComp.data.totalNum = payload.res.totalNum || 0;
-      } else {
-        payload.tableComp.data = [];
-        payload.tableComp.data.totalNum = 0;
-      }
+      // if (payload.res) {
+      //   payload.tableComp.data.result = payload.res.result;
+      //   payload.tableComp.data.totalNum = payload.res.totalNum;
+      // } else {
+      //   payload.tableComp.data = [];
+      //   payload.tableComp.data.totalNum = 0;
+      // }
+      payload.tableComp.data.result = payload.res.result;
+      payload.tableComp.data.totalNum = payload.res.totalNum;
       // 清除选中数据
       payload.tableComp.selectedRows = [];
     }
@@ -96,7 +97,7 @@ export default createStore({
       })
         .then((res: any) => {
           // 统一返回数据字段名
-          res = filterRes(res);
+          res = filterRes(res, tableComp);
           tableComp.searchAfter && tableComp.searchAfter(res);
           event.commit("updateRowData", { tableComp: tableComp, res: res });
         })
@@ -210,11 +211,13 @@ function handleParams(tableComp: any) {
   return params;
 }
 // 处理查询结果数据格式
-function filterRes(res: any) {
-  if (!res) return;
+function filterRes(res: any, tableComp: any) {
+  if (!res) return {
+    result: [],
+    totalNum: 0
+  };
   let data: any = {};
-  data.totalNum = res.totalNum || res.total || 0;
-  data.result = res.result || res.items || res.records || res;
-  if (!data.result.length) data.result = [];
+  data.result = res[tableComp.data.resultKey || "result"] || [];
+  data.totalNum = res[tableComp.data.totalKey || "totalNum"] || 0;
   return data;
 }

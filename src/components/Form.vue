@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-01-17 16:41:21
+ * @LastEditTime: 2023-02-06 19:13:37
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
@@ -55,6 +55,8 @@
         :prefix-Icon="item.prefixIcon || ''"
         @keyup="item.keyup && item.keyup(formData[item.prop])"
         @clear="item.clear && item.clear(formData[item.prop])"
+        :data-target="componentOption.target"
+        :data-pageKey="pageKey"
       ></el-input>
       <!-- 数字框 -->
       <el-input-number
@@ -91,6 +93,8 @@
         v-model="formData[item.prop]"
         @change="item.change && item.change(formData[item.prop], item)"
         :disabled="item.disabled"
+        :collapse-tags="item.collapseTags"
+        :collapse-tags-tooltip="item.collapseTagsTooltip"
       >
         <el-option
           v-for="op in item.options"
@@ -190,6 +194,7 @@
         v-if="item.type === 'Switch'"
         v-model="formData[item.prop]"
       ></el-switch>
+      <el-input type="text" v-if="elementGroup.length === 1" style="display: none;"></el-input>
       <uploadComp
         :style="{ 'text-align': item.textAlign || 'center' }"
         v-if="item.type === 'upload'"
@@ -225,6 +230,7 @@ import SearchTab from "@/components/SearchTab.vue";
 import uploadComp from "@/components/uploadComp.vue";
 
 export default defineComponent({
+  name: "Form",
   components: { SearchTab, uploadComp },
   props: {
     componentOption: {

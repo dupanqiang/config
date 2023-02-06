@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-01-17 17:16:47
+ * @LastEditTime: 2023-02-06 16:13:05
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -18,113 +18,125 @@ let statusOpt = {
           value: "",
           placeholder: "采购单号",
         },
-        {
-          type: "Select",
-          prop: "purchaseStatusList",
-          value: [],
-          url: "/purchase/slt/getOrderStatusEnum",
-          options: [],
-          multiple: true,
-          changeQry: true,
-          placeholder: "采购单状态",
-        },
-        {
-          type: "Select",
-          prop: "purchaseTypes",
-          value: [],
-          url: "/purchase/common/getPurchaseTypeEnum",
-          options: [],
-          multiple: true,
-          changeQry: true,
-          placeholder: "采购类型",
-        },
-        {
-          type: "Select",
-          prop: "orderTypes",
-          value: [],
-          url: "/purchase/common/getOrderTypeEnum",
-          options: [],
-          multiple: true,
-          changeQry: true,
-          placeholder: "订单类型",
-        },
-        {
-          type: "Select",
-          prop: "purchaseWarehouseStatus",
-          value: [],
-          url: "/purchase/slt/getReceiptStatusEnum",
-          options: [],
-          multiple: true,
-          changeQry: true,
-          placeholder: "发货状态",
-        },
-        {
-          type: "Input",
-          prop: "sku",
-          value: "",
-          placeholder: "sku编码",
-        },
-        {
-          type: "Daterange",
-          prop: "checkTime",
-          value: "",
-          startTime: "checkTimeStart",
-          endTime: "checkTimeEnd",
-          startPlaceholder: "核对日期开始",
-          endPlaceholder: "核对日期结束",
-          width: "240px",
-          disabledDate: () => {},
-        },
-        {
-          type: "Select",
-          prop: "orderPriorityNewLabel",
-          value: "",
-          url: "/purchase/fabricAdvice/getOrderPriorityNewEnum",
-          options: [],
-          changeQry: true,
-          placeholder: "采购单类型",
-          clearable: true,
-        },
-        {
-          type: "Select",
-          prop: "deferStatus",
-          value: "",
-          options: [
-            { label: "否", value: 0 },
-            { label: "是", value: 1 },
-          ],
-          changeQry: true,
-          placeholder: "是否超期",
-        },
-        {
-          type: "Daterange",
-          prop: "targetDeliveryCycle",
-          value: "",
-          startTime: "targetDeliveryCycleStart",
-          endTime: "targetDeliveryCycleEnd",
-          startPlaceholder: "目标交期开始",
-          endPlaceholder: "目标交期结束",
-          width: "240px",
-          disabledDate: () => {},
-        },
-        {
-          type: "Select",
-          prop: "notSubmitReasonList",
-          value: [],
-          options: computed(() => state.lableList),
-          itemName: 'name',
-          itemValue: 'name',
-          multiple: true,
-          placeholder: "未准交原因",
-        },
-        {
-          slot: "aaaaa",
-          width: "120px",
-          style: {color: "red", "border-radius": "4px", "box-shadow": "0 0 0 1px #DCDFE6 inset", "padding-left": "8px"},
-          isShow: (formatDate) => {
-            return formatDate.deferStatus == 1
-          }
-        }
+        // {
+        //   type: "Select",
+        //   prop: "purchaseStatusList",
+        //   value: [],
+        //   url: "/purchase/slt/getOrderStatusEnum",
+        //   options: [],
+        //   multiple: true,
+        //   changeQry: true,
+        //   placeholder: "采购单状态",
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "lineTypes",
+        //   value: [20],
+        //   options: [
+        //     { label: "OEM", value: 20 },
+        //     { label: "ODM", value: 21 },
+        //   ],
+        //   changeQry: true,
+        //   placeholder: "货源",
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "purchaseTypes",
+        //   value: [],
+        //   url: "/purchase/common/getPurchaseTypeEnum",
+        //   options: [],
+        //   multiple: true,
+        //   collapseTags: true,
+        //   collapseTagsTooltip: true,
+        //   placeholder: "采购类型",
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "orderTypes",
+        //   value: [],
+        //   url: "/purchase/common/getOrderTypeEnum",
+        //   options: [],
+        //   multiple: true,
+        //   changeQry: true,
+        //   placeholder: "订单类型",
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "purchaseWarehouseStatus",
+        //   value: [],
+        //   url: "/purchase/slt/getReceiptStatusEnum",
+        //   options: [],
+        //   multiple: true,
+        //   changeQry: true,
+        //   placeholder: "发货状态",
+        // },
+        // {
+        //   type: "Input",
+        //   prop: "sku",
+        //   value: "",
+        //   placeholder: "sku编码",
+        // },
+        // {
+        //   type: "Daterange",
+        //   prop: "checkTime",
+        //   value: "",
+        //   startTime: "checkTimeStart",
+        //   endTime: "checkTimeEnd",
+        //   startPlaceholder: "核对日期开始",
+        //   endPlaceholder: "核对日期结束",
+        //   width: "240px",
+        //   disabledDate: () => {},
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "orderPriorityNewLabel",
+        //   value: "",
+        //   url: "/purchase/fabricAdvice/getOrderPriorityNewEnum",
+        //   options: [],
+        //   changeQry: true,
+        //   placeholder: "采购单类型",
+        //   clearable: true,
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "deferStatus",
+        //   value: "",
+        //   options: [
+        //     { label: "否", value: 0 },
+        //     { label: "是", value: 1 },
+        //   ],
+        //   changeQry: true,
+        //   placeholder: "是否超期",
+        // },
+        // {
+        //   type: "Daterange",
+        //   prop: "targetDeliveryCycle",
+        //   value: "",
+        //   startTime: "targetDeliveryCycleStart",
+        //   endTime: "targetDeliveryCycleEnd",
+        //   startPlaceholder: "目标交期开始",
+        //   endPlaceholder: "目标交期结束",
+        //   width: "240px",
+        //   disabledDate: () => {},
+        // },
+        // {
+        //   type: "Select",
+        //   prop: "notSubmitReasonList",
+        //   value: [],
+        //   options: computed(() => state.lableList),
+        //   itemName: 'name',
+        //   itemValue: 'name',
+        //   multiple: true,
+        //   placeholder: "未准交原因",
+        // },
+        // {
+        //   slot: "aaaaa",
+        //   width: "120px",
+        //   style: {color: "red", "border-radius": "4px", "box-shadow": "0 0 0 1px #DCDFE6 inset", "padding-left": "8px"},
+        //   isShow: (formatDate) => {
+        //     return formatDate.deferStatus == 1
+        //   }
+        // }
       ];
     },
     buttonGroup: () => {
@@ -175,7 +187,7 @@ let statusOpt = {
     ) => {
       let columns = [
         {
-          headerName: "采购单号",
+          headerName: "线上订单号",
           field: "id",
           width: 80,
           cellRendererFramework: "CellId",
@@ -190,113 +202,77 @@ let statusOpt = {
           },
         },
         {
-          headerName: "聚水潭采购单号",
+          headerName: "履约单号（是否补发）",
           field: "poId",
           width: 120,
           cellStyle: { textAlign: "left" },
         },
         {
-          headerName: "采购单优先级",
+          headerName: "国际单号",
           field: "orderPriorityNewDesc",
-          width: 90,
-          // cellRenderer: ({ data }: any) => {
-          //   if (data.orderPriorityNewDesc.substring(1) != 6)
-          //     return data.orderPriorityNewDesc;
-          // },
+          width: 90
         },
         {
-          headerName: "采购单状态",
+          headerName: "订单日期",
           field: "purchaseStatusDesc",
           minWidth: 120,
           width: 120,
         },
         {
-          headerName: "采购类型",
+          headerName: "最晚应发货日期",
           field: "purchaseTypeDesc",
           minWidth: 120,
           width: 120,
         },
         {
-          headerName: "订单类型",
+          headerName: "缺货商品预计到货日期",
           field: "orderTypeDesc",
           minWidth: 120,
           width: 120,
         },
         {
-          headerName: "目标交期1｜数量",
+          headerName: "运营处理目标日期",
           field: "targetCycle1",
           minWidth: 140,
-          width: 140,
-          cellRenderer: ({ data }: any) => {
-            return data.targetCycle1
-          }
+          width: 140
         },
         {
-          headerName: "目标交期2｜数量",
-          field: "targetCycle2",
-          minWidth: 140,
-          width: 140,
-          cellRenderer: ({ data }: any) => {
-            return data.targetCycle2
-          }
-        },
-        {
-          headerName: "目标交期3｜数量",
-          field: "targetCycle3",
-          minWidth: 140,
-          width: 140,
-          cellRenderer: ({ data }: any) => {
-            return data.targetCycle3
-          }
-        },
-        {
-          headerName: "是否超期",
+          headerName: "订单类型",
           field: "deferStatusDesc",
-          width: 80,
-          cellRenderer: ({ data }: any) => {
-            if (data.deferStatus == 1) {
-              return `<span style="color: red;">超期</span>`;
-            } else if (data.deferStatus == 0){
-              return "未超期";
-            }
-          },
+          width: 80
         },
         {
-          headerName: "供应商款号",
+          headerName: "订单履约状态",
           field: "styleNo",
           minWidth: 160,
           width: 160,
         },
         {
-          headerName: "版号",
+          headerName: "物流商",
           field: "bomNo",
-          // cellRendererFramework: "CellBomNo",
-          // cellRendererParams: {
-          //   showBomInfo: showBomInfo,
-          // },
-          // minWidth: 90,
-          // width: 120,
+          minWidth: 90,
+          width: 120,
         },
         {
-          headerName: "版本创建时间",
+          headerName: "物流单号（头程及尾程）",
           field: "bomCreated",
           width: 140,
         },
         {
-          headerName: "下单数量",
+          headerName: "物流报错描述",
           field: "quantity",
           minWidth: 100,
           width: 100,
           showTotal: true,
         },
         {
-          headerName: "供应商名称",
+          headerName: "标签",
           field: "supplierName",
           minWidth: 210,
           width: 210,
         },
         {
-          headerName: "未准交原因",
+          headerName: "预售类型",
           field: "notSubmitReasonList",
           width: 160,
           // autoHeight: true,
@@ -312,19 +288,61 @@ let statusOpt = {
           }
         },
         {
-          headerName: "未准交原因状态",
+          headerName: "物流类型",
           field: "notSubmittingStatusDesc",
           width: 120,
         },
         {
-          headerName: "待交付总数量",
+          headerName: "国家",
           field: "allToBeDeliveredQuantity",
           minWidth: 110,
           width: 110,
           showTotal: true,
         },
         {
-          headerName: "已发货总数量",
+          headerName: "地址",
+          field: "totalQuantityShipped",
+          minWidth: 120,
+          width: 120,
+          showTotal: true,
+        },
+        {
+          headerName: "重量",
+          field: "totalQuantityShipped",
+          minWidth: 120,
+          width: 120,
+          showTotal: true,
+        },
+        {
+          headerName: "商品",
+          field: "totalQuantityShipped",
+          minWidth: 120,
+          width: 120,
+          showTotal: true,
+        },
+        {
+          headerName: "是否缺货",
+          field: "totalQuantityShipped",
+          minWidth: 120,
+          width: 120,
+          showTotal: true,
+        },
+        {
+          headerName: "金额（订单金额、运费金额）",
+          field: "totalQuantityShipped",
+          minWidth: 120,
+          width: 120,
+          showTotal: true,
+        },
+        {
+          headerName: "发货仓",
+          field: "totalQuantityShipped",
+          minWidth: 120,
+          width: 120,
+          showTotal: true,
+        },
+        {
+          headerName: "买家",
           field: "totalQuantityShipped",
           minWidth: 120,
           width: 120,
@@ -333,19 +351,19 @@ let statusOpt = {
         {
           headerName: "备注",
           field: "remark",
-          cellRendererFramework: "CellItemEdit",
-          cellRendererParams: {
-            dataKey: "remark",
-            type: "textarea",
-            url: "/purchase/slt/batchUpdateRemark",
-            params: (row: any) => {
-              return {
-                orderIds: [row.id],
-              };
-            },
-            callBack: () => {},
-          },
-          wrapText: true,
+          // cellRendererFramework: "CellItemEdit",
+          // cellRendererParams: {
+          //   dataKey: "remark",
+          //   type: "textarea",
+          //   url: "/purchase/slt/batchUpdateRemark",
+          //   params: (row: any) => {
+          //     return {
+          //       orderIds: [row.id],
+          //     };
+          //   },
+          //   callBack: () => {},
+          // },
+          // wrapText: true,
           // autoHeight: true,
           minWidth: 280,
           width: 280,
@@ -359,24 +377,32 @@ let statusOpt = {
           autoHeight: true,
           elementGroup: [
             {
-              text: "供应商设置",
+              text: "查看订单详情",
               type: "text",
               handleClick: ({ row, gridOption }: any) => {
                 console.log(row, gridOption)
               },
               // isShow: (data: any) => !data,
             },
-            {
-              text: "OEM供应商报价",
-              type: "text",
-              event: "dialog",
-              target: "dialog_test",
-              formTarget: "searchForm2",
-              relation: ["searchForm", "table"],
-              showDialogBefore: (component) => {
-                console.log(component)
-              }
-            },
+            // {
+            //   text: "供应商设置",
+            //   type: "text",
+            //   handleClick: ({ row, gridOption }: any) => {
+            //     console.log(row, gridOption)
+            //   },
+            //   // isShow: (data: any) => !data,
+            // },
+            // {
+            //   text: "OEM供应商报价",
+            //   type: "text",
+            //   event: "dialog",
+            //   target: "dialog_test",
+            //   formTarget: "searchForm2",
+            //   relation: ["searchForm", "table"],
+            //   showDialogBefore: (component) => {
+            //     console.log(component)
+            //   }
+            // },
           ],
         },
       ];

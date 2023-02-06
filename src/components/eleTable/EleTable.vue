@@ -2,9 +2,9 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2022-08-13 11:07:55
+ * @LastEditTime: 2023-02-03 14:23:02
  * @LastEditors: zhao yongfei
- * @FilePath: /dfs-page-vue/src/components/ElTable.vue
+ * @FilePath: /dfs-page-config/src/components/elTable/ElTable.vue
 -->
 
 <template>
@@ -110,6 +110,7 @@ import { defineComponent, onMounted, ref } from "vue";
 import SortableJs from "sortablejs";
 
 export default defineComponent({
+  name: "EleTable",
   props: {
     columns: {
       // 表头数据  文案和绑定值，以及需要特殊处理的slot
@@ -363,6 +364,7 @@ export default defineComponent({
 
       props.dragRow && rowDrop();
     });
+    
     return {
       tableRef,
       sizeChange,

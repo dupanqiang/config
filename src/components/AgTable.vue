@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-01-17 11:35:01
+ * @LastEditTime: 2023-02-03 17:28:05
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/AgTable.vue
@@ -83,6 +83,7 @@ import { useStore } from "vuex";
 import { sum } from "@/utils/index";
 import ColumnCheck from "./ColumnCheck.vue";
 export default defineComponent({
+  name: "AgTable",
   components: { AgGridVue, ColumnCheck },
   props: {
     pageKey: {
@@ -133,15 +134,16 @@ export default defineComponent({
       },
       pageInfo: tableComp.pageInfo,
       rowData: computed(() => {
-        if (tableComp.data.result.length) {
+        const result = tableComp.data.result || []
+        if (result.length) {
           setTimeout(() => {
             state.showTable = true
           }, 300);
         }
-        return tableComp.data.result;
+        return result;
       }),
       totalNum: computed(() => {
-        return Number(tableComp.data.totalNum);
+        return Number(tableComp.data.totalNum || 0);
       }),
       storageColumnsKey: computed(() => {
         return (
@@ -379,14 +381,13 @@ export default defineComponent({
     // 设置条数
     function sizeChange(pageSize: any) {
       tableComp.pageInfo.pageSize = pageSize;
-      store.dispatch("_TABLE_QUERY", { tableComp: tableComp });
+      store.dispatch("_TABLE_QUERY", { tableComp: tableComp, pageKey: props.pageKey });
     }
     // 翻页
     function currentChange(currentPage: any) {
       tableComp.pageInfo.currentPage = currentPage;
       tableComp.pageInfo.pageNum = currentPage;
-
-      store.dispatch("_TABLE_QUERY", { tableComp: tableComp });
+      store.dispatch("_TABLE_QUERY", { tableComp: tableComp, pageKey: props.pageKey });
     }
     return {
       ...toRefs(state),

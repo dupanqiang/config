@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-16 17:04:00
+ * @LastEditTime: 2023-02-03 17:38:22
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example2/index.vue
@@ -92,8 +92,8 @@ export default defineComponent({
           },
           columns: statusOpt.columns(showBomInfo),
           data: {
-            result: [],
-            totalNum: 0,
+            resultKey: "items",
+            totalKey: "totalNum",
           },
           exportBySelectionData: (selData: any) => {
             if (!selData) return false

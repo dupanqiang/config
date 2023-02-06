@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-01-17 17:35:48
+ * @LastEditTime: 2023-02-03 17:18:29
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
@@ -84,6 +84,7 @@ import { formatDate } from '@/utils';
 import { ElInput, ElDatePicker, ElSelect, ElOption, ElMessage } from "element-plus";
 import { EditPen } from '@element-plus/icons-vue'
 export default defineComponent({
+  name: "CellItemEdit",
   components: {
     ElInput,
     ElDatePicker,
@@ -92,9 +93,6 @@ export default defineComponent({
     EditPen
   },
   setup() {
-    const { ctx }:any = getCurrentInstance();
-    let params:any = {}
-    let data:any = {};
     const inputRef = ref();
     let state = reactive({
       showInput: false,
@@ -110,18 +108,17 @@ export default defineComponent({
       },
     })
     onMounted(() => {
-      params = ctx.params;
-      data = params.data;
-      if (data && Object.keys(data).length) {
+      const { data:{params} }:any = getCurrentInstance();
+      if (params.data && Object.keys(params.data).length) {
         if (params.type === 'select') {
-          const options = ctx.params.store ? (ctx.params.store.state[params.enumKey] || []) : ctx.params.option;
+          const options = params.store ? (params.store.state[params.enumKey] || []) : params.option;
           state.options = options
           state.modelData = getOptionLabel(state.options, params.data[params.dataKey]);
         } else {
           if(params.format === 'date') {
-             state.modelData = data[params.dataKey] ? formatDate(data[params.dataKey], "yyyy-MM-dd") : ''  
+             state.modelData = params.data[params.dataKey] ? formatDate(params.data[params.dataKey], "yyyy-MM-dd") : ''  
           } else {
-            state.modelData = data[params.dataKey] ? data[params.dataKey] : (data[params.dataKey] === 0 ? 0 : '')
+            state.modelData = params.data[params.dataKey] ? params.data[params.dataKey] : (params.data[params.dataKey] === 0 ? 0 : '')
           } 
         }
       }

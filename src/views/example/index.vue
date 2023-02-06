@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-01-17 16:15:35
+ * @LastEditTime: 2023-02-06 18:07:27
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -55,6 +55,7 @@ export default defineComponent({
           topComponents: [
             {
               type: "Form",
+              target: "table",
               key: "searchForm",
               labelWidth: "100px",
               formItemWidth: "200px",
@@ -82,7 +83,7 @@ export default defineComponent({
               initQuery: true,
               dependencies: "searchForm",
               target: 'table1',
-              url: "/purchase/slt/selectPurchaseOrderPage",
+              url: "/purchase/all",
               // method: "GET",
               searchBefore: (selfComp: any, row: any) => {
                 // console.log(selfComp, row);
@@ -96,8 +97,8 @@ export default defineComponent({
               },
               columns: statusOpt.topOption.columns(showBomInfo),
               data: {
-                result: [],
-                totalNum: 0,
+                resultKey: "items",
+                totalKey: "totalNum",
               },
               exportBySelectionData: (selData: any) => {
                 if (!selData) return false
@@ -117,6 +118,7 @@ export default defineComponent({
           downComponents: [
             {
               type: "Form",
+              target: "table1",
               key: "searchForm1",
               size: "small",
               showCloseButton: true,
@@ -154,8 +156,8 @@ export default defineComponent({
               },
               columns: statusOpt.bottomOption.columns(),
               data: {
-                result: [],
-                totalNum: 0,
+                resultKey: "items",
+                totalKey: "totalNum",
               },
               exportBySelectionData: (selData: any) => {
                 if (!selData) return false

@@ -2,9 +2,9 @@
  * @author: zhao yongfei
  * @Date: 2022-07-29 17:31:18
  * @description: 
- * @LastEditTime: 2022-07-30 18:43:39
+ * @LastEditTime: 2023-02-06 17:35:00
  * @LastEditors: zhao yongfei
- * @FilePath: /dfs-page-vue/src/utils/index.ts
+ * @FilePath: /dfs-page-config/src/utils/index.ts
  */
 
 import axios from "axios";
@@ -198,10 +198,10 @@ export const div = (v1: number, v2: number) => {
   return (r1 / r2) * Math.pow(10, t2 - t1);
 };
 // 回车事件
-export const handleEnter = (cb: () => void) => {
+export const handleEnter = (cb: Function) => {
   document.onkeydown = (e) => {
     if (e.keyCode == 13 || e.which == 13) {
-      cb();
+      cb(e);
     }
   };
 };
