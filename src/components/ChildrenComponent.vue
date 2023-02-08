@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-13 17:16:32
  * @description: 
- * @LastEditTime: 2023-01-16 16:42:08
+ * @LastEditTime: 2023-02-07 15:30:07
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ChildrenComponent.vue
 -->
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {

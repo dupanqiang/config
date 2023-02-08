@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-02-06 17:01:58
+ * @LastEditTime: 2023-02-06 19:32:06
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -65,8 +65,9 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
+import { handleEnter } from "@/utils";
 import { useStore } from "vuex";
-import { initPage } from "@/common/js/pageConfigUtils";
+import { initPage, queryData } from "@/common/js/pageConfigUtils";
 import CellOperation from "@/components/CellOperation.vue"
 import CellItemEdit from "@/components/CellItemEdit.vue"
 
@@ -110,9 +111,15 @@ export default defineComponent({
     }
     // 初始化页面
     initPage({pageKey: pageConfigData.pageKey, components: components, dialogRef: dialogRef}, store);
+    handleEnter((ev: any) => {
+      const pageKey = ev.target.dataset.pagekey
+      const target = ev.target.dataset.target
+      if (target) {
+        queryData(store, pageKey, target)
+      }
+    })
     return {
       dialogRef
-      
     }
   },
 });

@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-02-06 16:13:05
+ * @LastEditTime: 2023-02-08 10:57:24
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -154,9 +154,9 @@ let statusOpt = {
           target: "table",
           url: "/purchase/slt/exportSltOrderExcel",
         },
-        { text: "下载", type: "button", event: "download", url: "/purchase/paymentRequest/export", isShow: true},
-        { text: "打印采购单", type: "button", target: "table", handleClick: print, relation: ["searchForm", "table"] },
-        { text: "上传", type: "button", event: "upload", buttonType: "warning", url: '/inspection/importQualityInspectionMisjudgment' },
+        { text: "下载", type: "text", event: "download", icon: "Warning", url: "/purchase/paymentRequest/export", isShow: true},
+        { text: "打印采购单", type: "text", target: "table", handleClick: print, relation: ["searchForm", "table"] },
+        { text: "上传", type: "text", event: "upload", buttonType: "warning", url: '/inspection/importQualityInspectionMisjudgment' },
         {
           slot: "bbbbb",
           text: "手动创建采购单",
@@ -392,17 +392,17 @@ let statusOpt = {
             //   },
             //   // isShow: (data: any) => !data,
             // },
-            // {
-            //   text: "OEM供应商报价",
-            //   type: "text",
-            //   event: "dialog",
-            //   target: "dialog_test",
-            //   formTarget: "searchForm2",
-            //   relation: ["searchForm", "table"],
-            //   showDialogBefore: (component) => {
-            //     console.log(component)
-            //   }
-            // },
+            {
+              text: "测试弹窗",
+              type: "text",
+              event: "dialog",
+              target: "dialog_test1",
+              formTarget: "searchForm2",
+              relation: ["searchForm", "table"],
+              showDialogBefore: (component) => {
+                console.log(component)
+              }
+            },
           ],
         },
       ];

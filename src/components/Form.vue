@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-02-06 19:13:37
+ * @LastEditTime: 2023-02-07 19:43:17
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
@@ -122,9 +122,10 @@
       >
         <el-radio
           v-for="opt in item.options"
-          :key="opt.value"
-          :label="opt.value"
-          >{{ opt.label }}</el-radio
+          :key="opt[item.itemValue || 'value']"
+          :label="opt[item.itemValue || 'value']"
+          :style="item.itemStyle"
+          >{{ opt[item.itemName || 'label'] }}</el-radio
         >
       </el-radio-group>
       <!-- 单选按钮 -->
@@ -277,7 +278,7 @@ export default defineComponent({
         //   typeof item.value == "object"
         //     ? JSON.parse(JSON.stringify(item.value))
         //     : item.value;
-        if ((item.type === "Select" || item.type === "Cascader") && item.url) {
+        if ((item.type === "Select" || item.type === "Cascader" || item.type === "radioGroup") && item.url) {
           getSelectOption(store.state, item);
         }
       });
@@ -292,23 +293,28 @@ export default defineComponent({
     }
     function submit(fn) {
       if (component.validate) {
-        if (component.submitBefore) {
-          let components = []
-          if (component.relation) {
-            components = getRelationComp(store, props.pageKey, component.relation)
-          }
-          if (component.submitBefore({relation: components, formData: component.formData, row: component.row}) === false) {
-            return
-          }
-        }
         formRef.value.validate((valid: boolean) => {
           if (valid) {
+            if (!submitBefore()) return
             doSubmit(fn)
           }
         })
       } else {
+        if (!submitBefore()) return
         doSubmit(fn)
       }
+    }
+    function submitBefore() {
+      if (component.submitBefore) {
+        let components = {}
+        if (component.relation) {
+          components = getRelationComp(store, props.pageKey, component.relation)
+        }
+        if (component.submitBefore({relation: components, formData: component.formData, row: component.row}) === false) {
+          return false
+        }
+      }
+      return true
     }
     function doSubmit(fn) {
       let paramsKey = component.method == "GET" ? "params" : "data"

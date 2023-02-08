@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-02-03 17:16:39
+ * @LastEditTime: 2023-02-07 20:27:41
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperation.vue
@@ -10,7 +10,7 @@
   <div @click.stop v-if="params.node && !params.node.rowPinned" class="cell-operation-btn-box">
     <template v-for="item in elementGroup" :key="item.label">
       <span
-        class="text-btn"
+        class="dfs-text-btn"
         :style="item.style"
         v-if="item.type === 'text'"
         v-show="(item.isShow === undefined || item.isShow === true || (typeof item.isShow == 'function' && item.isShow(row)) || item.isShow.prop && searchData[item.isShow.prop] == item.isShow.value)"
@@ -51,7 +51,7 @@ export default defineComponent({
     }
     function dialog({option, row}) {
       if (option.showDialogBefore) {
-        let components = []
+        let components = {}
         if (option.relation) {
           components = getRelationComp(store, state.params.pageKey, option.relation)
         }
@@ -91,11 +91,6 @@ export default defineComponent({
   flex-wrap: wrap;
   align-items: center;
   padding: 0 4px;
-  .text-btn {
-    color: #00aff7;
-    margin: 2px;
-    cursor: pointer;
-  }
 }
 </style>
 

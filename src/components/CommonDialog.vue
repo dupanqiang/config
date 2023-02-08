@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-02-02 15:34:22
+ * @LastEditTime: 2023-02-07 20:16:53
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -16,6 +16,12 @@
     @open="showDialog"
     :close-on-click-modal="false"
   >
+    <template #header>
+      <p>
+        <el-icon v-if="component.dialogType==='warning'" style="position: relative; top: 2px;"><WarningFilled color="#e6a23c" /></el-icon>
+        {{component.title}}
+      </p>
+    </template>
     <ChildrenComponent :configOption="component.children" :pageKey="pageKey"></ChildrenComponent>
   </el-dialog>
 </template>
@@ -23,8 +29,10 @@
 import { defineComponent, reactive, toRefs, ref, nextTick } from "vue";
 import { getTargetComp } from "@/common/js/pageConfigUtils";
 import { useStore } from "vuex";
+import {WarningFilled} from "@element-plus/icons-vue"
 export default defineComponent({
   name: "CommonDialog",
+  components: {WarningFilled},
   props: {
     pageKey: {
       type: String,

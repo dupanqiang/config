@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-02-06 18:07:27
+ * @LastEditTime: 2023-02-07 20:03:00
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -185,7 +185,7 @@ export default defineComponent({
                   key: "searchForm2",
                   value: "",
                   labelWidth: "100px",
-                  formItemWidth: "200px",
+                  formItemWidth: "100%",
                   style: {'margin-bottom': "15px"},
                   size: "small",
                   url: "/logistics/tracking/updateTrackingNo",
@@ -200,6 +200,24 @@ export default defineComponent({
                     console.log(res)
                   },
                   elementGroup: [
+                    {
+                      type: "radioGroup",
+                      prop: "abnormalTwoId",
+                      value: "",
+                      url: "/oms-manager/orderAbnormal/getOrderAbnormalGroupByLevel",
+                      params: (row: any) => {
+                        return { level: 2 };
+                      },
+                      method: "GET",
+                      options: [],
+                      itemName: "name",
+                      itemValue: "abnormalTwoId",
+                      itemStyle: {width: "32%", margin: 0},
+                      noCache: true,
+                      // rules: [
+                      //   { required: true, message: "请选择颜色", trigger: "change" },
+                      // ],
+                    },
                     {
                       type: "Input",
                       prop: "originalTrackingNo",
@@ -247,6 +265,32 @@ export default defineComponent({
                   size: "small",
                   elementGroup: [
                     { text: "取消", type: "button", buttonType: "default", event: "cancel", restTarget: "searchForm2" },
+                    { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
+                  ]
+                }
+              ]
+            },
+            {
+              type: "dialog",
+              key: "dialog_test1",
+              target: "table",
+              title: "提示",
+              dialogType: "warning",
+              width: "400px",
+              children: [
+                {
+                  type: "Descriptions",
+                  column: 4,
+                  children: [
+                    {label: "", text: "确认转正常单？", span: 4, align: 'center'}
+                  ]
+                },
+                {
+                  type: "ButtonGroup",
+                  style: {'justify-content': 'center'},
+                  size: "small",
+                  elementGroup: [
+                    { text: "取消", type: "button", buttonType: "default", event: "cancel" },
                     { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
                   ]
                 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-06 21:52:31
- * @LastEditTime: 2023-01-11 18:23:01
+ * @LastEditTime: 2023-02-07 20:39:55
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Upload.vue
@@ -22,7 +22,14 @@
     :headers="headers"
     :data="params"
   >
-    <el-button :size="size" :type="buttonType" :disabled="uploading">
+    <span
+      v-if="type === 'text'"
+      class="dfs-text-btn"
+      :style="style"
+      :disabled="uploading"
+    >{{ text }}
+    </span>
+    <el-button v-else :size="size" :type="buttonType" :disabled="uploading">
       {{text}}
     </el-button>
   </el-upload>
@@ -41,6 +48,14 @@ export default defineComponent({
     buttonType: {
       type: String,
       default: "success",
+    },
+    type: {
+      type: String,
+      default: "button",
+    },
+    style: {
+      type: Object,
+      default: {},
     },
     params: {
       type: Object,

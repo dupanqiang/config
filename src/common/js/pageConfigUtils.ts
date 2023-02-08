@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-02-06 19:14:24
+ * @LastEditTime: 2023-02-07 20:02:47
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -61,7 +61,7 @@ import service from "@/utils/service";
   }
   // 获取依赖对象
   function getRelationComp(store, pageKey: string, relation: string[]) {
-    const components = []
+    const components = {}
     relation.forEach(key => {
       const comp = getTargetComp(store, pageKey, key);
       components[key] = comp
@@ -74,9 +74,10 @@ import service from "@/utils/service";
       item.options = state[item.url];
     } else {
       let paramsKey = item.method == "POST" ? "data" : "params"
+      const params = typeof item.params === 'function' ? item.params() : item.params
       service({
         url: state._BASE_URL + item.url,
-        [paramsKey]: item.params || {},
+        [paramsKey]:  params || {},
         method: item.method || "GET"
       })
       .then((res: any) => {
@@ -97,15 +98,15 @@ import service from "@/utils/service";
         item.isShow === true ||
         (item.isShow.prop && formData[item.isShow.prop] == item.isShow.value)
       ) {
-        data[item.prop] = formData[item.prop];
+        data[item.prop] = formData[item.prop] || null;
       } else {
-        data[item.prop] = item.value;
+        data[item.prop] = item.value || null;
       }
       // 处理时间
       if (item.type === "Daterange" || item.type === "DateTimerange") {
         if (!data[item.prop]) {
-          data[item.startTime] = "";
-          data[item.endTime] = "";
+          data[item.startTime] = null;
+          data[item.endTime] = null;
         } else {
           data[item.startTime] = formatDate(
             data[item.prop][0],
@@ -124,7 +125,6 @@ import service from "@/utils/service";
   export {
     initPage,
     queryData,
-    tableQuery,
     getTargetComp,
     getSelectOption,
     getFormData,
