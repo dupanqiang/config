@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-02-06 17:12:26
+ * @LastEditTime: 2023-02-11 11:54:17
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -71,12 +71,6 @@ export default createStore({
     },
     // 查询列表查询
     _TABLE_QUERY(event: any, { tableComp, pageKey, row }: any) {
-      if (tableComp.searchBefore) {
-        if (tableComp.searchBefore(tableComp, row) === false) {
-          return;
-        }
-      }
-
       let formData = {}
       let formComp = {}
       if (tableComp.dependencies) {
@@ -84,8 +78,14 @@ export default createStore({
         formData = getFormData(formComp); // formData查询参数
       }
       const ownParams = getOwnSearchData(tableComp, formComp); // 自身查询参数
-      tableComp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
 
+      tableComp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
+      
+      if (tableComp.searchBefore) {
+        if (tableComp.searchBefore(tableComp, row) === false) {
+          return;
+        }
+      }
       // event.state.loading = true;
       const params = handleParams(tableComp);
       // 查询

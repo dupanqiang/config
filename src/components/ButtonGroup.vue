@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-02-08 15:00:05
+ * @LastEditTime: 2023-02-09 21:31:21
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -73,11 +73,11 @@ import { downLoadData } from "@/utils/index";
 import Upload from "@/components/Upload.vue";
 import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";
 import { ElMessage } from "element-plus";
-import { Warning } from "@element-plus/icons-vue"
+import { Warning, Plus } from "@element-plus/icons-vue"
 
 export default defineComponent({
   name: "ButtonGroup",
-  components: { Upload, Warning },
+  components: { Upload, Warning, Plus },
   props: {
     pageKey: {
       type: String,

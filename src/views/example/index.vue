@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-02-07 20:03:00
+ * @LastEditTime: 2023-02-21 15:02:19
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -172,128 +172,128 @@ export default defineComponent({
                 // isRowClick: true,
                 // total: true,
               },
-            },
+            }
+          ]
+        },
+        {
+          type: "dialog",
+          key: "dialog_test",
+          target: "table",
+          title: "提交审核",
+          width: "500px",
+          children: [
             {
-              type: "dialog",
-              key: "dialog_test",
-              target: "table",
-              title: "提交审核",
-              width: "500px",
-              children: [
+              type: "Form",
+              key: "searchForm2",
+              value: "",
+              labelWidth: "100px",
+              formItemWidth: "100%",
+              style: {'margin-bottom': "15px"},
+              size: "small",
+              url: "/logistics/tracking/updateTrackingNo",
+              method: "POST",
+              relation: ["table"],
+              validate: true,
+              submitBefore: (component) => {
+                console.log(component)
+                // return false
+              },
+              submitAfter: (res) => {
+                console.log(res)
+              },
+              elementGroup: [
                 {
-                  type: "Form",
-                  key: "searchForm2",
+                  type: "radioGroup",
+                  prop: "abnormalTwoId",
                   value: "",
-                  labelWidth: "100px",
-                  formItemWidth: "100%",
-                  style: {'margin-bottom': "15px"},
-                  size: "small",
-                  url: "/logistics/tracking/updateTrackingNo",
-                  method: "POST",
-                  relation: ["table"],
-                  validate: true,
-                  submitBefore: (component) => {
-                    console.log(component)
-                    // return false
+                  url: "/oms-manager/orderAbnormal/getOrderAbnormalGroupByLevel",
+                  params: (row: any) => {
+                    return { level: 2 };
                   },
-                  submitAfter: (res) => {
-                    console.log(res)
-                  },
-                  elementGroup: [
-                    {
-                      type: "radioGroup",
-                      prop: "abnormalTwoId",
-                      value: "",
-                      url: "/oms-manager/orderAbnormal/getOrderAbnormalGroupByLevel",
-                      params: (row: any) => {
-                        return { level: 2 };
-                      },
-                      method: "GET",
-                      options: [],
-                      itemName: "name",
-                      itemValue: "abnormalTwoId",
-                      itemStyle: {width: "32%", margin: 0},
-                      noCache: true,
-                      // rules: [
-                      //   { required: true, message: "请选择颜色", trigger: "change" },
-                      // ],
-                    },
-                    {
-                      type: "Input",
-                      prop: "originalTrackingNo",
-                      value: "",
-                      label: "老运单号",
-                      width: '100%',
-                      style: {'margin-bottom': "15px"},
-                      rules: [
-                        { required: true, message: '不能为空' }
-                      ],
-                      placeholder: "请输入",
-                    },
-                    {
-                      type: "Input",
-                      prop: "trackingNo",
-                      value: "",
-                      label: "新单号",
-                      width: '100%',
-                      style: {'margin-bottom': "15px"},
-                      rules: [
-                        { required: true, message: '不能为空' }
-                      ],
-                      placeholder: "请输入",
-                    },
-                    {
-                      type: "Select",
-                      prop: "orderTypes",
-                      value: [],
-                      label: "订单类型",
-                      width: '100%',
-                      url: "/purchase/common/getOrderTypeEnum",
-                      options: [],
-                      multiple: true,
-                      changeQry: true,
-                      placeholder: "订单类型",
-                      rules: [
-                        { required: true, message: '不能为空' }
-                      ]
-                    }
-                  ]
+                  method: "GET",
+                  options: [],
+                  itemName: "name",
+                  itemValue: "abnormalTwoId",
+                  itemStyle: {width: "32%", margin: 0},
+                  noCache: true,
+                  // rules: [
+                  //   { required: true, message: "请选择颜色", trigger: "change" },
+                  // ],
                 },
                 {
-                  type: "ButtonGroup",
-                  style: {'justify-content': 'center'},
-                  size: "small",
-                  elementGroup: [
-                    { text: "取消", type: "button", buttonType: "default", event: "cancel", restTarget: "searchForm2" },
-                    { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
+                  type: "Input",
+                  prop: "originalTrackingNo",
+                  value: "",
+                  label: "老运单号",
+                  width: '100%',
+                  style: {'margin-bottom': "15px"},
+                  rules: [
+                    { required: true, message: '不能为空' }
+                  ],
+                  placeholder: "请输入",
+                },
+                {
+                  type: "Input",
+                  prop: "trackingNo",
+                  value: "",
+                  label: "新单号",
+                  width: '100%',
+                  style: {'margin-bottom': "15px"},
+                  rules: [
+                    { required: true, message: '不能为空' }
+                  ],
+                  placeholder: "请输入",
+                },
+                {
+                  type: "Select",
+                  prop: "orderTypes",
+                  value: [],
+                  label: "订单类型",
+                  width: '100%',
+                  url: "/purchase/common/getOrderTypeEnum",
+                  options: [],
+                  multiple: true,
+                  changeQry: true,
+                  placeholder: "订单类型",
+                  rules: [
+                    { required: true, message: '不能为空' }
                   ]
                 }
               ]
             },
             {
-              type: "dialog",
-              key: "dialog_test1",
-              target: "table",
-              title: "提示",
-              dialogType: "warning",
-              width: "400px",
+              type: "ButtonGroup",
+              style: {'justify-content': 'center'},
+              size: "small",
+              elementGroup: [
+                { text: "取消", type: "button", buttonType: "default", event: "cancel", restTarget: "searchForm2" },
+                { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
+              ]
+            }
+          ]
+        },
+        {
+          type: "dialog",
+          key: "dialog_test1",
+          target: "table",
+          title: "提示",
+          dialogType: "warning",
+          width: "400px",
+          children: [
+            {
+              type: "Descriptions",
+              column: 4,
               children: [
-                {
-                  type: "Descriptions",
-                  column: 4,
-                  children: [
-                    {label: "", text: "确认转正常单？", span: 4, align: 'center'}
-                  ]
-                },
-                {
-                  type: "ButtonGroup",
-                  style: {'justify-content': 'center'},
-                  size: "small",
-                  elementGroup: [
-                    { text: "取消", type: "button", buttonType: "default", event: "cancel" },
-                    { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
-                  ]
-                }
+                {label: "", text: "确认转正常单？", span: 4, align: 'center'}
+              ]
+            },
+            {
+              type: "ButtonGroup",
+              style: {'justify-content': 'center'},
+              size: "small",
+              elementGroup: [
+                { text: "取消", type: "button", buttonType: "default", event: "cancel" },
+                { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
               ]
             }
           ]

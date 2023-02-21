@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-02-06 19:32:06
+ * @LastEditTime: 2023-02-21 15:02:31
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -90,10 +90,10 @@ export default defineComponent({
     pageConfigData.components.forEach(copm => {
       if (copm.type === 'SplitScreen') {
         if (copm.topComponents && copm.downComponents) {
-          components = copm.topComponents.concat(copm.downComponents)
+          components.push(...copm.topComponents, ...copm.downComponents)
         }
       } else {
-        components = pageConfigData.components
+        components.push(copm)
       }
     })
     components.forEach((item: any) => {

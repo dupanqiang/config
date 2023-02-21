@@ -2,9 +2,9 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2023-02-03 14:23:02
+ * @LastEditTime: 2023-02-16 17:51:55
  * @LastEditors: zhao yongfei
- * @FilePath: /dfs-page-config/src/components/elTable/ElTable.vue
+ * @FilePath: /dfs-page-config/src/components/eleTable/EleTable.vue
 -->
 
 <template>
@@ -15,6 +15,7 @@
       :class="[cusClass]"
       :border="configFlag.border"
       :header-row-style="headerRowStyle"
+      :row-style="rowStyle"
       :data="data"
       :max-height="tableMaxHeight"
       :height="tableHeight"
@@ -22,6 +23,7 @@
       :current-row-key="-1"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
+      @row-dblclick="rowDblclick"
       :span-method="objectSpanMethod"
       :row-class-name="tableRowClassName"
       :key="key"
@@ -166,6 +168,14 @@ export default defineComponent({
         };
       },
     },
+    rowStyle: {
+      type: [Object, Function],
+      default: () => {
+        return {
+          color: "#333",
+        };
+      },
+    },
     highlightCurrentRow: {
       type: Boolean,
       default: false,
@@ -217,6 +227,12 @@ export default defineComponent({
         return "";
       },
     },
+    rowDblclick: {
+      type: Function,
+      default: () => {
+        return true;
+      },
+    }
   },
   emits: [
     "getTableRef",
