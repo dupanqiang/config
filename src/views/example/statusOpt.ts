@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-02-15 11:03:29
+ * @LastEditTime: 2023-02-22 13:12:52
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -397,7 +397,7 @@ let statusOpt = {
               type: "text",
               event: "dialog",
               target: "dialog_test1",
-              formTarget: "searchForm2",
+              formTarget: "trans_normal_form",
               relation: ["searchForm", "table"],
               showDialogBefore: (component) => {
                 console.log(component)

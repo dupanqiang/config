@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-02-09 21:31:21
+ * @LastEditTime: 2023-02-22 13:05:47
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -209,7 +209,6 @@ export default defineComponent({
     function submit(item) {
       const component = getTargetComp(store, props.pageKey, item.target)
       component.submit((res) => {
-        console.log(res)
         closeDialog(item.target)
         ElMessage.success("操作成功")
         if (item.queryTarget) {

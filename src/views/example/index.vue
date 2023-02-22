@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-02-21 15:02:19
+ * @LastEditTime: 2023-02-22 13:12:43
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -281,11 +281,29 @@ export default defineComponent({
           width: "400px",
           children: [
             {
-              type: "Descriptions",
-              column: 4,
+              type: "Form",
+              key: "trans_normal_form",
+              labelWidth: "0",
+              url: "/oms-manager/orderAbnormal/convertNormal",
+              method: "POST",
+              relation: ["table"],
               children: [
-                {label: "", text: "确认转正常单？", span: 4, align: 'center'}
-              ]
+                {
+                  type: "Descriptions",
+                  column: 4,
+                  size: "default",
+                  children: [
+                    {label: "", text: "确认转正常单？", span: 4, align: 'center'}
+                  ]
+                },
+              ],
+              submitBefore: (component) => {
+                const ids = component.relation.table.selectedRows.map(item => item.id)
+                component.formData.ids = ids
+              },
+              submitAfter: (res) => {
+                console.log(res)
+              },
             },
             {
               type: "ButtonGroup",
@@ -293,7 +311,7 @@ export default defineComponent({
               size: "small",
               elementGroup: [
                 { text: "取消", type: "button", buttonType: "default", event: "cancel" },
-                { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
+                { text: "提交", type: "button", event: "submit", target: "trans_normal_form", queryTarget: "table" },
               ]
             }
           ]

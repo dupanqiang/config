@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-02-11 11:54:17
+ * @LastEditTime: 2023-02-22 13:29:57
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -15,7 +15,9 @@ export default createStore({
   state: {
     // 页面配置数据
     _CONFIG_DATA: {},
-    _BASE_URL: import.meta.env.VITE_APP_API
+    _BASE_URL: import.meta.env.VITE_APP_API,
+    loading: false,
+    baseState: {}
   },
   getters: {
     // 获取页面配置数据
@@ -33,6 +35,9 @@ export default createStore({
   mutations: {
     saveUrl(state: any, payload: any) {
       state._BASE_URL = payload;
+    },
+    saveState(state: any, payload: any) {
+      state.baseState = payload.state;
     },
     // 储存页面配置数据
     savaPageConfigData(state: any, payload: any) {
@@ -77,19 +82,20 @@ export default createStore({
         formComp = getTargetComp(event, pageKey, tableComp.dependencies);
         formData = getFormData(formComp); // formData查询参数
       }
-      const ownParams = getOwnSearchData(tableComp, formComp); // 自身查询参数
-
-      tableComp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
       
+      tableComp.formData = formData
       if (tableComp.searchBefore) {
         if (tableComp.searchBefore(tableComp, row) === false) {
           return;
         }
       }
-      // event.state.loading = true;
+      const ownParams = getOwnSearchData(tableComp, formComp); // 自身查询参数
+
+      tableComp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
       const params = handleParams(tableComp);
       // 查询
       let paramsKey = tableComp.method == "GET" ? "params" : "data";
+      event.state.baseState.loading = true;
       service({
         url: event.state._BASE_URL + tableComp.url,
         [paramsKey]: params || {},
@@ -102,7 +108,7 @@ export default createStore({
           event.commit("updateRowData", { tableComp: tableComp, res: res });
         })
         .finally(() => {
-          // event.state.loading = false;
+          event.state.baseState.loading = false;
         });
     },
   },
@@ -217,7 +223,7 @@ function filterRes(res: any, tableComp: any) {
     totalNum: 0
   };
   let data: any = {};
-  data.result = res[tableComp.data.resultKey || "result"] || [];
+  data.result = res[tableComp.data.resultKey || "result"] || res || [];
   data.totalNum = res[tableComp.data.totalKey || "totalNum"] || 0;
   return data;
 }

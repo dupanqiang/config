@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-02-07 20:02:47
+ * @LastEditTime: 2023-02-22 13:53:44
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -51,6 +51,9 @@ import service from "@/utils/service";
     if (!_GET_CONFIG_DATA(pageKey)) return {};
     const components = _GET_CONFIG_DATA(pageKey);
     getComp(components, comKey)
+    if (!component.type) {
+      throw new Error(`没有找到key为'${comKey}'的组件，请检查是否已定义`)
+    }
     return component
   }
   function getComp(components, comKey) {
@@ -70,8 +73,9 @@ import service from "@/utils/service";
   }
   // 获取下拉框数据
   function getSelectOption(state: any, item: any ) {
-    if (state[item.url]) {
-      item.options = state[item.url];
+    const dataKey = item.url + '-' + (item.dataKey || '')
+    if (state[dataKey]) {
+      item.options = state[dataKey];
     } else {
       let paramsKey = item.method == "POST" ? "data" : "params"
       const params = typeof item.params === 'function' ? item.params() : item.params
@@ -81,9 +85,9 @@ import service from "@/utils/service";
         method: item.method || "GET"
       })
       .then((res: any) => {
-        const result = res.items || res.list || res.detail || res
+        const result = res[item.dataKey] || res.items || res
         item.options = result;
-        if (!item.noCache) state[item.url] = result;
+        if (!item.noCache) state[dataKey] = result;
       })
     }
   }

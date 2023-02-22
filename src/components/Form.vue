@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-02-07 19:43:17
+ * @LastEditTime: 2023-02-22 13:49:36
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Form.vue
@@ -317,6 +317,7 @@ export default defineComponent({
       return true
     }
     function doSubmit(fn) {
+      store.state.loading = true
       let paramsKey = component.method == "GET" ? "params" : "data"
       service({
         url: store.state._BASE_URL + component.url,
@@ -330,7 +331,7 @@ export default defineComponent({
         console.log(err)
       })
       .finally(() => {
-        // store.commit("setLoading", false);
+        store.state.loading = false
       });
     }
     function isOpen() {

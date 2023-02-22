@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-02-07 20:47:13
+ * @LastEditTime: 2023-02-22 13:49:15
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -38,14 +38,14 @@ interface Option {
 //   Descriptions
 // ]
 export default (App, option: Option) => {
-  const arr = ['state', 'getters', '_actions']
-  arr.forEach(key => {
+  ['getters', '_actions'].forEach(key => {
     Object.keys(store[key]).forEach(k => {
       option.store[key][k] = store[key][k]
     })
   })
   option.store.state._BASE_URL = option.baseUrl
   store.commit('saveUrl', option.baseUrl)
+  store.commit('saveState', option.store)
   // components.map(component => {
   //   App.component(component.name, component)
   // })
