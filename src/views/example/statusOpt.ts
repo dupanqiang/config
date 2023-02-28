@@ -1,13 +1,16 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-02-22 13:12:52
+ * @LastEditTime: 2023-02-25 14:59:18
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
  */
 import { ElMessage } from "element-plus";
 import { computed } from "vue";
+const t = (str) => {
+  return str
+}
 let statusOpt = {
   topOption: {
     formGroup: (state:any) => {
@@ -128,6 +131,34 @@ let statusOpt = {
           itemValue: 'name',
           multiple: true,
           placeholder: "未准交原因",
+        },
+        {
+          type: "Select",
+          prop: "sourceType",
+          value: "",
+          url: "/wms-service/common/selectDropDownBox",
+          dataKey: 'inbPutShelvesOrderSourceTypeEnum',
+          options: [],
+          changeQry: true,
+          placeholder: t('来源类型'),
+        },
+        {
+          type: "Select",
+          prop: "inbPutShelvesOrderStatus",
+          value: "",
+          url: "/wms-service/common/selectDropDownBox",
+          dataKey: 'inbPutShelvesOrderStatusEnum',
+          options: [],
+          placeholder: t('状态'),
+        },
+        {
+          type: "Select",
+          prop: "diffStatus",
+          value: "",
+          url: "/wms-service/common/selectDropDownBox",
+          dataKey: 'boolEnum',
+          options: [],
+          placeholder: t('是否差异'),
         },
         {
           slot: "aaaaa",

@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-02-22 13:49:15
+ * @LastEditTime: 2023-02-28 15:41:10
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -38,7 +38,7 @@ interface Option {
 //   Descriptions
 // ]
 export default (App, option: Option) => {
-  ['getters', '_actions'].forEach(key => {
+  ['state', 'getters', '_actions'].forEach(key => {
     Object.keys(store[key]).forEach(k => {
       option.store[key][k] = store[key][k]
     })

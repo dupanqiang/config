@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-02-22 13:53:44
+ * @LastEditTime: 2023-02-25 16:05:21
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -72,9 +72,16 @@ import service from "@/utils/service";
     return components
   }
   // 获取下拉框数据
+  let obj:any = {}
   function getSelectOption(state: any, item: any ) {
     const dataKey = item.url + '-' + (item.dataKey || '')
-    if (state[dataKey]) {
+    if (obj[item.url]) {
+      obj[item.url].push(item)
+      return
+    } else {
+      obj[item.url] = [item]
+    }
+    if (state[dataKey] && !item.noCache) {
       item.options = state[dataKey];
     } else {
       let paramsKey = item.method == "POST" ? "data" : "params"
@@ -86,8 +93,14 @@ import service from "@/utils/service";
       })
       .then((res: any) => {
         const result = res[item.dataKey] || res.items || res
-        item.options = result;
-        if (!item.noCache) state[dataKey] = result;
+        state[dataKey] = result;
+        const dataObj = obj[item.url]
+        if (dataObj) {
+          dataObj.forEach(item => {
+            item.options = res[item.dataKey] || result
+          })
+          delete obj[item.url]
+        }
       })
     }
   }
