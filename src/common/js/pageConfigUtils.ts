@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-02-25 16:05:21
+ * @LastEditTime: 2023-03-01 16:42:37
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -74,7 +74,7 @@ import service from "@/utils/service";
   // 获取下拉框数据
   let obj:any = {}
   function getSelectOption(state: any, item: any ) {
-    const dataKey = item.url + '-' + (item.dataKey || '')
+    const dataKey = item.url + (item.dataKey ? '-' + item.dataKey : '')
     if (obj[item.url]) {
       obj[item.url].push(item)
       return
@@ -115,7 +115,7 @@ import service from "@/utils/service";
         item.isShow === true ||
         (item.isShow.prop && formData[item.isShow.prop] == item.isShow.value)
       ) {
-        data[item.prop] = formData[item.prop] || null;
+        data[item.prop] = (formData[item.prop] == 0 ? 0 : null);
       } else {
         data[item.prop] = item.value || null;
       }
