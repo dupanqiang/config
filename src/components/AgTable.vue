@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-02-03 17:28:05
+ * @LastEditTime: 2023-03-20 18:17:30
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/AgTable.vue
@@ -56,13 +56,14 @@
       v-if="pageInfo"
       style="margin-top: 5px"
       :total="totalNum"
-      :pageNum="pageInfo.currentPage"
+      :pageNum="pageInfo.pageNum"
       :pageSize="pageInfo.pageSize"
       layout="total,sizes, prev, pager, next"
       @sizeChange="sizeChange"
       @currentChange="currentChange"
       :page-sizes="[20, 50, 100, 300, 500]"
       small
+      :key="componentOption.resetPagination"
     />
   </div>
   <ColumnCheck
@@ -385,8 +386,8 @@ export default defineComponent({
     }
     // 翻页
     function currentChange(currentPage: any) {
-      tableComp.pageInfo.currentPage = currentPage;
       tableComp.pageInfo.pageNum = currentPage;
+      tableComp.pageInfo.currentPage = currentPage;
       store.dispatch("_TABLE_QUERY", { tableComp: tableComp, pageKey: props.pageKey });
     }
     return {

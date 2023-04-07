@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-03-01 16:42:37
+ * @LastEditTime: 2023-04-07 11:49:58
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -86,8 +86,10 @@ import service from "@/utils/service";
     } else {
       let paramsKey = item.method == "POST" ? "data" : "params"
       const params = typeof item.params === 'function' ? item.params() : item.params
+      let base_url = state._BASE_URL
+      if (item.service === 'c2') base_url = base_url.replace('c1', 'c2')
       service({
-        url: state._BASE_URL + item.url,
+        url: base_url + item.url,
         [paramsKey]:  params || {},
         method: item.method || "GET"
       })
@@ -115,7 +117,7 @@ import service from "@/utils/service";
         item.isShow === true ||
         (item.isShow.prop && formData[item.isShow.prop] == item.isShow.value)
       ) {
-        data[item.prop] = (formData[item.prop] == 0 ? 0 : null);
+        data[item.prop] = formData[item.prop]+'' === '0' ? 0 : (formData[item.prop] || null);
       } else {
         data[item.prop] = item.value || null;
       }

@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2023-02-16 17:51:55
+ * @LastEditTime: 2023-03-20 18:11:10
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/eleTable/EleTable.vue
 -->
@@ -96,7 +96,7 @@
       v-if="configFlag.needPage"
       style="padding: 5px 10px; background: #fff"
       :total="totalNum"
-      :pageNum="pageInfo.currentPage"
+      :pageNum="pageInfo.pageNum"
       :pageSize="pageInfo.pageSize"
       layout="total,sizes, prev, pager, next"
       @sizeChange="sizeChange"

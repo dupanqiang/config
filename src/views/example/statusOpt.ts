@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-02-25 14:59:18
+ * @LastEditTime: 2023-03-08 19:07:14
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -198,7 +198,7 @@ let statusOpt = {
           }
         },
         { text: "测试弹窗", type: "button", event: "dialog", target: "dialog_test",
-          relation: ["searchForm", "table"],
+          relation: ["trans_normal_form", "table"],
           showDialogBefore: (component) => {
             if (!component.table.selectedRows.length) {
               ElMessage.warning("请选择数据")
@@ -429,7 +429,7 @@ let statusOpt = {
               event: "dialog",
               target: "dialog_test1",
               formTarget: "trans_normal_form",
-              relation: ["searchForm", "table"],
+              relation: ["trans_normal_form", "table"],
               showDialogBefore: (component) => {
                 console.log(component)
               }

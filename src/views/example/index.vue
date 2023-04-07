@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-02-22 13:12:43
+ * @LastEditTime: 2023-03-08 19:11:49
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -286,7 +286,7 @@ export default defineComponent({
               labelWidth: "0",
               url: "/oms-manager/orderAbnormal/convertNormal",
               method: "POST",
-              relation: ["table"],
+              relation: ["table", "trans_normal_form"],
               children: [
                 {
                   type: "Descriptions",
@@ -298,6 +298,7 @@ export default defineComponent({
                 },
               ],
               submitBefore: (component) => {
+                console.log(component)
                 const ids = component.relation.table.selectedRows.map(item => item.id)
                 component.formData.ids = ids
               },

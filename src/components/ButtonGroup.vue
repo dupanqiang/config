@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-02-22 13:05:47
+ * @LastEditTime: 2023-03-23 14:44:51
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -140,7 +140,11 @@ export default defineComponent({
     // 重置
     function reset(item: any) {
       const formComp: any = getTargetComp(store, props.pageKey, item.target);
+      // const tableComp: any = getTargetComp(store, props.pageKey, item.queryTarget);
       formComp.reset()
+      // tableComp.pageInfo.currentPage = 1
+      // tableComp.pageInfo.pageNum = 1
+      // tableComp.pageInfo = { pageNum: 1, currentPage: 1, pageSize: 50 };
       if (item.queryTarget) {
         queryData(item.queryTarget)
       }
@@ -232,6 +236,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    flex-wrap: wrap;
     &:deep(.el-button) {
       margin-right: 5px;
       margin-left: 0;
