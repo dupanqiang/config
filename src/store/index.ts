@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-03-20 18:14:41
+ * @LastEditTime: 2023-04-14 14:41:59
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -85,7 +85,7 @@ export default createStore({
         formComp = getTargetComp(event, pageKey, tableComp.dependencies);
         formData = getFormData(formComp); // formData查询参数
       }
-      
+      tableComp.previousFormData = {...tableComp.formData}
       tableComp.formData = formData
       if (tableComp.searchBefore) {
         if (tableComp.searchBefore(tableComp, row) === false) {

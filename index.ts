@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-02-28 15:41:10
+ * @LastEditTime: 2023-04-14 14:50:47
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -13,13 +13,13 @@ import '@/common/css/global.less';
 // import install from '@/components/index'
 import store from "@/store";
 import Page from "@/components/Page.vue";
-// import SplitScreen from "@/components/SplitScreen.vue";
-// import Form from "@/components/Form.vue";
+// import SplitScreen from "@/components/SplitScreen.vue";;
 // import ButtonGroup from "@/components/ButtonGroup.vue";
 // import AgTable from "@/components/AgTable.vue";
 // import CommonDialog from "@/components/CommonDialog.vue";
 // // import CellOperation from "@/components/CellOperation.vue"
 // import CellItemEdit from "@/components/CellItemEdit.vue"
+import UploadComp from "@/components/UploadComp"
 import EleTable from "@/components/eleTable";
 // import Descriptions from "@/components/Descriptions.vue"
 import install from '@/components/index'
@@ -61,5 +61,6 @@ export {
   // CommonDialog,
   // // CellOperation,
   // CellItemEdit,
-  EleTable
+  EleTable,
+  UploadComp
 }

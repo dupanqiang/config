@@ -63,6 +63,6 @@ declare module '@vue/runtime-core' {
     TagArr: typeof import('./components/rowComponents/tagArr.vue')['default']
     TextArr: typeof import('./components/rowComponents/textArr.vue')['default']
     Upload: typeof import('./components/Upload.vue')['default']
-    UploadComp: typeof import('./components/uploadComp.vue')['default']
+    UploadComp: typeof import('./components/uploadComp/UploadComp.vue')['default']
   }
 }

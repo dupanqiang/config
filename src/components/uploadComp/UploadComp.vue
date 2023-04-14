@@ -68,6 +68,7 @@ interface SetupContext {
 }
 
 export default defineComponent({
+  name: "UploadComp",
   components: {Plus, ZoomIn, Delete},
   props: {
     // upload 动态
