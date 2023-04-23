@@ -115,8 +115,8 @@ export default defineComponent({
   },
   setup(props: Props, context: SetupContext) {
     const store = useStore();
-    const eventBus = getCurrentInstance()?.appContext.config.globalProperties
-      .eventBus;
+    // const eventBus = getCurrentInstance()?.appContext.config.globalProperties
+    //   .eventBus;
     const dialogImageUrl = ref("");
     const dialogVisible = ref(false);
     const uploadRef: any = ref(null);
@@ -158,16 +158,18 @@ export default defineComponent({
         sendFileList.value.push(res);
         context.emit("fileUrlInfo", sendFileList.value);
         ElMessage.success("上传成功");
-        eventBus.$emit("uploadEnd", true);
+        // eventBus.$emit("uploadEnd", true);
       } else {
         ElMessage.error("上传失败");
-        eventBus.$emit("uploadEnd", false);
+        // eventBus.$emit("uploadEnd", false);
       }
-      store.commit("setLoading", false);
+      // store.commit("setLoading", false);
+      store.state.loading = false
     };
     const beforeAvatarUpload = (file: { type: string; size: number }) => {
       console.log("beforeAvatarUpload：", file, file.type, format.value);
-      store.commit("setLoading", true);
+      // store.commit("setLoading", true);
+      store.state.loading = true
       const isJPG = format.value.includes(file.type);
       const isLt2M = file.size / 1024 / 1024 < maxSize.value;
 
@@ -178,7 +180,7 @@ export default defineComponent({
         return ElMessage.error(`上传头像图片大小不能超过 ${maxSize.value}MB!`);
       }
 
-      eventBus.$emit("uploadIng");
+      // eventBus.$emit("uploadIng");
     };
 
     const handleDownload = () => {

@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-07-29 17:31:18
  * @description: 
- * @LastEditTime: 2023-02-06 19:28:56
+ * @LastEditTime: 2023-04-19 18:01:49
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/utils/index.ts
  */
@@ -11,7 +11,7 @@ import axios from "axios";
 const headerObj = {
   "Content-Type": "application/json;charset=UTF-8",
   // token: "7777777!",
-  "system-source": "SLT",
+  "system-source": "WEB",
 };
 // 补位
 const padding = (text: string, len: number) => {

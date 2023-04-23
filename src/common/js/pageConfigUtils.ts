@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-04-07 11:49:58
+ * @LastEditTime: 2023-04-23 20:10:33
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -75,22 +75,22 @@ import service from "@/utils/service";
   let obj:any = {}
   function getSelectOption(state: any, item: any ) {
     const dataKey = item.url + (item.dataKey ? '-' + item.dataKey : '')
-    if (obj[item.url]) {
-      obj[item.url].push(item)
-      return
-    } else {
-      obj[item.url] = [item]
-    }
     if (state[dataKey] && !item.noCache) {
       item.options = state[dataKey];
     } else {
+      if (obj[item.url]) {
+        obj[item.url].push(item)
+        return
+      } else {
+        obj[item.url] = [item]
+      }
       let paramsKey = item.method == "POST" ? "data" : "params"
       const params = typeof item.params === 'function' ? item.params() : item.params
       let base_url = state._BASE_URL
       if (item.service === 'c2') base_url = base_url.replace('c1', 'c2')
       service({
         url: base_url + item.url,
-        [paramsKey]:  params || {},
+        [paramsKey]: params || {},
         method: item.method || "GET"
       })
       .then((res: any) => {
