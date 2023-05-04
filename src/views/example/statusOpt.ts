@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-03-08 19:07:14
+ * @LastEditTime: 2023-05-04 15:41:57
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -15,6 +15,20 @@ let statusOpt = {
   topOption: {
     formGroup: (state:any) => {
       return [
+        {
+          type: "Tab",
+          url: "/purchase/wms/returnProduct/selectAuditReturnOrderNum",
+          params: {
+            returnStatus: 4,
+            diffType: 1
+          },
+          style: {width: "100%"},
+          method: "GET",
+          prop: 'returnStatus',
+          itemValue: 'type',
+          itemName: 'typeName',
+          itemData: 'number',
+        },
         {
           type: "Input",
           prop: "id",
@@ -163,10 +177,11 @@ let statusOpt = {
         {
           slot: "aaaaa",
           width: "120px",
+          prop: "slot",
           style: {color: "red", "border-radius": "4px", "box-shadow": "0 0 0 1px #DCDFE6 inset", "padding-left": "8px"},
-          isShow: (formatDate) => {
-            return formatDate.deferStatus == 1
-          }
+          // isShow: (formatDate) => {
+          //   return formatDate.deferStatus == 1
+          // }
         }
       ];
     },

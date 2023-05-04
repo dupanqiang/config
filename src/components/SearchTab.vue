@@ -2,9 +2,9 @@
  * @author: zhao yongfei
  * @Date: 2022-05-06 15:49:07
  * @description: 
- * @LastEditTime: 2022-08-13 15:27:32
+ * @LastEditTime: 2023-05-04 15:53:50
  * @LastEditors: zhao yongfei
- * @FilePath: /dfs-page-vue/src/components/SearchTab.vue
+ * @FilePath: /dfs-page-config/src/components/SearchTab.vue
 -->
 <template>
   <div class="header-btns">
@@ -79,7 +79,7 @@ export default defineComponent({
     function changeTab(index: number, status: number) {
       if (state.curIndex === index) return;
       state.curIndex = index;
-      formComp.searchData[option.prop] = status
+      formComp.formData[option.prop] = status
       if (option.effects) {
         option.effects.forEach((item: any) => {
           item.targets.forEach((target: string) => {
@@ -92,9 +92,9 @@ export default defineComponent({
           })
         });
       }
-      store.dispatch("dbsPageConfig/_QUERY_LIST", {
-        formComp: formComp,
-        pageKey: pageKey
+      store.dispatch("_QUERY_LIST", {
+        pageKey: pageKey,
+        target: formComp.target
       });
     }
     return {
