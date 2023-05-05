@@ -2,23 +2,23 @@
  * @author: zhao yongfei
  * @Date: 2022-05-06 15:49:07
  * @description: 
- * @LastEditTime: 2023-05-04 15:53:50
+ * @LastEditTime: 2023-05-05 11:36:55
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/SearchTab.vue
 -->
 <template>
-  <div class="header-btns">
-    <ul v-if="option.type == 'TabStep'" class="dfs-step-btn header-btns">
-      <li v-for="(item, index) in statusList" :key="item[option.itemValue]"
-        :class="['li' + index, curIndex == index ? 'active' : '']"
-        :style="{'z-index': statusList.length - index}"
-        @click="changeTab(index, item[option.itemValue])">
-        {{ item[option.itemName] }}
-        <span v-if="option.itemData" class="number">{{ item[option.itemData] || 0 }}</span>
-      </li>
-    </ul>
-    <div v-else v-for="(item, index) in statusList" :key="item[option.itemValue]">
-      <el-badge v-if="option.itemData" :value="item[option.itemData] || 0" :max="99999" class="item">
+  <ul v-if="option.type == 'TabStep'" class="header-btns step-btn">
+    <li v-for="(item, index) in statusList" :key="item[option.itemValue]"
+      :class="['li' + index, curIndex == index ? 'active' : '']"
+      :style="{'z-index': statusList.length - index}"
+      @click="changeTab(index, item[option.itemValue])">
+      {{ item[option.itemName] }}
+      <span v-if="option.itemData" class="number">{{ item[option.itemData] || 0 }}</span>
+    </li>
+  </ul>
+  <div v-else :class="['header-btns', option.itemData ? 'badge' : '']">
+    <template v-if="option.itemData">
+      <el-badge v-for="(item, index) in statusList" :key="item[option.itemValue]" :value="item[option.itemData] || 0" :max="99999">
         <el-button
           :type="curIndex === index ? 'primary' : 'info'"
           @click="changeTab(index, item[option.itemValue])"
@@ -27,14 +27,17 @@
           {{ item[option.itemName] }}
         </el-button>
       </el-badge>
-      <el-button v-else
+    </template>
+    <template v-else>
+      <el-button
+        v-for="(item, index) in statusList" :key="item[option.itemValue]"
         :type="curIndex === index ? 'primary' : 'info'"
         @click="changeTab(index, item[option.itemValue])"
         :size="size"
       >
         {{ item[option.itemName] }}
       </el-button>
-    </div>
+    </template>
   </div>
 </template>
 <script lang="ts">
@@ -106,75 +109,69 @@ export default defineComponent({
 </script>
 <style lang="less" scoped>
 .header-btns {
-  padding-top: 5px;
-  // 步骤按钮
-  .dfs-step-btn {
-    display: flex;
-    // padding-top: 0;
-    li {
-      display: inline-block;
-      height: 24px;
-      line-height: 24px;
-      background-color: #e4e7ed;
-      font-size: 12px;
-      padding: 0 12px 0 22px;
-      margin-right: 2px;
-      position: relative;
-      cursor: pointer;
-      &::before {
-        content: "";
-        width: 17px;
-        height: 18px;
-        background-color: #fff;
-        position: absolute;
-        top: 3px;
-        left: -9px;
-        transform: rotate(45deg);
-      }
-      &::after {
-        content: "";
-        width: 17px;
-        height: 18px;
-        background-color: #e4e7ed;
-        position: absolute;
-        top: 3px;
-        right: -9px;
-        transform: rotate(45deg);
-      }
-      &:first-child {
-        padding-left: 12px;
-        &::before {
-          display: none;
-        }
-      }
-    }
-    li.active {
-      background-color: #409eff;
-      color: #fff;
-      &::after {
-        background-color: #409eff;
-      }
-    }
-  }
-  div {
-    box-sizing: border-box;
-    font-size: 14px;
-    display: inline-block;
+  .el-badge {
     margin-right: 15px;
-    background: rgb(255 255 255 / 0%);
   }
-  > div {
-    .el-button.el-button--info {
-      background-color: white;
-      color: #666;
+  .el-button.el-button--info {
+    background-color: white;
+    color: #666;
+  }
+  .el-button.el-button--success {
+    background-color: #52cc90;
+    color: white;
+  }
+  // .el-button:hover {
+  //   color: green;
+  // }
+}
+.header-btns.badge {
+  padding-top: 5px;
+}
+.header-btns.step-btn {
+  display: flex;
+  li {
+    display: inline-block;
+    height: 24px;
+    line-height: 24px;
+    background-color: #e4e7ed;
+    font-size: 12px;
+    padding: 0 12px 0 22px;
+    margin-right: 2px;
+    position: relative;
+    cursor: pointer;
+    &::before {
+      content: "";
+      width: 17px;
+      height: 18px;
+      background-color: #fff;
+      position: absolute;
+      top: 3px;
+      left: -9px;
+      transform: rotate(45deg);
     }
-    .el-button.el-button--success {
-      background-color: #52cc90;
-      color: white;
+    &::after {
+      content: "";
+      width: 17px;
+      height: 18px;
+      background-color: #e4e7ed;
+      position: absolute;
+      top: 3px;
+      right: -9px;
+      transform: rotate(45deg);
+    }
+    &:first-child {
+      padding-left: 12px;
+      &::before {
+        display: none;
+      }
     }
   }
-  div:hover {
-    color: green;
+  li.active {
+    background-color: #409eff;
+    color: #fff;
+    &::after {
+      background-color: #409eff;
+    }
   }
 }
 </style>

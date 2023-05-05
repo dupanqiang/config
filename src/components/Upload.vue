@@ -1,15 +1,14 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-06 21:52:31
- * @LastEditTime: 2023-02-07 20:39:55
+ * @LastEditTime: 2023-05-05 14:53:16
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Upload.vue
 -->
 <template>
   <el-upload
-    style="display: inline-block"
-    class="upload-demo"
+    style="display: inline-flex"
     :action="uploadUrl"
     accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
     :with-credentials="true"
