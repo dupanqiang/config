@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-04-14 14:50:47
+ * @LastEditTime: 2023-05-08 11:48:19
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -10,7 +10,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import '@/common/css/aggrid.less';
 import '@/common/css/global.less';
-// import install from '@/components/index'
+import install from '@/components/index'
 import store from "@/store";
 import Page from "@/components/Page.vue";
 // import SplitScreen from "@/components/SplitScreen.vue";;
@@ -19,10 +19,10 @@ import Page from "@/components/Page.vue";
 // import CommonDialog from "@/components/CommonDialog.vue";
 // // import CellOperation from "@/components/CellOperation.vue"
 // import CellItemEdit from "@/components/CellItemEdit.vue"
-import UploadComp from "@/components/UploadComp"
+import Form from "@/components/form"
+import UploadComp from "@/components/uploadComp"
 import EleTable from "@/components/eleTable";
 // import Descriptions from "@/components/Descriptions.vue"
-import install from '@/components/index'
 interface Option {
   store: any;
   baseUrl: string
@@ -55,12 +55,12 @@ export default (App, option: Option) => {
 
 export {
   // SplitScreen,
-  // Form,
   // ButtonGroup,
   // AgTable,
   // CommonDialog,
   // // CellOperation,
   // CellItemEdit,
+  Form,
   EleTable,
   UploadComp
 }

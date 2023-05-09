@@ -1,7 +1,7 @@
 <!--
  * @Author: zengkai
  * @Date: 2022-05-31 18:31:12
- * @LastEditTime: 2023-01-17 11:16:59
+ * @LastEditTime: 2023-05-08 11:41:02
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/rowItem.vue
 -->
@@ -33,7 +33,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import Card from "@/components/Card.vue";
-import Form from "@/components/Form.vue";
+import Form from "@/components/form/Form.vue";
 import elementGroup from "@/components/elementGroup.vue";
 import AgTable from "@/components/AgTable.vue";
 // import ElTable from "@/components/ElTable.vue"

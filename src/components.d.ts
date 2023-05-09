@@ -49,7 +49,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ElTimeSelect: typeof import('element-plus/es')['ElTimeSelect']
     ElUpload: typeof import('element-plus/es')['ElUpload']
-    Form: typeof import('./components/Form.vue')['default']
+    Form: typeof import('./components/form/Form.vue')['default']
     ImageList: typeof import('./components/rowComponents/imageList.vue')['default']
     ImageOne: typeof import('./components/rowComponents/imageOne.vue')['default']
     ImgCarousel: typeof import('./components/rowComponents/imgCarousel.vue')['default']
