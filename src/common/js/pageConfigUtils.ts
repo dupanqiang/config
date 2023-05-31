@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-04-23 20:10:33
+ * @LastEditTime: 2023-05-31 10:50:11
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -117,7 +117,11 @@ import service from "@/utils/service";
         item.isShow === true ||
         (item.isShow.prop && formData[item.isShow.prop] == item.isShow.value)
       ) {
-        data[item.prop] = formData[item.prop]+'' === '0' ? 0 : (formData[item.prop] || null);
+        if (typeof formData[item.prop] == 'object') {
+          data[item.prop] = formData[item.prop]
+        } else {
+          data[item.prop] = formData[item.prop]+'' === '0' ? 0 : (formData[item.prop] || null);
+        }
       } else {
         data[item.prop] = item.value || null;
       }
