@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-05-05 11:34:17
- * @LastEditors: zhao yongfei
+ * @LastEditTime: 2023-06-12 11:20:02
+ * @LastEditors: dupan
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
  */
@@ -397,20 +397,20 @@ let statusOpt = {
         {
           headerName: "备注",
           field: "remark",
-          // cellRendererFramework: "CellItemEdit",
-          // cellRendererParams: {
-          //   dataKey: "remark",
-          //   type: "textarea",
-          //   url: "/purchase/slt/batchUpdateRemark",
-          //   params: (row: any) => {
-          //     return {
-          //       orderIds: [row.id],
-          //     };
-          //   },
-          //   callBack: () => {},
-          // },
-          // wrapText: true,
-          // autoHeight: true,
+          cellRendererFramework: "CellItemEdit",
+          cellRendererParams: {
+            dataKey: "remark",
+            type: "textarea",
+            url: "/purchase/slt/batchUpdateRemark",
+            params: (row: any) => {
+              return {
+                orderIds: [row.id],
+              };
+            },
+            callBack: () => {},
+          },
+          wrapText: true,
+          autoHeight: true,
           minWidth: 280,
           width: 280,
         },

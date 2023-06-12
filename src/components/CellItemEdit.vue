@@ -1,8 +1,8 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-02-03 17:18:29
- * @LastEditors: zhao yongfei
+ * @LastEditTime: 2023-06-12 11:25:53
+ * @LastEditors: dupan
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
 -->
@@ -83,6 +83,7 @@ import { reactive, toRefs, ref, defineComponent, onMounted, nextTick, getCurrent
 import { formatDate } from '@/utils';
 import { ElInput, ElDatePicker, ElSelect, ElOption, ElMessage } from "element-plus";
 import { EditPen } from '@element-plus/icons-vue'
+import { dataType } from "element-plus/es/components/table-v2/src/common";
 export default defineComponent({
   name: "CellItemEdit",
   components: {
@@ -94,6 +95,8 @@ export default defineComponent({
   },
   setup() {
     const inputRef = ref();
+    let params: any = {};
+    let data: any = {};
     let state = reactive({
       showInput: false,
       modelData:<any> "",
@@ -133,6 +136,8 @@ export default defineComponent({
       })
     }
     function editBlur(){
+      params = state.params
+      data = state.params.data
       if (state.modelData === data[params.dataKey]) {
         state.showInput = false;
         if (params.type === 'select') {
