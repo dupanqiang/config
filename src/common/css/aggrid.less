@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-01-26 17:43:47
  * @description: 
- * @LastEditTime: 2023-01-17 11:25:43
+ * @LastEditTime: 2023-06-16 11:38:13
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/common/css/aggrid.less
  */
@@ -52,6 +52,27 @@
     // .ag-cell-auto-height {
     //     height: auto !important;
     // }
+    .custom-cell-label {
+      display: none;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+      white-space: nowrap;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      background-color: #f00;
+      box-shadow: 0 0px 4px 0px #ccc;
+    }
+  }
+  .ag-row.ag-row-hover {
+    .custom-cell-label {
+      display: block;
+    }
   }
   .ag-header {
     .ag-header-row {
