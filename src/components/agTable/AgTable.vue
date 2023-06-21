@@ -1,10 +1,10 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-04-14 14:44:00
+ * @LastEditTime: 2023-06-21 11:53:41
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
- * @FilePath: /dfs-page-config/src/components/AgTable.vue
+ * @FilePath: /dfs-page-config/src/components/agTable/AgTable.vue
 -->
 <!--
  * enableCellTextSelection=true  ensureDomOrder=true 允许选中文本
@@ -82,7 +82,7 @@ import '@/common/css/aggrid.less';
 import { useStore } from "vuex";
 // import { useRoute } from "vue-router";
 import { sum } from "@/utils/index";
-import ColumnCheck from "./ColumnCheck.vue";
+import ColumnCheck from "../ColumnCheck.vue";
 export default defineComponent({
   name: "AgTable",
   components: { AgGridVue, ColumnCheck },

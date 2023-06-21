@@ -2,14 +2,14 @@
  * @author: zhao yongfei
  * @Date: 2023-01-13 17:42:04
  * @description: 
- * @LastEditTime: 2023-05-08 11:41:53
+ * @LastEditTime: 2023-06-21 11:50:27
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/index.ts
  */
 import SplitScreen from "@/components/SplitScreen.vue";
 import Form from "@/components/form/Form.vue";
 import ButtonGroup from "@/components/ButtonGroup.vue";
-import AgTable from "@/components/AgTable.vue";
+import AgTable from "@/components/agTable/AgTable.vue";
 import CommonDialog from "./CommonDialog.vue";
 // import CellOperation from "@/components/CellOperation.vue"
 import CellItemEdit from "@/components/CellItemEdit.vue"

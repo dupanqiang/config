@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-05-08 11:48:19
+ * @LastEditTime: 2023-06-21 11:55:21
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -15,13 +15,13 @@ import store from "@/store";
 import Page from "@/components/Page.vue";
 // import SplitScreen from "@/components/SplitScreen.vue";;
 // import ButtonGroup from "@/components/ButtonGroup.vue";
-// import AgTable from "@/components/AgTable.vue";
 // import CommonDialog from "@/components/CommonDialog.vue";
 // // import CellOperation from "@/components/CellOperation.vue"
 // import CellItemEdit from "@/components/CellItemEdit.vue"
 import Form from "@/components/form"
 import UploadComp from "@/components/uploadComp"
 import EleTable from "@/components/eleTable";
+import AgTable from "@/components/agTable";
 // import Descriptions from "@/components/Descriptions.vue"
 interface Option {
   store: any;
@@ -56,11 +56,11 @@ export default (App, option: Option) => {
 export {
   // SplitScreen,
   // ButtonGroup,
-  // AgTable,
   // CommonDialog,
   // // CellOperation,
   // CellItemEdit,
   Form,
+  AgTable,
   EleTable,
   UploadComp
 }
