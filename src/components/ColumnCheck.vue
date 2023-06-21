@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-02-01 16:29:19
+ * @LastEditTime: 2023-06-21 12:34:12
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ColumnCheck.vue
 -->
@@ -100,6 +100,7 @@ export default defineComponent({
         state.show = false
       }
       function addEvent() {
+        if (!props.storageColumnsKey) return
         setTimeout(() => {
           const ele: any = document.querySelector(`.${props.storageColumnsKey} .ag-header`)
           if (!ele) return

@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-06-21 11:53:41
+ * @LastEditTime: 2023-06-21 12:35:21
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/agTable/AgTable.vue
@@ -286,6 +286,7 @@ export default defineComponent({
     }
     setColumns();
     function dragStopped(e: any) {
+      if (!state.storageColumnsKey) return
       let columns = e.api.getColumnDefs();
       columns = columns.map((item: any, i: number) => {
         if (item.hide) {
