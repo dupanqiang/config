@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-06-21 12:35:21
+ * @LastEditTime: 2023-06-27 10:52:27
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/agTable/AgTable.vue
@@ -80,7 +80,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import '@/common/css/aggrid.less';
 import { useStore } from "vuex";
-// import { useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { sum } from "@/utils/index";
 import ColumnCheck from "../ColumnCheck.vue";
 export default defineComponent({
@@ -105,7 +105,7 @@ export default defineComponent({
   ],
   setup(props: any, context) {
     const store = useStore();
-    // const route = useRoute();
+    const route = useRoute();
     let gridApi: any = null;
     // 获取页面配置信息
     const tableComp = props.componentOption;
@@ -150,7 +150,8 @@ export default defineComponent({
         return (
           // (route.name as string) +
           (tableComp.status || "") +
-          (tableComp.key || "")
+          (tableComp.key || "") +
+          route.path
           // (route.params.status || "")
         )
       }),
