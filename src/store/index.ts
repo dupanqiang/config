@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-04-14 14:41:59
+ * @LastEditTime: 2023-07-13 02:45:00
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -70,15 +70,15 @@ export default createStore({
       initData(event, configData.components, configData.pageKey);
     },
     // 查询
-    _QUERY_LIST(event: any, { pageKey, target }) {
+    _QUERY_LIST(event: any, { pageKey, target, partialUpdate }) {
       const tableComp:any = getTargetComp(event, pageKey, target);
       tableComp.pageInfo.pageNum = 1
       tableComp.pageInfo.currentPage = 1
       tableComp.resetPagination = Math.random()
-      event.dispatch("_TABLE_QUERY", { tableComp, pageKey });
+      event.dispatch("_TABLE_QUERY", { tableComp, pageKey, partialUpdate });
     },
     // 查询列表查询
-    _TABLE_QUERY(event: any, { tableComp, pageKey, row }: any) {
+    _TABLE_QUERY(event: any, { tableComp, pageKey, partialUpdate, row }: any) {
       let formData = {}
       let formComp = {}
       if (tableComp.dependencies) {
@@ -95,7 +95,14 @@ export default createStore({
       const ownParams = getOwnSearchData(tableComp, formComp); // 自身查询参数
       tableComp.formData = { ...formData, ...ownParams }; // 给table添加查询参数
       
-      const params = handleParams(tableComp);
+      let params = handleParams(tableComp);
+      if (partialUpdate) {
+        params = {...params}
+        const data = tableComp.selectedRows.map(item => {
+          return item[partialUpdate.searchKey]
+        })
+        params[partialUpdate.searchKey] = data.toString()
+      }
       // 查询
       let paramsKey = tableComp.method == "GET" ? "params" : "data";
       event.state.baseState.loading = true;
@@ -107,8 +114,23 @@ export default createStore({
         .then((res: any) => {
           // 统一返回数据字段名
           res = filterRes(res, tableComp);
-          tableComp.searchAfter && tableComp.searchAfter(res);
-          event.commit("updateRowData", { tableComp: tableComp, res: res });
+          if (tableComp.searchAfter) {
+            const result = tableComp.searchAfter(res)
+            if (result === false) return
+          }
+          if (partialUpdate) {
+            tableComp.selectedNodes.forEach(node => {
+              for (let i = 0; i < res.result.length; i++) {
+                const data = res.result[i];
+                if (node.data[partialUpdate.dataKey] == data[partialUpdate.dataKey]) {
+                  node.setData(data)
+                  node.setSelected(false)
+                }
+              }
+            })
+          } else {
+            event.commit("updateRowData", { tableComp: tableComp, res: res });
+          }
         })
         .finally(() => {
           event.state.baseState.loading = false;
@@ -159,8 +181,9 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
   }
   // 复选框选择
   if (tableComp.configFlag && tableComp.configFlag.checkboxSelection) {
-    tableComp.onSelectionChanged = (selectedRows: any[]) => {
+    tableComp.onSelectionChanged = (selectedRows: any[], selectedNodes: any[]) => {
       tableComp.selectedRows = selectedRows;
+      tableComp.selectedNodes = selectedNodes;
     };
   }
   tableComp.columns.forEach((item: any) => {

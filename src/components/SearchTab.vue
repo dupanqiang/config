@@ -2,26 +2,26 @@
  * @author: zhao yongfei
  * @Date: 2022-05-06 15:49:07
  * @description: 
- * @LastEditTime: 2023-05-05 11:36:55
+ * @LastEditTime: 2023-06-28 15:33:07
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/SearchTab.vue
 -->
 <template>
   <ul v-if="option.type == 'TabStep'" class="header-btns step-btn">
     <li v-for="(item, index) in statusList" :key="item[option.itemValue]"
-      :class="['li' + index, curIndex == index ? 'active' : '']"
+      :class="['li' + index, currentValue == item[option.itemValue] ? 'active' : '']"
       :style="{'z-index': statusList.length - index}"
-      @click="changeTab(index, item[option.itemValue])">
+      @click="changeTab(item[option.itemValue])">
       {{ item[option.itemName] }}
       <span v-if="option.itemData" class="number">{{ item[option.itemData] || 0 }}</span>
     </li>
   </ul>
   <div v-else :class="['header-btns', option.itemData ? 'badge' : '']">
     <template v-if="option.itemData">
-      <el-badge v-for="(item, index) in statusList" :key="item[option.itemValue]" :value="item[option.itemData] || 0" :max="99999">
+      <el-badge v-for="item in statusList" :key="item[option.itemValue]" :value="item[option.itemData] || 0" :max="99999">
         <el-button
-          :type="curIndex === index ? 'primary' : 'info'"
-          @click="changeTab(index, item[option.itemValue])"
+          :type="currentValue == item[option.itemValue] ? 'primary' : 'info'"
+          @click="changeTab(item[option.itemValue])"
           :size="size"
         >
           {{ item[option.itemName] }}
@@ -30,9 +30,9 @@
     </template>
     <template v-else>
       <el-button
-        v-for="(item, index) in statusList" :key="item[option.itemValue]"
-        :type="curIndex === index ? 'primary' : 'info'"
-        @click="changeTab(index, item[option.itemValue])"
+        v-for="item in statusList" :key="item[option.itemValue]"
+        :type="currentValue == item[option.itemValue] ? 'primary' : 'info'"
+        @click="changeTab(item[option.itemValue])"
         :size="size"
       >
         {{ item[option.itemName] }}
@@ -57,7 +57,7 @@ export default defineComponent({
     const option = props.option;
     const formComp = props.formComp;
     const state = reactive({
-      curIndex: 0,
+      currentValue: props.option.value || null,
       statusList: [],
       size: option.size || "small"
     })
@@ -79,9 +79,9 @@ export default defineComponent({
       // props.formComp.updateTabData = getOptionData
     }
     // 状态切换
-    function changeTab(index: number, status: number) {
-      if (state.curIndex === index) return;
-      state.curIndex = index;
+    function changeTab(status: number) {
+      if (state.currentValue === status) return;
+      state.currentValue = status;
       formComp.formData[option.prop] = status
       if (option.effects) {
         option.effects.forEach((item: any) => {

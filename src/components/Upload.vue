@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-06 21:52:31
- * @LastEditTime: 2023-05-05 14:53:16
+ * @LastEditTime: 2023-07-12 21:59:29
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Upload.vue
@@ -92,8 +92,13 @@ export default defineComponent({
       context.emit("onSuccess", res);
     }
     // 失败
-    function uploadError() {
-      console.log(1111);
+    function uploadError(err) {
+      const errString = err.toString()
+      const reg =  /"msg"\s*:\s*"(.+?)"/;
+      const match = errString.match(reg)
+      if (match) {
+        ElMessage.error(match[1]);
+      }
     }
     return {
       ...toRefs(state),

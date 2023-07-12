@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-06-27 10:52:27
+ * @LastEditTime: 2023-07-13 02:06:29
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/agTable/AgTable.vue
@@ -53,7 +53,7 @@
   <slot :name="configFlag.slotName"></slot>
   <div style="display: flex; justify-content: end">
     <el-pagination
-      v-if="pageInfo"
+      v-if="pageInfo && configFlag.pagination"
       style="margin-top: 5px"
       :total="totalNum"
       :pageNum="pageInfo.pageNum"
@@ -80,7 +80,7 @@ import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import '@/common/css/aggrid.less';
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+// import { useRoute } from "vue-router";
 import { sum } from "@/utils/index";
 import ColumnCheck from "../ColumnCheck.vue";
 export default defineComponent({
@@ -105,7 +105,7 @@ export default defineComponent({
   ],
   setup(props: any, context) {
     const store = useStore();
-    const route = useRoute();
+    // const route = useRoute();
     let gridApi: any = null;
     // 获取页面配置信息
     const tableComp = props.componentOption;
@@ -126,7 +126,8 @@ export default defineComponent({
         rowMultiSelectWithClick: false, // to allow multiple rows to be selected with clicks
         suppressRowDeselection: false, // prevent rows from being deselected if you hold down Ctrl and click the row
         suppressRowClickSelection: true, // If true, rows won't be selected when clicked. Use, for example, when you want checkbox selection, and don't want to also select the row when the row is clicked.
-        index: false, // 是否需要序号
+        showIndex: false, // 是否需要序号
+        pagination: true, // 是否需要分页
         border: true,
         isRowClick: false,
         isTotal: false,
@@ -149,9 +150,9 @@ export default defineComponent({
       storageColumnsKey: computed(() => {
         return (
           // (route.name as string) +
-          (tableComp.status || "") +
+          (props.pageKey || "") +
           (tableComp.key || "") +
-          route.path
+          (tableComp.status || "")
           // (route.params.status || "")
         )
       }),
@@ -188,6 +189,19 @@ export default defineComponent({
         },
         ...tableComp.columns,
       ];
+    }
+    if (state.configFlag.showIndex) {
+      state.columnDefs.unshift({
+        headerName: ' ',
+        maxWidth: 30,
+        valueGetter: 'node.id',
+        resizable: false,
+        pinned: "left",
+        cellStyle: { textAlign: "center" },
+        cellRenderer: (params) => {
+          return Number(params.value) + 1
+        },
+      })
     }
     if (state.configFlag.total) {
       watch(
@@ -310,6 +324,10 @@ export default defineComponent({
       if (typeof state.configFlag.checkboxSelection === "function") {
         rowNode.selectable = state.configFlag.checkboxSelection(params);
       }
+      if (params.node.rowPinned) {
+        styleObj['font-weight'] = 'bold';
+        styleObj['color'] = 'red';
+      }
       if (params.node.isClicked === undefined) {
         return styleObj;
       } else {
@@ -331,15 +349,17 @@ export default defineComponent({
       if (state.configFlag.sizeColumnsToFit) {
         params.api.sizeColumnsToFit();
       }
-      context.emit("onGridReady", params.api);
+      // context.emit("onGridReady", params.api);
+      state.configFlag.onGridReady && state.configFlag.onGridReady(params.api)
+      // tableComp.gridApi = params.api
     }
     // 选中行
     function onSelectionChanged(event: any) {
-      // var selectedNodes = event.api.getSelectedNodes();
+      var selectedNodes = event.api.getSelectedNodes();
       var selectedRows = event.api.getSelectedRows();
       // context.emit("handleSelectionChange", selectedRows);
       tableComp.onSelectionChanged &&
-        tableComp.onSelectionChanged(selectedRows);
+        tableComp.onSelectionChanged(selectedRows, selectedNodes);
     }
     // 点击行
     function onRowClicked(event: any) {

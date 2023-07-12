@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-03-23 14:44:51
+ * @LastEditTime: 2023-07-12 23:31:14
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -131,10 +131,11 @@ export default defineComponent({
       item.handleClick(components)
     }
     // 查询
-    function queryData(target: string) {
+    function queryData(target: string, partialUpdate?: object) {
       store.dispatch("_QUERY_LIST", {
         pageKey: props.pageKey,
-        target: target
+        target: target,
+        partialUpdate
       });
     }
     // 重置
@@ -212,11 +213,11 @@ export default defineComponent({
     }
     function submit(item) {
       const component = getTargetComp(store, props.pageKey, item.target)
-      component.submit((res) => {
+      component.submit((formData) => {
         closeDialog(item.target)
         ElMessage.success("操作成功")
         if (item.queryTarget) {
-          queryData(item.queryTarget)
+          queryData(item.queryTarget, item.partialUpdate)
         }
       })
     }

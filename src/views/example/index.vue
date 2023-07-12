@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-25 14:35:27
- * @LastEditTime: 2023-04-14 15:38:11
+ * @LastEditTime: 2023-07-13 01:56:25
  * @LastEditors: zhao yongfei
  * @Description: 采购单的配置
  * @FilePath: /dfs-page-config/src/views/example/index.vue
@@ -195,8 +195,7 @@ export default defineComponent({
               relation: ["table"],
               validate: true,
               submitBefore: (component) => {
-                console.log(component)
-                // return false
+                console.log(JSON.stringify(component.formData, null, 4))
               },
               submitAfter: (res) => {
                 console.log(res)
@@ -267,7 +266,7 @@ export default defineComponent({
               size: "small",
               elementGroup: [
                 { text: "取消", type: "button", buttonType: "default", event: "cancel", restTarget: "searchForm2" },
-                { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table" },
+                { text: "提交", type: "button", event: "submit", target: "searchForm2", queryTarget: "table", partialUpdate: {searchKey: 'id', dataKey: 'id' } },
               ]
             }
           ]

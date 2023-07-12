@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2023-03-20 18:11:10
+ * @LastEditTime: 2023-07-05 16:38:54
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/eleTable/EleTable.vue
 -->
@@ -28,8 +28,9 @@
       :row-class-name="tableRowClassName"
       :key="key"
       :row-key="rowKey"
-      :show-summary="showSummary"
       @header-click="headerClick"
+      :show-summary="summaryArray.length ? true : false"
+      :summary-method="summaryMethod"
     >
       <!--    :row-key="(row) => row[rowKey] || rowKey" -->
       <!-- 全选单选 -->
@@ -109,6 +110,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import { sum } from "@/utils/index";
 import SortableJs from "sortablejs";
 
 export default defineComponent({
@@ -232,6 +234,10 @@ export default defineComponent({
       default: () => {
         return true;
       },
+    },
+    summaryArray: {
+      type: Array,
+      default: []
     }
   },
   emits: [
@@ -364,6 +370,43 @@ export default defineComponent({
         },
       });
     }
+    function summaryMethod(param: any) {
+      if (!props.summaryArray.length) return
+      const summaryArray = [...props.summaryArray]
+      const { columns, data } = param
+      const sums: any = []
+      columns.forEach((column: any, index: number) => {
+        if (index === 0) {
+          sums[index] = '合计'
+        } else {
+          for(let i = 0; i < summaryArray.length; i++) {
+            let key: any = summaryArray[i]
+            if (column.property === key) {
+              const values: any = []
+              for(let i = 0; i < data.length; i++) {
+                let num = Number(data[i][key] || 0)
+                if(isNaN(num)) {
+                  values.push('NaN')
+                  break
+                } else {
+                  values.push(num)
+                }
+              }
+              if (values.indexOf('NaN') > -1) {
+                sums[index] = data[0][key]
+              } else {
+                sums[index] = values.reduce((prev: number, curr: number) => {
+                  return sum(prev, curr)
+                }, 0)
+              }
+              summaryArray.unshift()
+              break
+            }
+          }
+        }
+      })
+      return sums
+    }
     // function setHeight() {
     //   let dom = document.querySelector(".dbs-table");
     //   if (dom) {
@@ -390,6 +433,7 @@ export default defineComponent({
       tableRowClassName,
       tableMaxHeight,
       headerClick,
+      summaryMethod
     };
   },
 });

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-05-09 14:18:15
+ * @LastEditTime: 2023-07-13 01:54:01
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/form/Form.vue
@@ -310,7 +310,7 @@ export default defineComponent({
         if (component.relation) {
           components = getRelationComp(store, props.pageKey, component.relation)
         }
-        if (component.submitBefore({relation: components, formData: component.formData, row: component.row}) === false) {
+        if (component.submitBefore({relation: components, formData: state.formData, row: component.row}) === false) {
           return false
         }
       }
@@ -325,7 +325,7 @@ export default defineComponent({
         method: component.method || "POST"
       })
       .then((res: any) => {
-        fn()
+        fn({...state.formData})
         component.submitAfter&&component.submitAfter(res)
       }).catch((err: any)=>{
         console.log(err)

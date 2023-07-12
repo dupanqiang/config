@@ -1,8 +1,8 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-06-12 11:20:02
- * @LastEditors: dupan
+ * @LastEditTime: 2023-07-12 18:43:56
+ * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
  */
@@ -17,18 +17,28 @@ let statusOpt = {
       return [
         {
           type: "Tab",
-          url: "/purchase/wms/returnProduct/selectAuditReturnOrderNum",
-          params: {
-            returnStatus: 4,
-            diffType: 1
-          },
-          style: {width: "100%"},
-          method: "GET",
-          prop: 'returnStatus',
-          itemValue: 'type',
-          itemName: 'typeName',
-          itemData: 'number',
+          url: "/purchase/deliveryOrder/statusEnum",
+          prop: 'statz',
+          value: 10,
+          itemValue: 'value',
+          itemName: 'label',
+          itemData: 'num',
+          style: {width: "100%"}
         },
+        // {
+        //   type: "Tab",
+        //   url: "/purchase/wms/returnProduct/selectAuditReturnOrderNum",
+        //   params: {
+        //     returnStatus: 4,
+        //     diffType: 1
+        //   },
+        //   style: {width: "100%"},
+        //   method: "GET",
+        //   prop: 'returnStatus',
+        //   itemValue: 'type',
+        //   itemName: 'typeName',
+        //   itemData: 'number',
+        // },
         {
           type: "Input",
           prop: "id",
@@ -188,7 +198,7 @@ let statusOpt = {
     buttonGroup: () => {
       return [
         { text: "查询", type: "button", event: "query", target: "table" },
-        { text: "重置", type: "button", event: "reset", target: "searchForm", queryTarget: "table" },
+        { text: "重置", type: "button", event: "reset", target: "searchForm", queryTarget: "table" }
       ];
     },
     buttonGroup2: (print: Function) => {
@@ -221,6 +231,7 @@ let statusOpt = {
             }
           }
         },
+        { text: "订单导入", type: "text", event: "upload",  url: '/oms-manager/ofcOrder/importExcel' },
         { text: "批量修改未准交原因", target: "table", type: "primary", handleClick: () => {}, relation: ["searchForm", "table"],
           isShow: (components) => {
             return components.searchForm.formData.deferStatus == 1
