@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-07-12 23:31:14
+ * @LastEditTime: 2023-07-13 03:00:37
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -97,6 +97,8 @@ export default defineComponent({
             if (item.relation) {
               const components = getRelationComp(store, props.pageKey, item.relation)
               return item.isShow(components)
+            } else {
+              return item.isShow()
             }
           }
           return item.isShow === undefined || item.isShow

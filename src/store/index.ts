@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-07-13 02:45:00
+ * @LastEditTime: 2023-07-13 22:37:35
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -75,7 +75,15 @@ export default createStore({
       tableComp.pageInfo.pageNum = 1
       tableComp.pageInfo.currentPage = 1
       tableComp.resetPagination = Math.random()
-      event.dispatch("_TABLE_QUERY", { tableComp, pageKey, partialUpdate });
+      if (partialUpdate) {
+        // 延时一秒请求，解决接口数据更新不及时
+        setTimeout(() => {
+          event.dispatch("_TABLE_QUERY", { tableComp, pageKey, partialUpdate });
+        }, 1000);
+      } else {
+        event.dispatch("_TABLE_QUERY", { tableComp, pageKey, partialUpdate });
+      }
+      
     },
     // 查询列表查询
     _TABLE_QUERY(event: any, { tableComp, pageKey, partialUpdate, row }: any) {
@@ -124,7 +132,7 @@ export default createStore({
                 const data = res.result[i];
                 if (node.data[partialUpdate.dataKey] == data[partialUpdate.dataKey]) {
                   node.setData(data)
-                  node.setSelected(false)
+                  // node.setSelected(false)
                 }
               }
             })
