@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-07-12 18:43:56
+ * @LastEditTime: 2023-07-21 14:38:52
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -246,7 +246,8 @@ let statusOpt = {
         {
           headerName: "线上订单号",
           field: "id",
-          width: 80,
+          width: 100,
+          headerTip: "这是一个提示",
           cellRendererFramework: "CellId",
           cellRendererParams: {
             callBackFn: (row: any) => {
@@ -408,7 +409,6 @@ let statusOpt = {
         {
           headerName: "备注",
           field: "remark",
-          cellRendererFramework: "CellItemEdit",
           cellRendererParams: {
             dataKey: "remark",
             type: "textarea",

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-07-13 22:37:35
+ * @LastEditTime: 2023-07-21 15:08:03
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -195,8 +195,16 @@ function tableBindFunction(event: any, tableComp: any, pageKey) {
     };
   }
   tableComp.columns.forEach((item: any) => {
+    // Header提示
+    if (item.headerTip) {
+      item.headerComponentFramework = "HeaderTip";
+      item.headerComponentParams = {
+        text: item.headerTip
+      }
+    }
     // 单元格编辑
     if (item.cellRendererParams && item.cellRendererParams.url) {
+      item.cellRendererFramework = "CellItemEdit"
       const cellRendererParams = item.cellRendererParams;
       const cb = cellRendererParams.callBack;
       cellRendererParams.callBackFn = (

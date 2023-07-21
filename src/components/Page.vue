@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-02-21 15:02:31
+ * @LastEditTime: 2023-07-21 14:45:34
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/Page.vue
 -->
@@ -68,11 +68,13 @@ import { defineComponent, ref, watch } from "vue";
 import { handleEnter } from "@/utils";
 import { useStore } from "vuex";
 import { initPage, queryData } from "@/common/js/pageConfigUtils";
+import HeaderTip from "@/components/HeaderTip.vue"
 import CellOperation from "@/components/CellOperation.vue"
 import CellItemEdit from "@/components/CellItemEdit.vue"
 
 export default defineComponent({
   components: {
+    HeaderTip,
     CellOperation,
     CellItemEdit
   },

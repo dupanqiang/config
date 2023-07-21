@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-07-13 02:06:29
+ * @LastEditTime: 2023-07-21 14:48:24
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/agTable/AgTable.vue
@@ -61,7 +61,7 @@
       layout="total,sizes, prev, pager, next"
       @sizeChange="sizeChange"
       @currentChange="currentChange"
-      :page-sizes="[20, 50, 100, 300, 500]"
+      :page-sizes="configFlag.pageSize || [20, 50, 100, 300, 500]"
       small
       :key="componentOption.resetPagination"
     />
