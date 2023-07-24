@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-15 16:02:31
- * @LastEditTime: 2023-01-31 15:40:08
+ * @LastEditTime: 2023-07-21 18:38:49
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/utils/service.ts
@@ -22,14 +22,13 @@ function errorHandle(info: any, callback?: any, time?: number) {
   });
 }
 
-let lang = navigator.language; //常规浏览器语言和IE浏览器
-
+let lang = localStorage.getItem('my_locale')
 const headerObj = {
   "Content-Type": "application/json;charset=UTF-8",
   "system-source": "WEB",
   system: "supplier",
   currency: "USD",
-  lang: lang,
+  lang: lang === 'zh' ? 'zh-CN' : (lang === 'en' ? 'en-US' : navigator.language),
   "app-id": "0",
 };
 

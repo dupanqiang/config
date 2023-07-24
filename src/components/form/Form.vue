@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-07-13 01:54:01
+ * @LastEditTime: 2023-07-22 14:11:10
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/form/Form.vue
@@ -47,7 +47,7 @@
         v-if="item.type === 'Input'"
         :show-password="item.inputType === 'password' ? true : false"
         :type="item.inputType || 'text'"
-        v-model.trim="formData[item.prop]"
+        v-model="formData[item.prop]"
         :maxlength="item.maxlength"
         :min="item.min"
         :max="item.max"
