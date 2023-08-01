@@ -2,14 +2,14 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-08-01 19:30:43
+ * @LastEditTime: 2023-08-01 20:56:44
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ColumnCheck.vue
 -->
 <template>
   <div ref="elColumnCheckedPanel" v-show="show" :style="{left: left, top: top, bottom: bottom}" class="header-checked" @click.stop>
     <p class="header-checked-header">
-      自定义显示字段
+      {{t("自定义显示字段")}}
     </p>
     <div class="header-checked-body">
       <el-checkbox
@@ -19,124 +19,127 @@
       </el-checkbox>
     </div>
     <div class="header-checked-footer">
-      <el-button type="default" size="small" @click="reset" style="margin-right: 4px">还原</el-button>
-      <el-button type="primary" size="small" @click="confirm">确定</el-button>
+      <el-button type="default" size="small" @click="reset" style="margin-right: 4px">{{t("还原")}}</el-button>
+      <el-button type="primary" size="small" @click="confirm">{{t("确定")}}</el-button>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, ref, onActivated, reactive, toRefs, watch, nextTick } from 'vue'
+import store from "@/store"
 
 export default defineComponent({
-    props: {
-      gridApi: {
-        type: Object,
-        default: {}
-      },
-      storageColumnsKey: {
-        type: String,
-        default: ''
-      },
-      columnDefs: {
-        type: Array,
-        default: []
-      },
-      columnUpdate: {
-        type: Number,
-        default: 0
-      }
+  props: {
+    gridApi: {
+      type: Object,
+      default: {}
     },
-    setup(props) {
-      const elColumnCheckedPanel = ref()
-      const state = reactive({
-        show: false,
-        left: '',
-        top: '',
-        bottom: 'auto',
-        columns: <any>[]
-      })
-      watch(() => props.columnUpdate, () => {
-        state.columns = props.columnDefs.map((item: any) => {
-          return {...item, show: !item.hide}
-        })
-      })
+    storageColumnsKey: {
+      type: String,
+      default: ''
+    },
+    columnDefs: {
+      type: Array,
+      default: []
+    },
+    columnUpdate: {
+      type: Number,
+      default: 0
+    }
+  },
+  setup(props) {
+    const { t } = store.state.useI18n()
+    const elColumnCheckedPanel = ref()
+    const state = reactive({
+      show: false,
+      left: '',
+      top: '',
+      bottom: 'auto',
+      columns: <any>[]
+    })
+    watch(() => props.columnUpdate, () => {
       state.columns = props.columnDefs.map((item: any) => {
         return {...item, show: !item.hide}
       })
-      function confirm() {
-        state.columns.forEach((item: any) => {
-          item.hide = !item.show
-        });
-        updateColumns(state.columns)
-        const columns = state.columns.map((item: any) => {
-          return {
-            field: item.field,
-            headerName: item.headerName,
-            width: item.width,
-            minWidth: item.minWidth,
-            hide: item.hide
-          }
-        })
-        localStorage.setItem(props.storageColumnsKey, JSON.stringify(columns))
-      }
-      function reset() {
-        state.columns.forEach((item: any) => {
-          if (item.rowGroup) {
-             item.hide = true
-             item.show = false
-          } else {
-              item.hide = false
-              item.show = true
-          }
-        });
-        updateColumns(state.columns)
-        localStorage.removeItem(props.storageColumnsKey)
-      }
-      function updateColumns(columns: any) {
-        props.gridApi.setColumnDefs(columns);
-        state.show = false
-      }
-      function closeColumnsPanel() {
-        state.show = false
-      }
-      function addEvent() {
-        if (!props.storageColumnsKey) return
-        setTimeout(() => {
-          const ele: any = document.querySelector(`.${props.storageColumnsKey} .ag-header`)
-          if (!ele) return
-          ele.oncontextmenu = (e: any) => {
-            state.left = e.pageX + 'px'
-            state.top = e.pageY + 'px'
-            setTimeout(() => {
-              state.show = true
-              nextTick(() => {
-                const elHeight = elColumnCheckedPanel.value.clientHeight
-                const docHeight = document.documentElement.clientHeight
-                if (elHeight + 20 > docHeight - e.pageY) {
-                  state.top = 'auto'
-                  state.bottom = '10px'
-                }
-              })
-            })
-            e.preventDefault()
-          }
-        }, 1000)
-        document.removeEventListener("click", closeColumnsPanel, false)
-        document.removeEventListener("contextmenu", closeColumnsPanel, false)
-        document.addEventListener("click", closeColumnsPanel, false)
-        document.addEventListener("contextmenu", closeColumnsPanel, false)
-      }
-      addEvent()
-      onActivated(() => {
-        addEvent()
+    })
+    state.columns = props.columnDefs.map((item: any) => {
+      return {...item, show: !item.hide}
+    })
+    function confirm() {
+      state.columns.forEach((item: any) => {
+        item.hide = !item.show
+      });
+      updateColumns(state.columns)
+      const columns = state.columns.map((item: any) => {
+        return {
+          field: item.field,
+          headerName: item.headerName,
+          width: item.width,
+          minWidth: item.minWidth,
+          hide: item.hide
+        }
       })
-      return {
-        elColumnCheckedPanel,
-        ...toRefs(state),
-        confirm,
-        reset
-      }
+      localStorage.setItem(props.storageColumnsKey, JSON.stringify(columns))
     }
+    function reset() {
+      state.columns.forEach((item: any) => {
+        if (item.rowGroup) {
+            item.hide = true
+            item.show = false
+        } else {
+            item.hide = false
+            item.show = true
+        }
+      });
+      updateColumns(state.columns)
+      localStorage.removeItem(props.storageColumnsKey)
+    }
+    function updateColumns(columns: any) {
+      props.gridApi.setColumnDefs(columns);
+      state.show = false
+    }
+    function closeColumnsPanel() {
+      state.show = false
+    }
+    function addEvent() {
+      if (!props.storageColumnsKey) return
+      setTimeout(() => {
+        const ele: any = document.querySelector(`.${props.storageColumnsKey} .ag-header`)
+        if (!ele) return
+        ele.oncontextmenu = (e: any) => {
+          state.left = e.pageX + 'px'
+          state.top = e.pageY + 'px'
+          setTimeout(() => {
+            state.show = true
+            nextTick(() => {
+              const elHeight = elColumnCheckedPanel.value.clientHeight
+              const docHeight = document.documentElement.clientHeight
+              if (elHeight + 20 > docHeight - e.pageY) {
+                state.top = 'auto'
+                state.bottom = '10px'
+              }
+            })
+          })
+          e.preventDefault()
+        }
+      }, 1000)
+      document.removeEventListener("click", closeColumnsPanel, false)
+      document.removeEventListener("contextmenu", closeColumnsPanel, false)
+      document.addEventListener("click", closeColumnsPanel, false)
+      document.addEventListener("contextmenu", closeColumnsPanel, false)
+    }
+    addEvent()
+    onActivated(() => {
+      addEvent()
+    })
+    return {
+      t,
+      elColumnCheckedPanel,
+      ...toRefs(state),
+      confirm,
+      reset
+    }
+  }
 })
 </script>
 <style lang="less">
@@ -144,7 +147,7 @@ export default defineComponent({
     position: fixed;
     background: #fff;
     border: 1px solid #dcdee2;
-    width: 200px;
+    min-width: 200px;
     font-size: 12px;
     z-index: 200;
     .header-checked-header {

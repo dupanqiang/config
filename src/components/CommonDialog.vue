@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-06 23:01:01
- * @LastEditTime: 2023-02-07 20:16:53
+ * @LastEditTime: 2023-08-01 21:15:19
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/CommonDialog.vue
@@ -26,7 +26,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs, ref, nextTick } from "vue";
+import { defineComponent, reactive, toRefs } from "vue";
 import { getTargetComp } from "@/common/js/pageConfigUtils";
 import { useStore } from "vuex";
 import {WarningFilled} from "@element-plus/icons-vue"

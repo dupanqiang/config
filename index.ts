@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-06-21 11:55:21
+ * @LastEditTime: 2023-08-01 20:40:12
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -25,7 +25,8 @@ import AgTable from "@/components/agTable";
 // import Descriptions from "@/components/Descriptions.vue"
 interface Option {
   store: any;
-  baseUrl: string
+  baseUrl: string;
+  useI18n?: Function
 }
 // const components = [
 //   SplitScreen,
@@ -46,6 +47,7 @@ export default (App, option: Option) => {
   option.store.state._BASE_URL = option.baseUrl
   store.commit('saveUrl', option.baseUrl)
   store.commit('saveState', option.store)
+  store.commit('useI18n', option.useI18n)
   // components.map(component => {
   //   App.component(component.name, component)
   // })

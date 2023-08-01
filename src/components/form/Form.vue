@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-07-22 14:11:10
+ * @LastEditTime: 2023-08-01 21:02:22
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/form/Form.vue
@@ -158,7 +158,7 @@
       <el-date-picker
         v-if="item.type === 'Date'"
         type="date"
-        :placeholder="item.placeholder || '选择日期'"
+        :placeholder="item.placeholder || t('选择日期')"
         v-model="formData[item.prop]"
         :clearable="item.clearable === false ? false : true"
         :disabled="item.disabled"
@@ -167,8 +167,8 @@
       <el-date-picker
         v-if="item.type === 'Daterange'"
         type="daterange"
-        :start-placeholder="item.startPlaceholder || '开始日期'"
-        :end-placeholder="item.endPlaceholder || '结束日期'"
+        :start-placeholder="item.startPlaceholder || t('开始日期')"
+        :end-placeholder="item.endPlaceholder || t('结束日期')"
         range-separator=" - "
         v-model="formData[item.prop]"
         :disabled-date="item.disabledDate"
@@ -177,7 +177,7 @@
       <!-- 时间 -->
       <el-time-select
         v-if="item.type === 'Time'"
-        :placeholder="item.placeholder || '选择时间'"
+        :placeholder="item.placeholder || t('选择时间')"
         v-model="formData[item.prop]"
         type=""
       ></el-time-select>
@@ -216,13 +216,14 @@
       v-if="elementGroup.length > 4 && showCloseButton"
     >
       <!-- <em :class="open ? 'el-icon-top' : 'el-icon-bottom'"></em> -->
-      {{ open ? "收起" : "展开" }}
+      {{ open ? t("收起") : t("展开") }}
     </span>
   </el-form>
 </el-config-provider>
 </template>
 <script lang="ts">
 import { defineComponent, computed, reactive, ref, toRefs } from "vue";
+import mStore from "@/store"
 import locale from "element-plus/lib/locale/lang/zh-cn";
 import { useStore } from "vuex";
 import service from "@/utils/service";
@@ -244,6 +245,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { t } = mStore.state.useI18n()
     const store = useStore()
     const formRef = ref();
     const component = props.componentOption
@@ -339,6 +341,7 @@ export default defineComponent({
     }
     getSelectData();
     return {
+      t,
       ...toRefs(state),
        locale,
       formRef,

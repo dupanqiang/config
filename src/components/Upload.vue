@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-06 21:52:31
- * @LastEditTime: 2023-07-12 21:59:29
+ * @LastEditTime: 2023-08-01 21:51:21
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Upload.vue
@@ -29,20 +29,20 @@
     >{{ text }}
     </span>
     <el-button v-else :size="size" :type="buttonType" :disabled="uploading">
-      {{text}}
+      {{ text }}
     </el-button>
   </el-upload>
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, toRefs } from "vue";
-import { useStore } from "vuex"
+import store from "@/store"
 import { ElMessage } from "element-plus";
 export default defineComponent({
   props: {
     url: String,
     text: {
       type: String,
-      default: "导入",
+      default: "",
     },
     buttonType: {
       type: String,
@@ -64,7 +64,7 @@ export default defineComponent({
   },
   emits: ["onSuccess"],
   setup(props, context) {
-    const store = useStore()
+    const { t } = store.state.useI18n()
     const state = reactive({
       uploadUrl: computed(
         () => store.state._BASE_URL + props.url
@@ -84,7 +84,7 @@ export default defineComponent({
     // 上传成功
     function uploadSuccess(res: any) {
       if (res.code == 0) {
-        ElMessage.success(res.msg || "上传成功");
+        ElMessage.success(res.msg || t("上传成功"));
       } else {
         ElMessage.error(res.msg);
       }

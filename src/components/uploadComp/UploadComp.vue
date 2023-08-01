@@ -35,7 +35,7 @@
         </span>
       </template>
     </el-upload>
-    <el-dialog v-model="dialogVisible" title="预览" center>
+    <el-dialog v-model="dialogVisible" :title="t('预览')" center>
       <img width="100%" :src="dialogImageUrl" style="width: 100%" />
     </el-dialog>
   </div>
@@ -43,6 +43,7 @@
 
 <script lang="ts">
 import { ElMessage } from "element-plus";
+import mStore from "@/store"
 import { useStore } from "vuex";
 import {
   defineComponent,
@@ -51,7 +52,6 @@ import {
   reactive,
   toRefs,
   toRaw,
-  getCurrentInstance,
   watch,
 } from "vue";
 import {Plus, ZoomIn, Delete} from "@element-plus/icons-vue"
@@ -114,6 +114,7 @@ export default defineComponent({
     },
   },
   setup(props: Props, context: SetupContext) {
+    const { t } = mStore.state.useI18n()
     const store = useStore();
     // const eventBus = getCurrentInstance()?.appContext.config.globalProperties
     //   .eventBus;
@@ -157,10 +158,10 @@ export default defineComponent({
         dialogImageUrl.value = URL.createObjectURL(file.raw);
         sendFileList.value.push(res);
         context.emit("fileUrlInfo", sendFileList.value);
-        ElMessage.success("上传成功");
+        ElMessage.success(t("上传成功"));
         // eventBus.$emit("uploadEnd", true);
       } else {
-        ElMessage.error("上传失败");
+        ElMessage.error(t("上传失败"));
         // eventBus.$emit("uploadEnd", false);
       }
       // store.commit("setLoading", false);
@@ -174,10 +175,10 @@ export default defineComponent({
       const isLt2M = file.size / 1024 / 1024 < maxSize.value;
 
       if (!isJPG) {
-        return ElMessage.error("上传图片格式错误!");
+        return ElMessage.error(t("上传图片格式错误") + '!');
       }
       if (!isLt2M) {
-        return ElMessage.error(`上传头像图片大小不能超过 ${maxSize.value}MB!`);
+        return ElMessage.error(`${t('上传图片大小不能超过')} ${maxSize.value}MB!`);
       }
 
       // eventBus.$emit("uploadIng");
@@ -188,10 +189,11 @@ export default defineComponent({
     };
 
     const handleExceed = () => {
-      return ElMessage.warning(` 文件数量不得超过 ${imgLength.value} 个`);
+      return ElMessage.warning(`${t('文件数量不得超过')} ${imgLength.value} 个`);
     };
 
     return {
+      t,
       ...toRefs(state),
       dialogImageUrl,
       dialogVisible,

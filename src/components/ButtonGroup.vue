@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-07-13 03:00:37
+ * @LastEditTime: 2023-08-01 21:10:37
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -68,6 +68,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs } from "vue";
+import mStore from "@/store"
 import { useStore } from "vuex";
 import { downLoadData } from "@/utils/index";
 import Upload from "@/components/Upload.vue";
@@ -89,6 +90,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const { t } = mStore.state.useI18n()
     const store = useStore();
     const state = reactive({
       buttonGroup: computed(() => {
@@ -168,7 +170,7 @@ export default defineComponent({
     // 导出
     function exportData(item: any) {
       const tableComp: any = getTargetComp(store, props.pageKey, item.target);
-      if (tableComp.data.totalNum == 0) return ElMessage.warning("无可导出数据");
+      if (tableComp.data.totalNum == 0) return ElMessage.warning(t("无可导出数据"));
       let exportParams = {}
       if (tableComp.exportBySelectionData) {
         // 根据选择数据导出
@@ -217,7 +219,7 @@ export default defineComponent({
       const component = getTargetComp(store, props.pageKey, item.target)
       component.submit((formData) => {
         closeDialog(item.target)
-        ElMessage.success("操作成功")
+        ElMessage.success(t("操作成功"))
         if (item.queryTarget) {
           queryData(item.queryTarget, item.partialUpdate)
         }

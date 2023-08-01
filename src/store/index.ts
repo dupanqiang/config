@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-07-21 15:08:03
+ * @LastEditTime: 2023-08-01 20:50:57
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -17,6 +17,11 @@ export default createStore({
     _CONFIG_DATA: {},
     _BASE_URL: import.meta.env.VITE_APP_API,
     loading: false,
+    useI18n: () => {
+      return {
+        t: (str) => str
+      }
+    },
     baseState: {}
   },
   getters: {
@@ -38,6 +43,9 @@ export default createStore({
     },
     saveState(state: any, payload: any) {
       state.baseState = payload.state;
+    },
+    useI18n(state: any, useI18n: Function) {
+      if (useI18n) state.useI18n = useI18n;
     },
     // 储存页面配置数据
     savaPageConfigData(state: any, payload: any) {

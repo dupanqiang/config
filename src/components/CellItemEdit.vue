@@ -1,8 +1,8 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-06-12 11:25:53
- * @LastEditors: dupan
+ * @LastEditTime: 2023-08-01 21:47:24
+ * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
 -->
@@ -79,11 +79,10 @@
 </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, ref, defineComponent, onMounted, nextTick, getCurrentInstance } from "vue";
+import { reactive, toRefs, ref, defineComponent, onBeforeMount, nextTick, getCurrentInstance } from "vue";
 import { formatDate } from '@/utils';
 import { ElInput, ElDatePicker, ElSelect, ElOption, ElMessage } from "element-plus";
 import { EditPen } from '@element-plus/icons-vue'
-import { dataType } from "element-plus/es/components/table-v2/src/common";
 export default defineComponent({
   name: "CellItemEdit",
   components: {
@@ -110,7 +109,7 @@ export default defineComponent({
         value: "value"
       },
     })
-    onMounted(() => {
+    onBeforeMount(() => {
       const { data:{params} }:any = getCurrentInstance();
       if (params.data && Object.keys(params.data).length) {
         if (params.type === 'select') {
@@ -119,7 +118,7 @@ export default defineComponent({
           state.modelData = getOptionLabel(state.options, params.data[params.dataKey]);
         } else {
           if(params.format === 'date') {
-             state.modelData = params.data[params.dataKey] ? formatDate(params.data[params.dataKey], "yyyy-MM-dd") : ''  
+            state.modelData = params.data[params.dataKey] ? formatDate(params.data[params.dataKey], "yyyy-MM-dd") : ''  
           } else {
             state.modelData = params.data[params.dataKey] ? params.data[params.dataKey] : (params.data[params.dataKey] === 0 ? 0 : '')
           } 
@@ -150,8 +149,8 @@ export default defineComponent({
       } else if (params.type === 'date') {
         state.modelData = formatDate(state.modelData, "yyyy-MM-dd");
         if(params.format === 'date' && !state.modelData) {
-           ElMessage.warning('时间不能为空')
-           return;
+          ElMessage.warning('不能为空')
+          return;
         }
       }
       params.callBackFn && params.callBackFn(params.data, params.dataKey, state.modelData, params.rowIndex);
