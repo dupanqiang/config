@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-02-07 20:27:41
+ * @LastEditTime: 2023-08-01 19:37:54
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperation.vue
@@ -90,6 +90,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   padding: 0 4px;
 }
 </style>

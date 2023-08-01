@@ -1,14 +1,19 @@
 <!--
  * @Author: Do not edit
  * @Date: 2023-04-06 18:11:58
- * @LastEditTime: 2023-07-21 14:38:00
+ * @LastEditTime: 2023-08-01 17:33:58
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/HeaderTip.vue
 -->
 <template>
   <span class="ag-header-cell-tip">
-    <img class="" src="@/assets/images/helpbg.gif" alt="" :title="params.text">
+    <el-tooltip placement="top" effect="light">
+      <template #content>
+        <p style="max-width: 220px;">{{params.text}}</p>
+      </template>
+      <img class="" src="@/assets/images/helpbg.gif" alt="">
+    </el-tooltip>
     {{params.displayName}}
   </span>
 </template>
@@ -19,8 +24,7 @@ import {
   defineComponent,
   onBeforeMount,
   getCurrentInstance,
-} from "vue";
-
+} from "vue"
 export default defineComponent({
   setup() {
     const state = reactive({

@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-06-21 12:34:12
+ * @LastEditTime: 2023-08-01 19:30:43
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ColumnCheck.vue
 -->
@@ -139,7 +139,7 @@ export default defineComponent({
     }
 })
 </script>
-<style lang="less" scoped>
+<style lang="less">
   .header-checked {
     position: fixed;
     background: #fff;
@@ -159,9 +159,19 @@ export default defineComponent({
       max-height: 70vh;
       overflow-y: auto;
       .el-checkbox {
-        display: block;
-        padding: 6px;
-        height: 20px;
+        padding: 0 6px;
+        display: flex;
+        align-items: center;
+        height: 24px;
+        .el-checkbox__label {
+          font-weight: 400;
+          color: #333;
+        }
+        &.is-checked {
+          .el-checkbox__label {
+            color: #409eff;
+          }
+        }
       }
     }
     .header-checked-footer {

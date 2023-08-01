@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-01-26 17:43:47
  * @description: 
- * @LastEditTime: 2023-07-21 14:54:48
+ * @LastEditTime: 2023-08-01 17:54:27
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/common/css/aggrid.less
  */
@@ -186,12 +186,8 @@
 .ag-root-wrapper:hover .ag-body-horizontal-scroll-viewport::-webkit-scrollbar {
   display: block;
 }
-.ag-body-horizontal-scroll-viewport,
-.ag-body-horizontal-scroll-container,
-.ag-body-horizontal-scroll {
-  min-height: 6px !important;
-  height: 6px !important;
-  overflow-x: auto;
+.ag-center-cols-viewport::-webkit-scrollbar {
+  display:none
 }
 // .ag-center-cols-viewport {
 //   overflow: hidden;
@@ -202,6 +198,9 @@
   min-height: 6px !important;
   height: 6px !important;
   overflow-x: auto;
+}
+.ag-body-horizontal-scroll.ag-scrollbar-invisible {
+  pointer-events:inherit
 }
 
 .ag-root {

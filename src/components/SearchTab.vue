@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-05-06 15:49:07
  * @description: 
- * @LastEditTime: 2023-06-28 15:33:07
+ * @LastEditTime: 2023-08-01 19:20:55
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/SearchTab.vue
 -->
@@ -139,6 +139,7 @@ export default defineComponent({
     margin-right: 2px;
     position: relative;
     cursor: pointer;
+    min-width: max-content;
     &::before {
       content: "";
       width: 17px;
