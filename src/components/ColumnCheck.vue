@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-10 13:02:15
  * @description: 
- * @LastEditTime: 2023-08-01 20:56:44
+ * @LastEditTime: 2023-08-02 19:54:31
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/ColumnCheck.vue
 -->
@@ -25,8 +25,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref, onActivated, reactive, toRefs, watch, nextTick } from 'vue'
-import store from "@/store"
+import { defineComponent, ref, onActivated, reactive, toRefs, watch, nextTick, getCurrentInstance } from 'vue'
 
 export default defineComponent({
   props: {
@@ -48,7 +47,7 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { t } = store.state.useI18n()
+    const { t } = getCurrentInstance().appContext.config.globalProperties.useI18n();
     const elColumnCheckedPanel = ref()
     const state = reactive({
       show: false,

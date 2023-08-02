@@ -43,8 +43,7 @@
 
 <script lang="ts">
 import { ElMessage } from "element-plus";
-import mStore from "@/store"
-import { useStore } from "vuex";
+import { useStore } from "vuex"
 import {
   defineComponent,
   unref,
@@ -53,6 +52,7 @@ import {
   toRefs,
   toRaw,
   watch,
+  getCurrentInstance
 } from "vue";
 import {Plus, ZoomIn, Delete} from "@element-plus/icons-vue"
 interface Props {
@@ -114,10 +114,8 @@ export default defineComponent({
     },
   },
   setup(props: Props, context: SetupContext) {
-    const { t } = mStore.state.useI18n()
-    const store = useStore();
-    // const eventBus = getCurrentInstance()?.appContext.config.globalProperties
-    //   .eventBus;
+    const { t } = getCurrentInstance().appContext.config.globalProperties.useI18n();
+    const store = useStore()
     const dialogImageUrl = ref("");
     const dialogVisible = ref(false);
     const uploadRef: any = ref(null);
@@ -159,18 +157,14 @@ export default defineComponent({
         sendFileList.value.push(res);
         context.emit("fileUrlInfo", sendFileList.value);
         ElMessage.success(t("上传成功"));
-        // eventBus.$emit("uploadEnd", true);
       } else {
         ElMessage.error(t("上传失败"));
-        // eventBus.$emit("uploadEnd", false);
       }
-      // store.commit("setLoading", false);
-      store.state.loading = false
+      store.commit("setLoading", false);
     };
     const beforeAvatarUpload = (file: { type: string; size: number }) => {
       console.log("beforeAvatarUpload：", file, file.type, format.value);
-      // store.commit("setLoading", true);
-      store.state.loading = true
+      store.commit("setLoading", true);
       const isJPG = format.value.includes(file.type);
       const isLt2M = file.size / 1024 / 1024 < maxSize.value;
 
@@ -180,8 +174,6 @@ export default defineComponent({
       if (!isLt2M) {
         return ElMessage.error(`${t('上传图片大小不能超过')} ${maxSize.value}MB!`);
       }
-
-      // eventBus.$emit("uploadIng");
     };
 
     const handleDownload = () => {

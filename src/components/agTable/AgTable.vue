@@ -1,7 +1,7 @@
 <!--
  * @Author: zhaoyongfei
  * @Date: 2021-08-24 17:18:13
- * @LastEditTime: 2023-07-21 14:48:24
+ * @LastEditTime: 2023-08-02 18:08:44
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/agTable/AgTable.vue
@@ -51,21 +51,23 @@
   </ag-grid-vue>
   <!-- 插槽 -->
   <slot :name="configFlag.slotName"></slot>
-  <div style="display: flex; justify-content: end">
-    <el-pagination
-      v-if="pageInfo && configFlag.pagination"
-      style="margin-top: 5px"
-      :total="totalNum"
-      :pageNum="pageInfo.pageNum"
-      :pageSize="pageInfo.pageSize"
-      layout="total,sizes, prev, pager, next"
-      @sizeChange="sizeChange"
-      @currentChange="currentChange"
-      :page-sizes="configFlag.pageSize || [20, 50, 100, 300, 500]"
-      small
-      :key="componentOption.resetPagination"
-    />
-  </div>
+  <el-config-provider :locale="locale">
+    <div style="display: flex; justify-content: end">
+      <el-pagination
+        v-if="pageInfo && configFlag.pagination"
+        style="margin-top: 5px"
+        :total="totalNum"
+        :pageNum="pageInfo.pageNum"
+        :pageSize="pageInfo.pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        @sizeChange="sizeChange"
+        @currentChange="currentChange"
+        :page-sizes="configFlag.pageSize || [20, 50, 100, 300, 500]"
+        small
+        :key="componentOption.resetPagination"
+      />
+    </div>
+  </el-config-provider>
   <ColumnCheck
     :gridApi="gridApi"
     :storageColumnsKey="storageColumnsKey"
@@ -79,7 +81,7 @@ import { AgGridVue } from "ag-grid-vue3";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import '@/common/css/aggrid.less';
-import { useStore } from "vuex";
+import store from "@/store";
 // import { useRoute } from "vue-router";
 import { sum } from "@/utils/index";
 import ColumnCheck from "../ColumnCheck.vue";
@@ -104,7 +106,7 @@ export default defineComponent({
     "onRowClicked",
   ],
   setup(props: any, context) {
-    const store = useStore();
+    const locale = store.state.locale
     // const route = useRoute();
     let gridApi: any = null;
     // 获取页面配置信息
@@ -413,6 +415,7 @@ export default defineComponent({
       store.dispatch("_TABLE_QUERY", { tableComp: tableComp, pageKey: props.pageKey });
     }
     return {
+      locale,
       ...toRefs(state),
       onGridReady,
       dragStopped,

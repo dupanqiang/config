@@ -2,12 +2,13 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2023-07-05 16:38:54
+ * @LastEditTime: 2023-08-02 18:05:15
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/eleTable/EleTable.vue
 -->
 
 <template>
+<el-config-provider :locale="locale">
   <div class="PublicTable">
     <el-table
       ref="tableRef"
@@ -91,7 +92,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <!-- :hide-on-single-page="true" -->
     <el-pagination
       v-if="configFlag.needPage"
@@ -106,10 +106,12 @@
       small
     />
   </div>
+</el-config-provider>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
+import store from "@/store"
 import { sum } from "@/utils/index";
 import SortableJs from "sortablejs";
 
@@ -249,6 +251,7 @@ export default defineComponent({
     "headerClick",
   ],
   setup(props, context) {
+    const locale = store.state.locale
     // shift多选所用变量
     // let isPressShiftKey = false;
     // let index = -1;
@@ -425,6 +428,7 @@ export default defineComponent({
     });
     
     return {
+      locale,
       tableRef,
       sizeChange,
       currentChange,

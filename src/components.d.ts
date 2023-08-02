@@ -52,6 +52,8 @@ declare module '@vue/runtime-core' {
     ElUpload: typeof import('element-plus/es')['ElUpload']
     Form: typeof import('./components/form/Form.vue')['default']
     HeaderTip: typeof import('./components/HeaderTip.vue')['default']
+    IEpArrowDown: typeof import('~icons/ep/arrow-down')['default']
+    IEpArrowUp: typeof import('~icons/ep/arrow-up')['default']
     ImageList: typeof import('./components/rowComponents/imageList.vue')['default']
     ImageOne: typeof import('./components/rowComponents/imageOne.vue')['default']
     ImgCarousel: typeof import('./components/rowComponents/imgCarousel.vue')['default']

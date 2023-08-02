@@ -1,13 +1,12 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-08-01 21:02:22
+ * @LastEditTime: 2023-08-02 19:35:47
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/form/Form.vue
 -->
 <template>
-<el-config-provider :locale="locale">
   <el-form
     :class="['form-group', componentOption.class||'']"
     ref="formRef"
@@ -158,7 +157,7 @@
       <el-date-picker
         v-if="item.type === 'Date'"
         type="date"
-        :placeholder="item.placeholder || t('选择日期')"
+        :placeholder="item.placeholder"
         v-model="formData[item.prop]"
         :clearable="item.clearable === false ? false : true"
         :disabled="item.disabled"
@@ -167,8 +166,8 @@
       <el-date-picker
         v-if="item.type === 'Daterange'"
         type="daterange"
-        :start-placeholder="item.startPlaceholder || t('开始日期')"
-        :end-placeholder="item.endPlaceholder || t('结束日期')"
+        :start-placeholder="item.startPlaceholder"
+        :end-placeholder="item.endPlaceholder"
         range-separator=" - "
         v-model="formData[item.prop]"
         :disabled-date="item.disabledDate"
@@ -177,14 +176,14 @@
       <!-- 时间 -->
       <el-time-select
         v-if="item.type === 'Time'"
-        :placeholder="item.placeholder || t('选择时间')"
+        :placeholder="item.placeholder"
         v-model="formData[item.prop]"
         type=""
       ></el-time-select>
       <!-- 日期时间 -->
       <el-date-picker
         v-if="item.type === 'DateTime'"
-        :placeholder="item.placeholder || '选择日期'"
+        :placeholder="item.placeholder"
         type="datetime"
         v-model="formData[item.prop]"
         :disabled="item.disable"
@@ -215,16 +214,16 @@
       class="form-move-search"
       v-if="elementGroup.length > 4 && showCloseButton"
     >
-      <!-- <em :class="open ? 'el-icon-top' : 'el-icon-bottom'"></em> -->
       {{ open ? t("收起") : t("展开") }}
+      <el-icon>
+        <i-ep-arrowUp v-show="open" />
+        <i-ep-arrowDown v-show="!open" />
+      </el-icon>
     </span>
   </el-form>
-</el-config-provider>
 </template>
 <script lang="ts">
-import { defineComponent, computed, reactive, ref, toRefs } from "vue";
-import mStore from "@/store"
-import locale from "element-plus/lib/locale/lang/zh-cn";
+import { defineComponent, computed, reactive, ref, toRefs, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import service from "@/utils/service";
 import { getSelectOption, getRelationComp } from "@/common/js/pageConfigUtils";
@@ -245,7 +244,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { t } = mStore.state.useI18n()
+    const { t } = getCurrentInstance().appContext.config.globalProperties.useI18n();
     const store = useStore()
     const formRef = ref();
     const component = props.componentOption
@@ -319,7 +318,7 @@ export default defineComponent({
       return true
     }
     function doSubmit(fn) {
-      store.state.loading = true
+      store.commit("setLoading", true);
       let paramsKey = component.method == "GET" ? "params" : "data"
       service({
         url: store.state._BASE_URL + component.url,
@@ -333,7 +332,7 @@ export default defineComponent({
         console.log(err)
       })
       .finally(() => {
-        store.state.loading = false
+        store.commit("setLoading", false);
       });
     }
     function isOpen() {
@@ -343,7 +342,6 @@ export default defineComponent({
     return {
       t,
       ...toRefs(state),
-       locale,
       formRef,
       isOpen,
       getSelectData,
@@ -358,6 +356,8 @@ export default defineComponent({
     font-size: 12px;
     color: #409eff;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
   }
   .hide-item {
     display: none;

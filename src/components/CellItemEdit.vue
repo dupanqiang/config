@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-08-01 21:47:24
+ * @LastEditTime: 2023-08-02 18:06:22
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellItemEdit.vue
@@ -46,7 +46,6 @@
         ref="inputRef"
         v-model="modelData"
         type="date"
-        placeholder="选择日期"
         size="small"
         @blur="editBlur()"
       >
@@ -55,7 +54,6 @@
         v-if="type === 'select'"
         ref="inputRef"
         v-model="modelData"
-        placeholder="请选择"
         size="small"
         filterable
         clearable

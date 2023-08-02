@@ -1,11 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-08-01 20:50:57
+ * @LastEditTime: 2023-08-02 19:39:25
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
  */
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import en from 'element-plus/dist/locale/en.mjs'
 import { createStore } from "vuex";
 import { getTargetComp, getFormData } from "@/common/js/pageConfigUtils";
 import service from "@/utils/service";
@@ -17,12 +19,7 @@ export default createStore({
     _CONFIG_DATA: {},
     _BASE_URL: import.meta.env.VITE_APP_API,
     loading: false,
-    useI18n: () => {
-      return {
-        t: (str) => str
-      }
-    },
-    baseState: {}
+    locale: zhCn,
   },
   getters: {
     // 获取页面配置数据
@@ -38,14 +35,21 @@ export default createStore({
     },
   },
   mutations: {
-    saveUrl(state: any, payload: any) {
-      state._BASE_URL = payload;
+    // 显示/隐藏loading
+    setLoading(state, bol = false) {
+      state.loading = bol;
     },
-    saveState(state: any, payload: any) {
-      state.baseState = payload.state;
+    saveUrl(state: any, baseUrl: string) {
+      state._BASE_URL = baseUrl;
     },
-    useI18n(state: any, useI18n: Function) {
-      if (useI18n) state.useI18n = useI18n;
+    saveLocale(state: any, locale) {
+      if (locale === 'en') {
+        state.locale = en
+        localStorage.setItem("my_locale", "en")
+      } else {
+        state.locale = zhCn
+        localStorage.setItem("my_locale", "zh")
+      }
     },
     // 储存页面配置数据
     savaPageConfigData(state: any, payload: any) {
@@ -121,7 +125,7 @@ export default createStore({
       }
       // 查询
       let paramsKey = tableComp.method == "GET" ? "params" : "data";
-      event.state.baseState.loading = true;
+      event.commit("setLoading", true);
       service({
         url: event.state._BASE_URL + tableComp.url,
         [paramsKey]: params || {},
@@ -149,7 +153,7 @@ export default createStore({
           }
         })
         .finally(() => {
-          event.state.baseState.loading = false;
+          event.commit("setLoading", false);
         });
     },
   },

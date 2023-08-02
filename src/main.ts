@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 11:53:20
  * @description: 
- * @LastEditTime: 2023-02-07 15:55:37
+ * @LastEditTime: 2023-08-02 19:33:50
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/main.ts
  */
@@ -13,6 +13,11 @@ import App from '@/App.vue'
 import store from "@/store";
 
 const app = createApp(App);
+app.config.globalProperties.useI18n = () => {
+  return {
+    t: (str) => str
+  }
+};
 install(app)
 app.use(store)
 .mount('#app');

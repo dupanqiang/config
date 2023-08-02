@@ -1,6 +1,6 @@
 {
   "name": "dfs-page-config",
-  "version": "0.1.60",
+  "version": "0.1.68",
   "type": "module",
   "files": [
     "dist"

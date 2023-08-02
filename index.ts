@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-08-01 20:40:12
+ * @LastEditTime: 2023-08-02 20:02:01
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -13,54 +13,33 @@ import '@/common/css/global.less';
 import install from '@/components/index'
 import store from "@/store";
 import Page from "@/components/Page.vue";
-// import SplitScreen from "@/components/SplitScreen.vue";;
-// import ButtonGroup from "@/components/ButtonGroup.vue";
-// import CommonDialog from "@/components/CommonDialog.vue";
-// // import CellOperation from "@/components/CellOperation.vue"
-// import CellItemEdit from "@/components/CellItemEdit.vue"
 import Form from "@/components/form"
 import UploadComp from "@/components/uploadComp"
 import EleTable from "@/components/eleTable";
 import AgTable from "@/components/agTable";
-// import Descriptions from "@/components/Descriptions.vue"
 interface Option {
   store: any;
   baseUrl: string;
-  useI18n?: Function
+  useI18n?: Function;
+  locale?: string
 }
-// const components = [
-//   SplitScreen,
-//   Form,
-//   ButtonGroup,
-//   AgTable,
-//   CommonDialog,
-//   // CellOperation,
-//   CellItemEdit,
-//   Descriptions
-// ]
 export default (App, option: Option) => {
-  ['state', 'getters', '_actions'].forEach(key => {
+  ['getters', '_actions'].forEach(key => {
     Object.keys(store[key]).forEach(k => {
       option.store[key][k] = store[key][k]
     })
-  })
-  option.store.state._BASE_URL = option.baseUrl
-  store.commit('saveUrl', option.baseUrl)
-  store.commit('saveState', option.store)
-  store.commit('useI18n', option.useI18n)
-  // components.map(component => {
-  //   App.component(component.name, component)
-  // })
-  install(App)
+  });
+  store.commit('saveUrl', option.baseUrl);
+  store.commit('saveLocale', option.locale);
+  option.store.state._CONFIG_DATA = store.state._CONFIG_DATA;
+  option.store.state._BASE_URL = option.baseUrl;
+  (store as any)._mutations.setLoading = option.store._mutations.setLoading;
+  install(App);
   App.component("DfsPageConfig", Page);
+  App.config.globalProperties.useI18n = option.useI18n;
 }
 
 export {
-  // SplitScreen,
-  // ButtonGroup,
-  // CommonDialog,
-  // // CellOperation,
-  // CellItemEdit,
   Form,
   AgTable,
   EleTable,
