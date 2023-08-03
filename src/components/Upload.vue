@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-07-06 21:52:31
- * @LastEditTime: 2023-08-02 20:12:26
+ * @LastEditTime: 2023-08-03 14:54:45
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/Upload.vue
@@ -25,7 +25,6 @@
       v-if="type === 'text'"
       class="dfs-text-btn"
       :style="style"
-      :disabled="uploading"
     >{{ text }}
     </span>
     <el-button v-else :size="size" :type="buttonType" :loading="uploading">
@@ -81,6 +80,7 @@ export default defineComponent({
     // 上传
     function beforeUpload() {
       uploading.value = true;
+      store.commit("setLoading", true);
     }
     // 上传成功
     function uploadSuccess(res: any) {
@@ -90,6 +90,7 @@ export default defineComponent({
         ElMessage.error(res.msg);
       }
       uploading.value = false;
+      store.commit("setLoading", false);
       context.emit("onSuccess", res);
     }
     // 失败
@@ -101,6 +102,7 @@ export default defineComponent({
         ElMessage.error(match[1]);
       }
       uploading.value = false;
+      store.commit("setLoading", false);
     }
     return {
       ...toRefs(state),

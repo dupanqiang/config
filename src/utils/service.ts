@@ -22,7 +22,7 @@ function errorHandle(info: any, callback?: any, time?: number) {
   });
 }
 
-let lang = localStorage.getItem('my_locale')
+let lang = localStorage.getItem('my_locale_comp')
 const headerObj = {
   "Content-Type": "application/json;charset=UTF-8",
   "system-source": "WEB",

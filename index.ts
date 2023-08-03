@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 13:54:56
  * @description: 
- * @LastEditTime: 2023-08-02 20:02:01
+ * @LastEditTime: 2023-08-03 11:57:26
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/index.ts
  */
@@ -36,7 +36,12 @@ export default (App, option: Option) => {
   (store as any)._mutations.setLoading = option.store._mutations.setLoading;
   install(App);
   App.component("DfsPageConfig", Page);
-  App.config.globalProperties.useI18n = option.useI18n;
+  const useI18n = () => {
+    return {
+      t: (str) => str
+    }
+  };
+  App.config.globalProperties.useI18n = option.useI18n || useI18n
 }
 
 export {

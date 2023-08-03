@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-08-24 11:46:08
- * @LastEditTime: 2023-08-02 19:49:07
+ * @LastEditTime: 2023-08-03 14:56:58
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/ButtonGroup.vue
@@ -68,7 +68,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, computed, toRefs, getCurrentInstance } from "vue";
-import { useStore } from "vuex"
+import store from "@/store"
 import { downLoadData } from "@/utils/index";
 import Upload from "@/components/Upload.vue";
 import { getTargetComp, getRelationComp } from "@/common/js/pageConfigUtils";
@@ -90,7 +90,6 @@ export default defineComponent({
   },
   setup(props) {
     const { t } = getCurrentInstance().appContext.config.globalProperties.useI18n();
-    const store = useStore()
     const state = reactive({
       buttonGroup: computed(() => {
         return props.componentOption.elementGroup.filter((item: any) => {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-14 20:49:39
- * @LastEditTime: 2023-08-02 19:39:25
+ * @LastEditTime: 2023-08-03 14:43:56
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/store/index.ts
@@ -45,10 +45,10 @@ export default createStore({
     saveLocale(state: any, locale) {
       if (locale === 'en') {
         state.locale = en
-        localStorage.setItem("my_locale", "en")
+        localStorage.setItem("my_locale_comp", "en")
       } else {
         state.locale = zhCn
-        localStorage.setItem("my_locale", "zh")
+        localStorage.setItem("my_locale_comp", "zh")
       }
     },
     // 储存页面配置数据
