@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-15 16:02:31
- * @LastEditTime: 2023-07-21 18:38:49
+ * @LastEditTime: 2023-10-24 16:29:34
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/utils/service.ts
@@ -22,14 +22,14 @@ function errorHandle(info: any, callback?: any, time?: number) {
   });
 }
 
-let lang = localStorage.getItem('my_locale_comp')
 const headerObj = {
   "Content-Type": "application/json;charset=UTF-8",
   "system-source": "WEB",
-  system: "supplier",
-  currency: "USD",
-  lang: lang === 'zh' ? 'zh-CN' : (lang === 'en' ? 'en-US' : navigator.language),
+  "system": "supplier",
+  "currency": "USD",
+  "lang": 'zh-CN',
   "app-id": "0",
+  'timeZone': localStorage.getItem("my_timeZone") || 'UTC+8'
 };
 
 // 创建一个 axios 实例
@@ -43,6 +43,7 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     let userInfo: any = localStorage.getItem("userInfo");
+    let lang = localStorage.getItem('my_locale_comp')
     if (userInfo) {
       userInfo = JSON.parse(userInfo);
       config.headers["x-user-slt-mobile"] = userInfo.mobile;
@@ -53,6 +54,7 @@ service.interceptors.request.use(
         ? encodeURIComponent(userInfo.supplierUserVo?.userName)
         : userInfo?.mobile;
     }
+    config.headers["lang"] = lang === 'zh' ? 'zh-CN' : (lang === 'en' ? 'en-US' : navigator.language)
     return config;
   },
   (error) => {

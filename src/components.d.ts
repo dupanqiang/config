@@ -69,7 +69,4 @@ declare module '@vue/runtime-core' {
     Upload: typeof import('./components/Upload.vue')['default']
     UploadComp: typeof import('./components/uploadComp/UploadComp.vue')['default']
   }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
-  }
 }
