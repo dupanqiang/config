@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2023-08-02 18:05:15
+ * @LastEditTime: 2023-12-12 14:57:31
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/eleTable/EleTable.vue
 -->
@@ -102,7 +102,7 @@
       layout="total,sizes, prev, pager, next"
       @sizeChange="sizeChange"
       @currentChange="currentChange"
-      :page-sizes="[10, 20, 30, 50, 100]"
+      :page-sizes="configFlag.pageSize || [20, 50, 100, 200, 500]"
       small
     />
   </div>

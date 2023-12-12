@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-08-01 19:37:54
+ * @LastEditTime: 2023-12-12 14:50:30
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperation.vue
@@ -55,7 +55,7 @@ export default defineComponent({
         if (option.relation) {
           components = getRelationComp(store, state.params.pageKey, option.relation)
         }
-        if (option.showDialogBefore(components, row) === false) {
+        if (option.showDialogBefore(components, row, option) === false) {
           return
         }
       }
