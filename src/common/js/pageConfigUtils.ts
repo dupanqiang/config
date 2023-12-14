@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-09-01 16:54:13
- * @LastEditTime: 2023-07-22 14:14:28
+ * @LastEditTime: 2023-12-14 16:07:02
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/common/js/pageConfigUtils.ts
@@ -74,14 +74,14 @@ import service from "@/utils/service";
   // 获取下拉框数据
   let obj:any = {}
   function getSelectOption(state: any, item: any ) {
-    const dataKey = item.url + (item.dataKey ? '-' + item.dataKey : '')
+    const dataKey = item.url + (item.dataKey ? '-' + item.dataKey : '') + (item.params ? '-' + JSON.stringify(item.params) : '')
     if (state[dataKey] && !item.noCache) {
       item.options = state[dataKey];
     } else {
-      if (obj[item.url]) {
+      if (obj[item.url] && !item.params) {
         obj[item.url].push(item)
         return
-      } else {
+      } else if (!item.params) {
         obj[item.url] = [item]
       }
       let paramsKey = item.method == "POST" ? "data" : "params"
@@ -102,6 +102,8 @@ import service from "@/utils/service";
             item.options = res[item.dataKey] || result
           })
           delete obj[item.url]
+        } else {
+          item.options = result
         }
       })
     }
@@ -142,6 +144,8 @@ import service from "@/utils/service";
           );
         }
         delete data[item.prop];
+      } else if (item.type === "Year") {
+        data[item.prop] = formatDate(data[item.prop], "yyyy");
       }
     });
     return data;

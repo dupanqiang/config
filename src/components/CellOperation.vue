@@ -1,7 +1,7 @@
 <!--
  * @Author: zhao yongfei
  * @Date: 2020-12-15 11:00:37
- * @LastEditTime: 2023-12-12 14:50:30
+ * @LastEditTime: 2023-12-14 14:33:39
  * @LastEditors: zhao yongfei
  * @Description: table内字段编辑
  * @FilePath: /dfs-page-config/src/components/CellOperation.vue
@@ -55,7 +55,7 @@ export default defineComponent({
         if (option.relation) {
           components = getRelationComp(store, state.params.pageKey, option.relation)
         }
-        if (option.showDialogBefore(components, row, option) === false) {
+        if (option.showDialogBefore(components, row) === false) {
           return
         }
       }
@@ -92,6 +92,9 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
   padding: 0 4px;
+  .el-button + .el-button {
+    margin-left: 5px;
+  }
 }
 </style>
 

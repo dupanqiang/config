@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-08-02 19:35:47
+ * @LastEditTime: 2023-12-13 14:30:05
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/form/Form.vue
@@ -153,6 +153,15 @@
           >{{ ch.label }}</el-checkbox
         >
       </el-checkbox-group>
+      <!-- 日期 -->
+      <el-date-picker
+        v-if="item.type === 'Year'"
+        type="year"
+        :placeholder="item.placeholder"
+        v-model="formData[item.prop]"
+        :clearable="item.clearable === false ? false : true"
+        :disabled="item.disabled"
+      ></el-date-picker>
       <!-- 日期 -->
       <el-date-picker
         v-if="item.type === 'Date'"

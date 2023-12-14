@@ -1,7 +1,7 @@
 /*
  * @Author: zhaoyongfei
  * @Date: 2021-10-13 12:22:27
- * @LastEditTime: 2023-07-21 14:38:52
+ * @LastEditTime: 2023-12-14 15:50:40
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/views/example/statusOpt.ts
@@ -39,6 +39,32 @@ let statusOpt = {
         //   itemName: 'typeName',
         //   itemData: 'number',
         // },
+        {
+          type: "Select",
+          prop: "subCatalogType",
+          value: null,
+          url: "/finance-service/drop-down-enum/select",
+          params: {subCatalogType: true},
+          options: [],
+          method: 'POST',
+          dataKey: "subCatalogType",
+          itemName: "desc",
+          itemValue: "key",
+          placeholder: "类型",
+        },
+        {
+          type: "Select",
+          prop: "status",
+          value: null,
+          url: "/finance-service/drop-down-enum/select",
+          params: {status: true},
+          options: [],
+          method: 'POST',
+          dataKey: "status",
+          itemName: "desc",
+          itemValue: "key",
+          placeholder: "状态",
+        },
         {
           type: "Input",
           prop: "id",
