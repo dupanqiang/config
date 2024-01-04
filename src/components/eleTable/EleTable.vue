@@ -2,7 +2,7 @@
  * @author: zhao yongfei
  * @Date: 2022-08-12 10:57:04
  * @description: 
- * @LastEditTime: 2023-12-12 14:57:31
+ * @LastEditTime: 2024-01-04 19:11:54
  * @LastEditors: zhao yongfei
  * @FilePath: /dfs-page-config/src/components/eleTable/EleTable.vue
 -->
@@ -70,11 +70,10 @@
         :fixed="item.fixed"
         :class-name="item.className"
       >
-        <template v-if="item.customizeHeader || false" #header>
+        <template #header v-if="item.header">
           <slot
             :class="item.className"
-            name="HEADER"
-            :scope="{ item, columnIndex }"
+            :name="item.header.slot"
           />
         </template>
         <template v-slot="scope">

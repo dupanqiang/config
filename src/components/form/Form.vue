@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-09-07 16:37:38
- * @LastEditTime: 2023-12-13 14:30:05
+ * @LastEditTime: 2023-12-15 14:40:03
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/components/form/Form.vue
@@ -97,7 +97,7 @@
       >
         <el-option
           v-for="op in item.options"
-          :label="op[item.itemName || 'label']"
+          :label="typeof item.itemName == 'function' ? item.itemName(op) : op[item.itemName || 'label']"
           :value="op[item.itemValue || 'value']"
           :key="op.value"
           :disabled="op.disabled"

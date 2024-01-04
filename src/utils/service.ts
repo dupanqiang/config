@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-12-15 16:02:31
- * @LastEditTime: 2023-10-24 16:29:34
+ * @LastEditTime: 2023-12-21 14:42:15
  * @LastEditors: zhao yongfei
  * @Description: In User Settings Edit
  * @FilePath: /dfs-page-config/src/utils/service.ts
@@ -25,7 +25,7 @@ function errorHandle(info: any, callback?: any, time?: number) {
 const headerObj = {
   "Content-Type": "application/json;charset=UTF-8",
   "system-source": "WEB",
-  "system": "supplier",
+  // "system": "supplier",
   "currency": "USD",
   "lang": 'zh-CN',
   "app-id": "0",
@@ -42,18 +42,18 @@ const service = axios.create({
 //请求拦截
 service.interceptors.request.use(
   (config) => {
-    let userInfo: any = localStorage.getItem("userInfo");
+    // let userInfo: any = localStorage.getItem("userInfo");
     let lang = localStorage.getItem('my_locale_comp')
-    if (userInfo) {
-      userInfo = JSON.parse(userInfo);
-      config.headers["x-user-slt-mobile"] = userInfo.mobile;
-      config.headers["x-user-slt-login-id"] =
-        userInfo.supplierUserVo?.userLoginId;
-      config.headers["x-user-slt-user-name"] = !!userInfo.supplierUserVo
-        ?.userName
-        ? encodeURIComponent(userInfo.supplierUserVo?.userName)
-        : userInfo?.mobile;
-    }
+    // if (userInfo) {
+    //   userInfo = JSON.parse(userInfo);
+    //   config.headers["x-user-slt-mobile"] = userInfo.mobile;
+    //   config.headers["x-user-slt-login-id"] =
+    //     userInfo.supplierUserVo?.userLoginId;
+    //   config.headers["x-user-slt-user-name"] = !!userInfo.supplierUserVo
+    //     ?.userName
+    //     ? encodeURIComponent(userInfo.supplierUserVo?.userName)
+    //     : userInfo?.mobile;
+    // }
     config.headers["lang"] = lang === 'zh' ? 'zh-CN' : (lang === 'en' ? 'en-US' : navigator.language)
     return config;
   },
