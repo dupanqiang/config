@@ -1,16 +1,16 @@
 {
   "name": "page-config",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "type": "module",
   "files": [
     "dist"
   ],
-  "main": "./dist/dfs-page-config.umd.cjs",
-  "module": "./dist/dfs-page-config.js",
+  "main": "./dist/page-config.umd.cjs",
+  "module": "./dist/page-config.js",
   "exports": {
     ".": {
-      "import": "./dist/dfs-page-config.js",
-      "require": "./dist/dfs-page-config.umd.cjs"
+      "import": "./dist/page-config.js",
+      "require": "./dist/page-config.umd.cjs"
     },
     "./css": "./dist/style.css"
   },
