@@ -2,9 +2,9 @@
  * @author: zhao yongfei
  * @Date: 2023-01-09 11:53:20
  * @description: 
- * @LastEditTime: 2023-01-14 11:35:33
- * @LastEditors: zhao yongfei
- * @FilePath: /dfs-page-config/vite.config.ts
+ * @LastEditTime: 2024-09-04 15:53:34
+ * @LastEditors: dupanqiang
+ * @FilePath: /config/vite.config.ts
  */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
@@ -58,7 +58,7 @@ export default defineConfig({
   ],
   server: {
     port: 8000,
-    host: "devfe.doublefs.com",
+    host: "0.0.0.0",
     hmr: { overlay: false },
     https: true,
     open: true
